@@ -21,6 +21,11 @@ background_sprite = pygame.transform.scale(background_sprite, (screen_width, scr
 
 font = pygame.font.Font(None, 36)
 
+# Sound effect and music setup
+pygame.mixer.music.load('musics/music.mp3')
+pygame.mixer.music.play(-1, 0.0, 5000)
+hit_fx = pygame.mixer.Sound('sounds/coin.wav')
+
 def add_zombie():
 
     centers = pits.centers
@@ -45,6 +50,7 @@ while running:
                 if zombie.is_smashed(event.pos):
                     zombies.remove(zombie)
                     hit += 1
+                    hit_fx.play()
                     break
             else:
                 miss += 1
