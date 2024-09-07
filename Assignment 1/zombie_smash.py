@@ -1,6 +1,8 @@
 import pygame
 import sys
 from random import randint
+from Zombie import Zombie
+from Pit import Pit
 
 pygame.init()
 
@@ -9,57 +11,15 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Zombie Game")
 
-white = (255, 255, 255)
-green = (0, 255, 0)
-
-original_zombie_sprite = pygame.image.load('zombie.png')
+original_zombie_sprite = pygame.image.load('sprites/zombie.png')
 zombie_width = 100
 zombie_height = 100
 zombie_sprite = pygame.transform.scale(original_zombie_sprite, (zombie_width, zombie_height))
 
-background_sprite = pygame.image.load('background.png')
+background_sprite = pygame.image.load('sprites/background.png')
 background_sprite = pygame.transform.scale(background_sprite, (screen_width, screen_height))
 
-class Pit:
-    def __init__(self, start_x, start_y, end_x, end_y, rows=3, cols=3):
-        self.start_x = start_x
-        self.start_y = start_y
-        self.end_x = end_x
-        self.end_y = end_y
-        self.rows = rows
-        self.cols = cols
-        self.centers = self._calculate_centers()
-
-    def _calculate_centers(self):
-        centers = []
-        for row in range(self.rows):
-            for col in range(self.cols):
-                x = self.start_x + col * (self.end_x - self.start_x) // (self.cols - 1)
-                y = self.start_y + row * (self.end_y - self.start_y) // (self.rows - 1)
-                centers.append((x, y))
-        return centers
-
-pits = Pit(140, 193, 665, 511)
-
-class Zombie:
-    def __init__(self, x, y, width, height, sprite_image) -> None:
-        self.appear_time = pygame.time.get_ticks()
-        self.stay_time = randint(3000, 5000)
-        self.width = width
-        self.height = height
-        self.x = x
-        self.y = y
-        self.sprite = pygame.transform.scale(sprite_image, (self.width, self.height))
-
-    def draw(self, screen):
-        # pygame.draw.rect(screen, green, (self.x, self.y, self.width, self.height))
-        screen.blit(self.sprite, (self.x, self.y))
-
-    def is_smashed(self, pos):
-        return pygame.Rect(self.x, self.y, self.width, self.height).collidepoint(pos)
-
-zombies = []
-last_spawn = 0
+font = pygame.font.Font(None, 36)
 
 def add_zombie():
 
@@ -69,6 +29,12 @@ def add_zombie():
     zombies.append(zombie)
 
 running = True
+hit = 0
+miss = 0
+pits = Pit(140, 193, 665, 511)
+zombies = []
+last_spawn = 0
+
 while running:
 
     for event in pygame.event.get():
@@ -78,8 +44,20 @@ while running:
             for zombie in zombies[:]:
                 if zombie.is_smashed(event.pos):
                     zombies.remove(zombie)
+                    hit += 1
+                    break
+            else:
+                miss += 1
 
     screen.blit(background_sprite, (0, 0))
+
+    hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
+    hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10)) 
+    screen.blit(hit_text, hit_rect)
+
+    miss_text = font.render(f"Misses: {miss}", True, (0, 0, 0))
+    miss_rect = miss_text.get_rect(topright=(screen_width - 10, hit_rect.bottom + 10)) 
+    screen.blit(miss_text, miss_rect)
 
     current_time = pygame.time.get_ticks()
 
@@ -87,6 +65,7 @@ while running:
 
     for zombie in zombies:
         zombie.draw(screen)
+        
 
     if current_time - last_spawn >= 1000:
         spawn = randint(0, 1)
