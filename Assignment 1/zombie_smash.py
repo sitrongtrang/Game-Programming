@@ -26,12 +26,21 @@ pygame.mixer.music.load('musics/music.mp3')
 pygame.mixer.music.play(-1, 0.0, 5000)
 hit_fx = pygame.mixer.Sound('sounds/coin.wav')
 
-def add_zombie():
 
+def add_zombie():
     centers = pits.centers
-    zombie_x, zombie_y = centers[randint(0, len(centers) - 1)]
-    zombie = Zombie(zombie_x - zombie_width // 2, zombie_y - zombie_height // 2, zombie_width, zombie_height, zombie_sprite)
-    zombies.append(zombie)
+    max_attempts = 10  # Number of attempts to find a valid spawn location
+    for _ in range(max_attempts):
+        zombie_x, zombie_y = centers[randint(0, len(centers) - 1)]
+        new_zombie_rect = pygame.Rect(zombie_x - zombie_width // 2, zombie_y - zombie_height // 2, zombie_width,
+                                      zombie_height)
+        overlap = any(new_zombie_rect.colliderect(pygame.Rect(z.x, z.y, z.width, z.height)) for z in zombies)
+
+        if not overlap:
+            zombie = Zombie(zombie_x - zombie_width // 2, zombie_y - zombie_height // 2, zombie_width, zombie_height,
+                            zombie_sprite)
+            zombies.append(zombie)
+            break
 
 running = True
 hit = 0
@@ -41,14 +50,13 @@ zombies = []
 last_spawn = 0
 
 while running:
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for zombie in zombies[:]:
                 if zombie.is_smashed(event.pos):
-                    zombies.remove(zombie)
+                    zombie.stun()
                     hit += 1
                     hit_fx.play()
                     break
@@ -58,20 +66,21 @@ while running:
     screen.blit(background_sprite, (0, 0))
 
     hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
-    hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10)) 
+    hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10))
     screen.blit(hit_text, hit_rect)
 
     miss_text = font.render(f"Misses: {miss}", True, (0, 0, 0))
-    miss_rect = miss_text.get_rect(topright=(screen_width - 10, hit_rect.bottom + 10)) 
+    miss_rect = miss_text.get_rect(topright=(screen_width - 10, hit_rect.bottom + 10))
     screen.blit(miss_text, miss_rect)
 
     current_time = pygame.time.get_ticks()
 
+    # Remove zombies that have been stunned for 1 second
+    zombies = [zombie for zombie in zombies if not zombie.is_stunned_for_duration()]
     zombies = [zombie for zombie in zombies if current_time - zombie.appear_time < zombie.stay_time]
 
     for zombie in zombies:
         zombie.draw(screen)
-        
 
     if current_time - last_spawn >= 1000:
         spawn = randint(0, 1)
