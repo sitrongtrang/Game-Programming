@@ -40,8 +40,8 @@ def add_zombie():
             zombie = Zombie(zombie_x - zombie_width // 2, zombie_y - zombie_height // 2, zombie_width, zombie_height,
                             zombie_sprite)
             zombies.append(zombie)
+            zombie.spawn()
             break
-    zombie.spawn()
 
 running = True
 hit = 0
@@ -58,7 +58,7 @@ while running:
             for zombie in zombies[:]:
                 if zombie.is_smashed(event.pos):
                     # Call zomebie death   
-                    #zombie.stun()
+                    zombie.stun()
                     zombie.death()
                     hit += 1
                     hit_fx.play()

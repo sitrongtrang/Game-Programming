@@ -41,7 +41,8 @@ class Zombie:
 
 
     def is_smashed(self, pos):
-        if self.state == 'death': return False
+        if self.state == 'death' and self.stunned_start_time is not None: 
+            return False
 
         if self.stunned_start_time is None:
             return pygame.Rect(self.x, self.y, self.width, self.height).collidepoint(pos)
