@@ -41,6 +41,7 @@ def add_zombie():
                             zombie_sprite)
             zombies.append(zombie)
             break
+    zombie.spawn()
 
 running = True
 hit = 0
@@ -56,7 +57,9 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for zombie in zombies[:]:
                 if zombie.is_smashed(event.pos):
-                    zombie.stun()
+                    # Call zomebie death   
+                    #zombie.stun()
+                    zombie.death()
                     hit += 1
                     hit_fx.play()
                     break
@@ -65,6 +68,8 @@ while running:
 
     screen.blit(background_sprite, (0, 0))
 
+
+    # Update
     hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
     hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10))
     screen.blit(hit_text, hit_rect)
@@ -79,6 +84,10 @@ while running:
     zombies = [zombie for zombie in zombies if not zombie.is_stunned_for_duration()]
     zombies = [zombie for zombie in zombies if current_time - zombie.appear_time < zombie.stay_time]
 
+    for zombie in zombies:
+        zombie.update(zombies)
+
+    #Draw
     for zombie in zombies:
         zombie.draw(screen)
 
