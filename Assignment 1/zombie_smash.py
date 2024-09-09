@@ -49,55 +49,76 @@ miss = 0
 pits = Pit(140, 193, 665, 511)
 zombies = []
 last_spawn = 0
+new_game_time = 0
+game_over_time = 0
+game_over = False
+# new_game = False
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            for zombie in zombies[:]:
-                if zombie.is_smashed(event.pos):
-                    # Call zomebie death   
-                    zombie.stun()
-                    zombie.death()
-                    hit += 1
-                    hit_fx.play()
-                    break
+            if game_over: #TODO: If game over and clicked on "Play Again", reset a new game
+                hit = 0
+                miss = 0
+                zombies = []
+                last_spawn = pygame.time.get_ticks()
+                new_game_time = pygame.time.get_ticks()
+                # new_game = False
+                game_over = False
             else:
-                miss += 1
+                for zombie in zombies[:]:
+                    if zombie.is_smashed(event.pos):
+                        # Call zomebie death   
+                        zombie.stun()
+                        zombie.death()
+                        hit += 1
+                        hit_fx.play()
+                        break
+                else:
+                    miss += 1
 
-    screen.blit(background_sprite, (0, 0))
+    if not game_over:
+        screen.blit(background_sprite, (0, 0))
 
 
-    # Update
-    hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
-    hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10))
-    screen.blit(hit_text, hit_rect)
+        # Update
+        hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
+        hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10))
+        screen.blit(hit_text, hit_rect)
 
-    miss_text = font.render(f"Misses: {miss}", True, (0, 0, 0))
-    miss_rect = miss_text.get_rect(topright=(screen_width - 10, hit_rect.bottom + 10))
-    screen.blit(miss_text, miss_rect)
+        miss_text = font.render(f"Misses: {miss}", True, (0, 0, 0))
+        miss_rect = miss_text.get_rect(topright=(screen_width - 10, hit_rect.bottom + 10))
+        screen.blit(miss_text, miss_rect)
 
-    current_time = pygame.time.get_ticks()
+        current_time = pygame.time.get_ticks()
 
-    # Remove zombies that have been stunned for 1 second
-    zombies = [zombie for zombie in zombies if not zombie.is_stunned_for_duration()]
-    zombies = [zombie for zombie in zombies if current_time - zombie.appear_time < zombie.stay_time]
+        # Remove zombies that have been stunned for 1 second
+        zombies = [zombie for zombie in zombies if not zombie.is_stunned_for_duration()]
+        zombies = [zombie for zombie in zombies if current_time - zombie.appear_time < zombie.stay_time]
 
-    for zombie in zombies:
-        zombie.update(zombies)
+        for zombie in zombies:
+            zombie.update(zombies)
 
-    #Draw
-    for zombie in zombies:
-        zombie.draw(screen)
+        #Draw
+        for zombie in zombies:
+            zombie.draw(screen)
 
-    if current_time - last_spawn >= 1000:
-        spawn = randint(0, 1)
-        if spawn:
-            last_spawn = pygame.time.get_ticks()
-            add_zombie()
+        if current_time - last_spawn >= 1000:
+            spawn = randint(0, 1)
+            if spawn:
+                last_spawn = pygame.time.get_ticks()
+                add_zombie()
 
-    pygame.display.flip()
+        pygame.display.flip()
+        if pygame.time.get_ticks() - new_game_time >= 30000:
+            #TODO: Change to game over screen
+            hit = 0
+            miss = 0
+            zombies = []
+            game_over = True
+            game_over_time = pygame.time.get_ticks()
 
 pygame.quit()
 sys.exit()
