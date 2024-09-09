@@ -3,17 +3,30 @@ import sys
 from random import randint
 from Zombie import Zombie
 from Pit import Pit
-
+from Button import Button
 pygame.init()
 
 screen_width = 800
 screen_height = 600
+
+BLUR_OVERLAY = (255,255,255,60)
+PRESET_COLOURS = {
+    'red' : (255, 0, 0),
+    'green' : (0, 255, 0),
+    'blue' : (0, 0, 255),
+    'black' : (0, 0, 0),
+    'white' : (255,255,255),
+    'yellow' : (255,255,0)
+}
+
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Zombie Game")
 
 original_zombie_sprite = pygame.image.load('sprites/zombie.png')
 zombie_width = 100
 zombie_height = 100
+
 zombie_sprite = pygame.transform.scale(original_zombie_sprite, (zombie_width, zombie_height))
 
 background_sprite = pygame.image.load('sprites/background.png')
@@ -43,20 +56,69 @@ def add_zombie():
             zombie.spawn()
             break
 
+def comment_score(score):
+    comment = {
+        "excelent": ("You are a true zombie terminator!", PRESET_COLOURS["green"]),
+        "good": ("You have guard us well!", (100, 255, 0)),
+        "bad": ("You tried... I guess?",  PRESET_COLOURS["red"]),
+        "else" : ("The zombie apocalypse is here because of you!", PRESET_COLOURS["red"])
+    }
+    ladder = {
+        "excelent": 18,
+        "good": 9,
+        "bad": 0,
+    }
+    response = ["excelent", "good", "bad"]
+    for res in response:
+        if score >= ladder[res]:
+            return comment[res]
+    return comment["else"]
+
+def end_screen():
+
+    def blur(screenshoot): 
+        overlay = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
+        overlay.fill(BLUR_OVERLAY)
+        screen.blit(overlay, (0, 0)) 
+
+
+    zombies.clear()
+    screenshot = screen.copy()
+    blur(screenshot) 
+
+    score = hit - miss 
+    score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+    screen.blit(score_text, (screen_width // 2 - score_text.get_width() // 2, screen_height // 2 - score_text.get_height() // 2))   
+    comment, comment_color = comment_score(score)
+    comment_text = font.render(f"{comment}", True, comment_color)
+    screen.blit(comment_text, (screen_width // 2 - comment_text.get_width() // 2, screen_height // 2 + comment_text.get_height() // 2))
+
+    play_button.draw(screen)
+    exit_button.draw(screen)
+
+    pygame.display.flip()
+
+
 running = True
 hit = 0
 miss = 0
-times = 30000 # 30 seconds
+times = 30 * 1000
+start_ticks= pygame.time.get_ticks()
 pits = Pit(140, 193, 665, 511)
 zombies = []
 last_spawn = 0
+ingame = True
+
+play_button = Button(200, 400, PRESET_COLOURS["green"], "Play Again")
+exit_button = Button(400, 400, PRESET_COLOURS["red"], "Exit")
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            for zombie in zombies[:]:
+        elif event.type == pygame.MOUSEBUTTONDOWN and ingame:
+            # Normal loop
+            for zombie in zombies:
                 if zombie.is_smashed(event.pos):
                     # Call zomebie death   
                     zombie.stun()
@@ -66,19 +128,33 @@ while running:
                     break
             else:
                 miss += 1
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if play_button.is_clicked(event.pos):
+                hit = 0
+                miss = 0
+                start_ticks = pygame.time.get_ticks()
+                ingame = True
+                zombies.clear()
+            elif exit_button.is_clicked(event.pos):
+                running = False
+            pass
 
     screen.blit(background_sprite, (0, 0))
 
 
     # Update
 
-    times_left = (times - pygame.time.get_ticks()) // 1000
+    times_left = (times - ( pygame.time.get_ticks() - start_ticks) ) // 1000
 
     if times_left <= 0:
-        running = False
+        # Game end branch
+        # 
+        ingame = False
+        end_screen()
+        pygame.display.flip()
+        continue
 
-
-    time_text = font.render(f"Time: {times_left}", True, (0, 0, 0))
+    time_text = font.render(f"Time: {times_left if times_left >= 0 else 0}", True, (0, 0, 0))
     time_rect = time_text.get_rect(topleft=(10, 10))
     screen.blit(time_text, time_rect)
 
