@@ -46,6 +46,7 @@ def add_zombie():
 running = True
 hit = 0
 miss = 0
+times = 30000 # 30 seconds
 pits = Pit(140, 193, 665, 511)
 zombies = []
 last_spawn = 0
@@ -70,6 +71,17 @@ while running:
 
 
     # Update
+
+    times_left = (times - pygame.time.get_ticks()) // 1000
+
+    if times_left <= 0:
+        running = False
+
+
+    time_text = font.render(f"Time: {times_left}", True, (0, 0, 0))
+    time_rect = time_text.get_rect(topleft=(10, 10))
+    screen.blit(time_text, time_rect)
+
     hit_text = font.render(f"Hits: {hit}", True, (0, 0, 0))
     hit_rect = hit_text.get_rect(topright=(screen_width - 10, 10))
     screen.blit(hit_text, hit_rect)
