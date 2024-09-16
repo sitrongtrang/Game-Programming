@@ -4,7 +4,6 @@ from random import randint
 from Zombie import Zombie
 from Pit import Pit
 from Button import Button
-from menu_button import Menu_Button
 pygame.init()
 
 screen_width = 800
@@ -295,7 +294,6 @@ def main_game():
 
     pygame.quit()
     sys.exit()
-
     
 main_menu()
 main_game()
