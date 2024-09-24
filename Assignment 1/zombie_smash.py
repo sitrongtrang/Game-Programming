@@ -4,6 +4,7 @@ from random import randint
 from Zombie import Zombie
 from Pit import Pit
 from Button import Button
+from menu_button import Menu_Button
 pygame.init()
 
 screen_width = 800
@@ -200,7 +201,7 @@ def pause_menu():
 running = True
 hit = 0
 miss = 0
-times = 2 * 1000
+times = 30 * 1000
 start_ticks= pygame.time.get_ticks()
 pits = Pit(140, 193, 665, 511)
 zombies = []
