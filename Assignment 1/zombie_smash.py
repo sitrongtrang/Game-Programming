@@ -89,7 +89,7 @@ def end_screen():
     blur(screenshot) 
 
     score = hit - miss 
-    score_text = font.render(f"Score: {score}", True, PRESET_COLOURS["white"])
+    score_text = font.render(f"Score: {score if score > 0 else 0}", True, PRESET_COLOURS["white"])
     screen.blit(score_text, (screen_width // 2 - score_text.get_width() // 2, screen_height // 2 - score_text.get_height() // 2))   
     comment, comment_color = comment_score(score)
     comment_text = font.render(f"{comment}", True, comment_color)
