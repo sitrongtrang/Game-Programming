@@ -225,7 +225,7 @@ def main_game():
                 if event.key == pygame.K_p or event.key == pygame.K_SPACE:
                     is_paused = True
                     pause_menu()
-            elif event.type == pygame.MOUSEBUTTONDOWN and ingame:
+            elif event.type == pygame.MOUSEBUTTONDOWN and ingame and event.button == 1:
                 # Normal loop
                 for zombie in zombies:
                     if zombie.is_smashed(event.pos):
