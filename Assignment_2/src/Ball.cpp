@@ -7,17 +7,16 @@ void Ball::onCollision(Physics& other) {
     
 } 
 
-bool Ball::isColliding(Physics& other) {
+bool Ball::detectCollision(Physics& other) {
 
 }
 
-void Ball::collideWall(Physics& wall) {
-    this->reflect(wall.getNormal());
-}
+void Ball::collideSurface(Physics& surface) {
+    
+    SDL_FPoint normal = surface.getNormal();
 
-void Ball::reflect(SDL_FPoint normal){
-    float dotProduct = vel.x * normal.x + vel.y * normal.y;
+    float dotProduct = this->vel.x * normal.x + this->vel.y * normal.y;
 
-    SDL_FPoint newVel = {vel.x - 2 * dotProduct * normal.x, vel.y - 2 * dotProduct * normal.y};
+    SDL_FPoint newVel = {this->vel.x - 2 * dotProduct * normal.x, this->vel.y - 2 * dotProduct * normal.y};
     this->setVel(newVel);
 }

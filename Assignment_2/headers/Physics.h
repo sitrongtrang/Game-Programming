@@ -11,15 +11,13 @@ protected:
 
 public:
 
-    Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel= {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f});
 
     virtual ~Physics();
 
-    void applyForce(SDL_FPoint force); // Apply force from external forces (drag, wind, sand, etc.)
+    void applyForce(SDL_FPoint force); // Affected by external forces (drag, wind, sand, etc.)
 
-    void update(float deltaTime); // Update pos, vel
-
-    bool hasInfiniteMass(); // Check if object has infinite mass
+    virtual void update(float deltaTime); // Update position, velocity, acceleration
 
     // Getters
     float getMass() const;
@@ -33,8 +31,8 @@ public:
     void setAcc(SDL_FPoint newAcc);
 
     // Collision
-    virtual bool isColliding(Physics& other) = 0; // Detect collision
+    virtual bool detectCollision(Physics& other) = 0; // Detect collision
     virtual void onCollision(Physics& other) = 0; // Collision response (animation, event triggers, etc.)
-    virtual void collideWall(Physics& wall); // Collide with wall
+    virtual void collideSurface(Physics& surface); // Collide with surface
     void handleCollision(Physics& other); // Update velocity after collision
 };

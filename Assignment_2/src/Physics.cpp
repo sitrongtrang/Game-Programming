@@ -1,7 +1,11 @@
 #include "Physics.h"
 #include <math.h>
 
-Physics::Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc);
+bool overEdge(float val, float min_val, float max_val) {
+    return val < min_val || val > max_val;
+}
+
+Physics::Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc)
     : mass(mass), pos(initPos), vel(initVel), acc(initAcc) {}
 
 Physics::~Physics() {}
@@ -18,43 +22,28 @@ void Physics::update(float deltaTime) {
     SDL_FPoint newVel = {this->vel.x + this->acc.x * deltaTime, this->vel.y + this->acc.y * deltaTime};
     this->setVel(newVel);
     
-    SDL_FPoint newAcc = {0.0f, 0.0f};
+    SDL_FPoint newAcc = {0.0f, 0.0f}; // reset every frame
     this->setAcc(newAcc);
 }
 
-bool Physics::hasInfiniteMass() {
-    return isinf(this->mass);
-}
 
-
+float Physics::getMass() const { return this->mass; }
 SDL_FPoint Physics::getPos() const { return this->pos; }
 SDL_FPoint Physics::getVel() const { return this->vel; }
 SDL_FPoint Physics::getAcc() const { return this->acc; }
-float Physics::getMass() const { return this->mass; }
 
 
-void Physics::setPos(SDL_FPoint newPos) { 
-    SDL_FPoint temp = {newPos.x, newPos.y};
-
-    if (overEdge(temp.x, edges)) {
-        temp.x = this->pos.x;
-    }
-    if (overEdge(temp.y, edges)) {
-        temp.y = this->pos.y;
-    }
-
-    this->pos = temp; 
-}
+void Physics::setPos(SDL_FPoint newPos) { this->pos = newPos; }
 void Physics::setVel(SDL_FPoint newVel) { this->vel = newVel; }
 void Physics::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 
 void Physics::handleCollision(Physics& other) {
 
-    if (other.infiniteMass()) {
-        this->collideWall();
+    if (other.getMass() == std::numeric_limits<float>::infinity()) {
+        this->collideSurface();
     }
 
-    if (this->infiniteMass()) {
+    if (this->mass == std::numeric_limits<float>::infinity()) {
         return;
     }
 
@@ -69,7 +58,7 @@ void Physics::handleCollision(Physics& other) {
     float velAlongNormal = relVel.x * normal.x + relVel.y * normal.y;
 
     // If objects are moving away from each other, do nothing
-    if (velAlongNormal > 0) {
+    if (velAlongNormal >= 0) {
         return;
     }
 
@@ -93,7 +82,7 @@ void Physics::handleCollision(Physics& other) {
     other.onCollision(*this);
 }
 
-void Physics::collideWall(Physics& wall) {
+void Physics::collideSurface(Physics& surface) {
     return;
 }
 
