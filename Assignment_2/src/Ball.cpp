@@ -12,12 +12,12 @@ bool Ball::isColliding(Physics& other) {
 }
 
 void Ball::collideWall(Physics& wall) {
-    reflect(wall.getNormal());
+    this->reflect(wall.getNormal());
 }
 
 void Ball::reflect(SDL_FPoint normal){
     float dotProduct = vel.x * normal.x + vel.y * normal.y;
 
     SDL_FPoint newVel = {vel.x - 2 * dotProduct * normal.x, vel.y - 2 * dotProduct * normal.y};
-    setVel(newVel);
+    this->setVel(newVel);
 }

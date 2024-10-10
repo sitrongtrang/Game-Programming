@@ -19,6 +19,8 @@ public:
 
     void update(float deltaTime); // Update pos, vel
 
+    bool hasInfiniteMass(); // Check if object has infinite mass
+
     // Getters
     float getMass() const;
     SDL_FPoint getPos() const;

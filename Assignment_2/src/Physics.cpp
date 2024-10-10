@@ -8,18 +8,22 @@ Physics::~Physics() {}
 
 void Physics::applyForce(SDL_FPoint force) {
     SDL_FPoint newAcc = {this->acc.x + force.x / this->mass, this->acc.y + force.y / this->mass}
-    setAcc(newAcc);
+    this->setAcc(newAcc);
 }
 
 void Physics::update(float deltaTime) {
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
-    setPos(newPos);
+    this->setPos(newPos);
 
     SDL_FPoint newVel = {this->vel.x + this->acc.x * deltaTime, this->vel.y + this->acc.y * deltaTime};
-    setVel(newVel);
+    this->setVel(newVel);
     
     SDL_FPoint newAcc = {0.0f, 0.0f};
-    setAcc(newAcc);
+    this->setAcc(newAcc);
+}
+
+bool Physics::hasInfiniteMass() {
+    return isinf(this->mass);
 }
 
 
@@ -29,11 +33,30 @@ SDL_FPoint Physics::getAcc() const { return this->acc; }
 float Physics::getMass() const { return this->mass; }
 
 
-void Physics::setPos(SDL_FPoint newPos) { this->pos = newPos; }
+void Physics::setPos(SDL_FPoint newPos) { 
+    SDL_FPoint temp = {newPos.x, newPos.y};
+
+    if (overEdge(temp.x, edges)) {
+        temp.x = this->pos.x;
+    }
+    if (overEdge(temp.y, edges)) {
+        temp.y = this->pos.y;
+    }
+
+    this->pos = temp; 
+}
 void Physics::setVel(SDL_FPoint newVel) { this->vel = newVel; }
 void Physics::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 
 void Physics::handleCollision(Physics& other) {
+
+    if (other.infiniteMass()) {
+        this->collideWall();
+    }
+
+    if (this->infiniteMass()) {
+        return;
+    }
 
     SDL_FPoint normal = {other.getPos().x - this->pos.x, other.getPos().y - this->pos.y};
     float normalLength = std::sqrt(normal.x * normal.x + normal.y * normal.y);
@@ -61,12 +84,12 @@ void Physics::handleCollision(Physics& other) {
     SDL_FPoint impulse = {impulseScalar * normal.x, impulseScalar * normal.y};
 
     SDL_FPoint newVel = {this->vel.x - (1 / this->mass) * impulse.x, this->vel.y - (1 / this->mass) * impulse.y};
-    setVel(newVel);
+    this->setVel(newVel);
 
     SDL_FPoint otherNewVel = {other.getVel().x + (1 / other.getMass()) * impulse.x, other.getVel().y + (1 / other.getMass()) * impulse.y};
     other.setVel(otherNewVel); 
 
-    onCollision(other);
+    this->onCollision(other);
     other.onCollision(*this);
 }
 
