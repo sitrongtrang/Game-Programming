@@ -1,17 +1,13 @@
 #include "Physics.h"
 #include <math.h>
 
-bool overEdge(float val, float min_val, float max_val) {
-    return val < min_val || val > max_val;
-}
-
 Physics::Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc)
     : mass(mass), pos(initPos), vel(initVel), acc(initAcc) {}
 
 Physics::~Physics() {}
 
 void Physics::applyForce(SDL_FPoint force) {
-    SDL_FPoint newAcc = {this->acc.x + force.x / this->mass, this->acc.y + force.y / this->mass}
+    SDL_FPoint newAcc = {this->acc.x + force.x / this->mass, this->acc.y + force.y / this->mass};
     this->setAcc(newAcc);
 }
 
@@ -22,7 +18,7 @@ void Physics::update(float deltaTime) {
     SDL_FPoint newVel = {this->vel.x + this->acc.x * deltaTime, this->vel.y + this->acc.y * deltaTime};
     this->setVel(newVel);
     
-    SDL_FPoint newAcc = {0.0f, 0.0f}; // reset every frame
+    SDL_FPoint newAcc = {0.0f, 0.0f}; // reset every frame, if force is contiuous, reapplied next frame
     this->setAcc(newAcc);
 }
 
