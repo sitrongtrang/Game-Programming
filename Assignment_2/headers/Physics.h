@@ -32,7 +32,7 @@ public:
 
     // Collision
     virtual bool detectCollision(Physics& other) = 0; // Detect collision
-    virtual void onCollision(Physics& other) = 0; // Collision response (animation, event triggers, etc.)
+    virtual void onCollision(Physics& other) = 0; // Collision response (collide animation, event triggers, etc.)
     virtual void collideSurface(Physics& surface); // Collide with surface
     void handleCollision(Physics& other); // Update velocity after collision
 };
