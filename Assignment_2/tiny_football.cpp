@@ -1,12 +1,12 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <cstdlib>
-
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-const int PLAYER_WIDTH = 20;
-const int PLAYER_HEIGHT = 100;
-const int BALL_SIZE = 15;
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_opengl3.h>
+// #include "./headers/keySetMenu.h"
+#include "./headers/utils.h"
 
 struct Player {
     int x, y;
@@ -64,9 +64,22 @@ void moveBall(Ball& ball, Player& player1, Player& player2) {
     }
 }
 
+bool initTTF() {
+    if (TTF_Init() == -1) {
+        std::cerr << "TTF could not initialize! TTF_Error: " << TTF_GetError() << std::endl;
+        return false;
+    }
+    return true;
+}
+
 int main(int argc, char* args[]) {
+    // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        return -1;
+    }
+    if (!initTTF()) {
+        SDL_Quit();
         return -1;
     }
 
@@ -81,6 +94,15 @@ int main(int argc, char* args[]) {
         std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
     }
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    // Setup ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui_ImplSDL2_InitForOpenGL(window, renderer); // Initialize ImGui for SDL
+    ImGui_ImplOpenGL3_Init("#version 130"); // Set GLSL version
+
 
     Player player1 = { 50, SCREEN_HEIGHT / 2 - PLAYER_HEIGHT / 2, 0 };
     Player player2 = { SCREEN_WIDTH - 50 - PLAYER_WIDTH, SCREEN_HEIGHT / 2 - PLAYER_HEIGHT / 2, 0 };
@@ -90,48 +112,66 @@ int main(int argc, char* args[]) {
     SDL_Event e;
 
     while (!quit) {
+        // Start a new ImGui frame
+        ImGui_ImplSDL2_NewFrame(); // No parameters needed here
+        ImGui_ImplOpenGL3_NewFrame(); 
+        ImGui::NewFrame();
+
+        // Poll events
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
 
-            // Xử lý phím cho cả hai người chơi
+
+            // Handle key events if the menu is not visible
+
             handlePlayerInput(e, player1, SDLK_w, SDLK_s);
             handlePlayerInput(e, player2, SDLK_UP, SDLK_DOWN);
+
+
         }
 
-        // Di chuyển người chơi
+        // Move players and ball when not in the key set menu
+
         movePlayer(player1);
         movePlayer(player2);
-
-        // Di chuyển bóng
         moveBall(ball, player1, player2);
 
-        // Clear màn hình
+
+        // Clear screen
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        // Vẽ người chơi 1
+        // Render players and ball
         SDL_Rect player1Rect = { player1.x, player1.y, PLAYER_WIDTH, PLAYER_HEIGHT };
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(renderer, &player1Rect);
 
-        // Vẽ người chơi 2
         SDL_Rect player2Rect = { player2.x, player2.y, PLAYER_WIDTH, PLAYER_HEIGHT };
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         SDL_RenderFillRect(renderer, &player2Rect);
 
-        // Vẽ bóng
         SDL_Rect ballRect = { ball.x, ball.y, BALL_SIZE, BALL_SIZE };
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, &ballRect);
 
-        // Cập nhật màn hình
+
+        // Render ImGui
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // Update screen
         SDL_RenderPresent(renderer);
 
-        // Tốc độ khung hình
+        // Frame rate control
         SDL_Delay(16);
     }
+
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
