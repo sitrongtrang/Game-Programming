@@ -4,24 +4,32 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <stdio.h>
-
+#include "../headers/utils.h"
+#include "../headers/keySetMenu.h"
+#include "../headers/keyBinding.h"
+#include <iostream>
 // Game state variables
 bool game_running = true;
+bool game_paused = false; 
 float square_x = 0.0f;  // Square's X position
 float square_y = 0.0f;  // Square's Y position
 float square_size = 0.1f;  // Size of the square
 
+KeySetMenu keySetMenu(keyBindingsInstance);
+
 // Function to update the game logic
 void UpdateGame() {
     const Uint8* state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_UP])
-        square_y += 0.01f;  // Move up
-    if (state[SDL_SCANCODE_DOWN])
-        square_y -= 0.01f;  // Move down
-    if (state[SDL_SCANCODE_LEFT])
-        square_x -= 0.01f;  // Move left
-    if (state[SDL_SCANCODE_RIGHT])
-        square_x += 0.01f;  // Move right
+    if (!game_paused) {  // Only update game logic if not paused
+        if (state[SDL_SCANCODE_UP])
+            square_y += 0.01f;  // Move up
+        if (state[SDL_SCANCODE_DOWN])
+            square_y -= 0.01f;  // Move down
+        if (state[SDL_SCANCODE_LEFT])
+            square_x -= 0.01f;  // Move left
+        if (state[SDL_SCANCODE_RIGHT])
+            square_x += 0.01f;  // Move right
+    }
 }
 
 // Function to render a simple square
@@ -49,7 +57,9 @@ int main(int, char**) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
-    SDL_Window* window = SDL_CreateWindow("Simple Game with ImGui", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Tiny Football Game",
+                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1);  // Enable vsync
@@ -70,38 +80,37 @@ int main(int, char**) {
         // Poll and handle SDL events
         while (SDL_PollEvent(&event)) {
             ImGui_ImplSDL2_ProcessEvent(&event);
-            if (event.type == SDL_QUIT)
+            if (event.type == SDL_QUIT) {
                 game_running = false;
+            }
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p) {
+                game_paused = !game_paused;
+            }
         }
 
-        // Update game logic
-        UpdateGame();
 
-        // Start ImGui frame
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
 
-        // ImGui interface
-        {
-            ImGui::Begin("Game Controls");
-            ImGui::Text("Use arrow keys to move the square.");
-            ImGui::Text("Press 'ESC' to exit.");
-            if (ImGui::Button("Exit"))
-                game_running = false;
-            ImGui::End();
-        }
-
-        // Render game objects
         glClear(GL_COLOR_BUFFER_BIT);
-        RenderSquare();
+
+
+        // Render Key Set Menu if game is paused
+        if (game_paused) {
+            keySetMenu.Render(game_paused);
+        } else {
+            UpdateGame();  // Update game logic if not paused
+            RenderSquare();  // Render game objects
+        }
 
         // Render ImGui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         SDL_GL_SwapWindow(window);
     }
+
 
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
