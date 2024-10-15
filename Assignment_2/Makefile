@@ -1,6 +1,9 @@
 # Compiler
 CXX = g++
 
+# Output binary name
+TARGET = tiny_football
+
 # Source files for tiny_football and ImGui
 SRC = tiny_football.cpp
 IMGUI_DIR = ./imgui
@@ -10,27 +13,41 @@ IMGUI_BACKEND = $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp $(IMGUI_DIR)/backends/
 # Combine all source files
 ALL_SRC = $(SRC) $(IMGUI_SRC) $(IMGUI_BACKEND)
 
-# Output binary name
-TARGET = tiny_football
+# Compiler flags
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -g -Wall -Wformat
 
-# Compiler and linker flags
-CXXFLAGS = -Wall -Wextra -g -std=c++11 -I/usr/include/SDL2 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends
-LDFLAGS = -lSDL2 -lGL -lGLU -ldl
+# Platform detection
+UNAME_S := $(shell uname -s)
 
-# Default target
+# Platform-specific configurations
+ifeq ($(UNAME_S), Linux) # LINUX
+    ECHO_MESSAGE = "Building for Linux"
+    LIBS = -lGL -ldl `sdl2-config --libs`
+    CXXFLAGS += `sdl2-config --cflags`
+endif
+
+ifeq ($(UNAME_S), Darwin) # MACOS
+    ECHO_MESSAGE = "Building for macOS"
+    LIBS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo `sdl2-config --libs`
+    CXXFLAGS += `sdl2-config --cflags` -I/usr/local/include -I/opt/local/include
+endif
+
+ifeq ($(OS), Windows_NT) # WINDOWS (MinGW)
+    ECHO_MESSAGE = "Building for Windows (MinGW)"
+    LIBS = -lgdi32 -lopengl32 -limm32 `pkg-config --static --libs sdl2`
+    CXXFLAGS += `pkg-config --cflags sdl2`
+endif
+
+# Build rules
 all: $(TARGET)
+	@echo $(ECHO_MESSAGE)
 
-# Rule to create the target executable
 $(TARGET): $(ALL_SRC)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
-# Target to run the program
-run: $(TARGET)
-	./$(TARGET)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 
 # Clean up build files
 clean:
 	rm -f $(TARGET)
 
 # Phony targets
-.PHONY: all clean run
+.PHONY: all clean
