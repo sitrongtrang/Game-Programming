@@ -1,4 +1,5 @@
 #include "../headers/keyBinding.h"
+#include "keyBinding.h"
 
 // Global instance of KeyBinding
 KeyBinding keyBindingsInstance;
@@ -28,7 +29,7 @@ void KeyBinding::initializeDefaultKeyBindings() {
 }
 
 // Change key for Player 1
-void KeyBinding::changePlayer1Key(PlayerAction action) {
+void KeyBinding::changePlayer1Key(PlayerAction action,bool& waitingForKey) {
     switch (action) {
         case PlayerAction::MoveUp:    changeKey(player1Bindings.moveUp); break;
         case PlayerAction::MoveDown:  changeKey(player1Bindings.moveDown); break;
@@ -38,10 +39,11 @@ void KeyBinding::changePlayer1Key(PlayerAction action) {
         case PlayerAction::Action2:   changeKey(player1Bindings.action2); break;
         case PlayerAction::Action3:   changeKey(player1Bindings.action3); break;
     }
+    waitingForKey=false;
 }
 
 // Change key for Player 2
-void KeyBinding::changePlayer2Key(PlayerAction action) {
+void KeyBinding::changePlayer2Key(PlayerAction action,bool& waitingForKey) {
     switch (action) {
         case PlayerAction::MoveUp:    changeKey(player2Bindings.moveUp); break;
         case PlayerAction::MoveDown:  changeKey(player2Bindings.moveDown); break;
@@ -51,6 +53,8 @@ void KeyBinding::changePlayer2Key(PlayerAction action) {
         case PlayerAction::Action2:   changeKey(player2Bindings.action2); break;
         case PlayerAction::Action3:   changeKey(player2Bindings.action3); break;
     }
+    waitingForKey=false;
+
 }
 
 // Change key by capturing user input
@@ -100,4 +104,25 @@ SDL_Keycode KeyBinding::getPlayer2Key(PlayerAction action) const {
         case PlayerAction::Action3:   return player2Bindings.action3;
     }
     return SDLK_UNKNOWN; // Invalid action
+}
+bool KeyBinding::isKeyInUse(SDL_Keycode key, PlayerAction action) const {
+    // Check Player 1 bindings
+    if (key == getPlayer1Key(PlayerAction::MoveUp) && action != PlayerAction::MoveUp) return true;
+    if (key == getPlayer1Key(PlayerAction::MoveDown) && action != PlayerAction::MoveDown) return true;
+    if (key == getPlayer1Key(PlayerAction::MoveLeft) && action != PlayerAction::MoveLeft) return true;
+    if (key == getPlayer1Key(PlayerAction::MoveRight) && action != PlayerAction::MoveRight) return true;
+    if (key == getPlayer1Key(PlayerAction::Action1) && action != PlayerAction::Action1) return true;
+    if (key == getPlayer1Key(PlayerAction::Action2) && action != PlayerAction::Action2) return true;
+    if (key == getPlayer1Key(PlayerAction::Action3) && action != PlayerAction::Action3) return true;
+
+    // Check Player 2 bindings
+    if (key == getPlayer2Key(PlayerAction::MoveUp) && action != PlayerAction::MoveUp) return true;
+    if (key == getPlayer2Key(PlayerAction::MoveDown) && action != PlayerAction::MoveDown) return true;
+    if (key == getPlayer2Key(PlayerAction::MoveLeft) && action != PlayerAction::MoveLeft) return true;
+    if (key == getPlayer2Key(PlayerAction::MoveRight) && action != PlayerAction::MoveRight) return true;
+    if (key == getPlayer2Key(PlayerAction::Action1) && action != PlayerAction::Action1) return true;
+    if (key == getPlayer2Key(PlayerAction::Action2) && action != PlayerAction::Action2) return true;
+    if (key == getPlayer2Key(PlayerAction::Action3) && action != PlayerAction::Action3) return true;
+
+    return false; // Key is not in use
 }
