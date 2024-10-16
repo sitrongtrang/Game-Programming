@@ -2,6 +2,7 @@
 #define KEYBINDING_H
 
 #include <SDL2/SDL.h>
+#include <stdio.h>
 
 // Structure for player key bindings
 struct PlayerKeyBindings {
