@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PHYSICS_H
+#define PHYSICS_H
 
 #include <SDL2/SDL.h>
 
@@ -36,3 +37,5 @@ public:
     virtual void collideSurface(Physics& surface); // Collide with surface
     void handleCollision(Physics& other); // Update velocity after collision
 };
+
+#endif

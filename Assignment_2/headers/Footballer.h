@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FOOTBALLER_H
+#define FOOTBALLER_H
 
 #include "Physics.h"
 
@@ -24,4 +25,6 @@ public:
     void onCollision(Physics& other) override;
     void collideSurface(Physics& surface) override;
 }
+
+#endif
 
