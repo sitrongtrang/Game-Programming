@@ -2,17 +2,20 @@
 #define FOOTBALLER_H
 
 #include "Physics.h"
+#include <math.h>
 
 class Footballer : public Physics {
 protected:
     bool obstructedX, obstructedY; // footballer is obstructed in x/y direction
     float ropeLength;
+    // TODO: implement puller later
+    SDL_FPoint puller; // the character that pulls the footballer
 public:
-    Footballer(float mass, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f}, float ropeLength);
+    Footballer(float mass, float ropeLength, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f});
 
     void update(float deltaTime) override;
 
-    void applyRopeConstraint(SDL_FPoint source) // physics for being dragged by the rope
+    void applyRopeConstraint(SDL_FPoint source); // physics for being dragged by the rope
     SDL_FPoint getFrictionForce(); // calculate friction force
 
     bool getObstructedX();
@@ -24,7 +27,7 @@ public:
     bool detectCollision(Physics& other) override;
     void onCollision(Physics& other) override;
     void collideSurface(Physics& surface) override;
-}
+};
 
 #endif
 

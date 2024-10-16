@@ -25,6 +25,7 @@ public:
     SDL_FPoint getPos() const;
     SDL_FPoint getVel() const;
     SDL_FPoint getAcc() const;
+    virtual SDL_FPoint getNormal();
 
     // Setters
     void setPos(SDL_FPoint newPos);

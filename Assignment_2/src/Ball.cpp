@@ -4,11 +4,11 @@ Ball::Ball(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAc
     : Physics(mass, initPos, initVel, initAcc) {}
 
 void Ball::onCollision(Physics& other) {
-    
+    return;
 } 
 
 bool Ball::detectCollision(Physics& other) {
-
+    return false;
 }
 
 void Ball::collideSurface(Physics& surface) {

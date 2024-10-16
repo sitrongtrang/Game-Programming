@@ -10,6 +10,6 @@ public:
     bool detectCollision(Physics& other) override;
     void onCollision(Physics& other) override;
     void collideSurface(Physics& surface) override; 
-}
+};
 
 #endif
