@@ -1,7 +1,7 @@
 #include "Footballer.h"
 
-Footballer::Footballer(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc, float ropeLength) 
-    : Physics(mass, initPos, initVel, initAcc), obstructedX(false), obstructedY(false), ropeLength(ropeLength) {}
+Footballer::Footballer(float mass, float ropeLength, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+    : Physics(mass, initPos, initVel, initAcc), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller({0, 0}) {}
 
 void Footballer::update(float deltaTime) {
 
@@ -47,10 +47,10 @@ void Footballer::applyRopeConstraint(SDL_FPoint source) {
 
 SDL_FPoint Footballer::getFrictionForce() {
     if (this->vel.x == 0 && this->vel.y == 0)
-        return 0;
+        return {0, 0};
     float friction_magnitude = 0.2f * this->mass * 9.8f; // F_friction = μ * m * g
-    float friction_x = friction_magnitude * (-this->vel.x)/sqrt(this-vel.x * this->vel.x + this->vel.y * this->vel.y);
-    float friction_y = friction_magnitude * (-this->vel.y)/sqrt(this-vel.x * this->vel.x + this->vel.y * this->vel.y);
+    float friction_x = friction_magnitude * (-this->vel.x)/sqrt(this->vel.x * this->vel.x + this->vel.y * this->vel.y);
+    float friction_y = friction_magnitude * (-this->vel.y)/sqrt(this->vel.x * this->vel.x + this->vel.y * this->vel.y);
     SDL_FPoint f_friction = {friction_x, friction_y};
     return f_friction;
 }
@@ -62,11 +62,11 @@ void Footballer::setObstructedX(bool obsX) { this->obstructedX = obsX; }
 void Footballer::setObstructedY(bool obsY) { this->obstructedY = obsY; }
 
 void Footballer::onCollision(Physics& other) {
-    
+    return;
 } 
 
 bool Footballer::detectCollision(Physics& other) {
-
+    return false;
 }
 
 void Footballer::collideSurface(Physics& surface) {

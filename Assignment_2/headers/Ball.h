@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BALL_H
+#define BALL_H
 
 #include "Physics.h"
 
@@ -9,4 +10,6 @@ public:
     bool detectCollision(Physics& other) override;
     void onCollision(Physics& other) override;
     void collideSurface(Physics& surface) override; 
-}
+};
+
+#endif

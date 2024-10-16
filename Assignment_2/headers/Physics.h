@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PHYSICS_H
+#define PHYSICS_H
 
 #include <SDL2/SDL.h>
 
@@ -24,6 +25,7 @@ public:
     SDL_FPoint getPos() const;
     SDL_FPoint getVel() const;
     SDL_FPoint getAcc() const;
+    virtual SDL_FPoint getNormal();
 
     // Setters
     void setPos(SDL_FPoint newPos);
@@ -36,3 +38,5 @@ public:
     virtual void collideSurface(Physics& surface); // Collide with surface
     void handleCollision(Physics& other); // Update velocity after collision
 };
+
+#endif

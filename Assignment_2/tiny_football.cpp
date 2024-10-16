@@ -22,6 +22,7 @@ int score2 = 0;
 
 // Clear color variable
 ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+KeySetMenu keySetMenu(keyBindingsInstance);
 
 // Function to update the game logic
 void UpdateGame()
@@ -66,28 +67,47 @@ GLuint LoadTextureFromFile(const char *filename)
     return textureID;
 }
 
-int main(int argc, char *argv[])
-{
+// Function to render a simple square
+void RenderSquare() {
+    glBegin(GL_QUADS);  // Start drawing a quad (square)
+    glColor3f(0.0f, 1.0f, 0.0f);  // Green color
+    glVertex2f(square_x - square_size, square_y - square_size);  // Bottom-left
+    glVertex2f(square_x + square_size, square_y - square_size);  // Bottom-right
+    glVertex2f(square_x + square_size, square_y + square_size);  // Top-right
+    glVertex2f(square_x - square_size, square_y + square_size);  // Top-left
+    glEnd();
+}
+
+int main(int, char**) {
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
-    {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
         printf("Error: %s\n", SDL_GetError());
         return -1;
     }
 
     // Set up OpenGL context and SDL window
-    const char *glsl_version = "#version 130";
+    const char* glsl_version = "#version 130";
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_Window *window = SDL_CreateWindow("Tiny Football", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+    SDL_Window* window = SDL_CreateWindow("Tiny Football Game",
+                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
-    SDL_GL_SetSwapInterval(1); // Enable vsync
+    SDL_GL_SetSwapInterval(1);  // Enable vsync
+
+    // Initialize Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+
+    // Set up ImGui for SDL and OpenGL
+    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+    ImGui_ImplOpenGL3_Init(glsl_version);
 
     // Load and set the window icon
     SDL_Surface *icon_surface = IMG_Load("./images/game_icon.jpg");
@@ -100,15 +120,6 @@ int main(int argc, char *argv[])
         SDL_FreeSurface(resized_icon_surface);
     }
 
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void)io;
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
-    ImGui_ImplOpenGL3_Init(glsl_version);
     GLuint background_texture = LoadTextureFromFile("./images/main_menu.jpg");
     io.Fonts->AddFontFromFileTTF("./fonts/font.ttf", 24.0f);
 
@@ -126,7 +137,7 @@ int main(int argc, char *argv[])
                 state = GameState::QUIT;
                 break;
             }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
             {
                 state = state != GameState::PAUSED ? GameState::PAUSED : GameState::PLAYING;
                 if (state == GameState::PAUSED)
@@ -145,6 +156,7 @@ int main(int argc, char *argv[])
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
+        glClear(GL_COLOR_BUFFER_BIT);
         // Show splash screen only once
         if (state == GameState::INTRODUCTION)
         {
@@ -160,6 +172,7 @@ int main(int argc, char *argv[])
         }
         else if (state == GameState::PAUSED)
         {
+            keySetMenu.Render(game_paused);
             renderPauseMenu(state, score1, score2);
         }
         else if (state == GameState::GAME_OVER)
@@ -168,16 +181,14 @@ int main(int argc, char *argv[])
         }
         else if (state == GameState::PLAYING)
         {
+            
             renderGameMenu(state, score1, score2);
             UpdateGame();
+            RenderSquare();
         }
 
         // Rendering
         ImGui::Render();
-        SDL_GL_MakeCurrent(window, gl_context);
-        glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
     }

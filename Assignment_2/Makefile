@@ -4,8 +4,8 @@ CXX = g++
 # Output binary name
 TARGET = tiny_football
 
-# Source files for tiny_football and ImGui
-SRC = tiny_football.cpp ./src/menu/*.cpp ./src/Constant.cpp
+# Source files for tiny_football, keySetMenu, keyBinding, and ImGui and Menu
+SRC = tiny_football.cpp ./src/keySetMenu.cpp ./src/keyBinding.cpp ./src/Physics.cpp ./src/Ball.cpp ./src/Footballer.cpp ./src/Surface.cpp ./src/menu/*.cpp ./src/Constant.cpp
 IMGUI_DIR = ./imgui
 IMGUI_SRC = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 IMGUI_BACKEND = $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
@@ -13,8 +13,11 @@ IMGUI_BACKEND = $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp $(IMGUI_DIR)/backends/
 # Combine all source files
 ALL_SRC = $(SRC) $(IMGUI_SRC) $(IMGUI_BACKEND)
 
+# Object files
+OBJS = tiny_football.o ./src/keySetMenu.o ./src/keyBinding.o ./src/Physics.o ./src/Ball.o ./src/Footballer.o ./src/Surface.o $(IMGUI_SRC:.cpp=.o) $(IMGUI_BACKEND:.cpp=.o)
+
 # Compiler flags
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -g -Wall -Wformat
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I./headers -g -Wall -Wformat  # Include headers path
 
 # Platform detection
 UNAME_S := $(shell uname -s)
@@ -42,12 +45,23 @@ endif
 all: $(TARGET)
 	@echo $(ECHO_MESSAGE)
 
-$(TARGET): $(ALL_SRC)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
+$(TARGET): $(OBJS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+
+# Generic pattern rule to compile .cpp files into .o files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# Specific rules for ImGui source files
+$(IMGUI_DIR)/%.o: $(IMGUI_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(IMGUI_DIR)/backends/%.o: $(IMGUI_DIR)/backends/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Clean up build files
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(OBJS)
 
 # Phony targets
 .PHONY: all clean

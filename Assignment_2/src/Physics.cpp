@@ -27,6 +27,7 @@ float Physics::getMass() const { return this->mass; }
 SDL_FPoint Physics::getPos() const { return this->pos; }
 SDL_FPoint Physics::getVel() const { return this->vel; }
 SDL_FPoint Physics::getAcc() const { return this->acc; }
+SDL_FPoint Physics::getNormal() const { return {0, 0}; }
 
 
 void Physics::setPos(SDL_FPoint newPos) { this->pos = newPos; }
@@ -35,11 +36,11 @@ void Physics::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 
 void Physics::handleCollision(Physics& other) {
 
-    if (other.getMass() == std::numeric_limits<float>::infinity()) {
-        this->collideSurface();
+    if (other.getMass() == 1000000) {
+        this->collideSurface(other);
     }
 
-    if (this->mass == std::numeric_limits<float>::infinity()) {
+    if (this->mass == 1000000) {
         return;
     }
 
