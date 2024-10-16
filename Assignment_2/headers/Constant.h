@@ -10,12 +10,6 @@
 #include <stdio.h>
 #include <chrono>
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
-const int PLAYER_WIDTH = 20;
-const int PLAYER_HEIGHT = 100;
-const int BALL_SIZE = 15;
-
 extern std::chrono::time_point<std::chrono::steady_clock> startTime;
 extern std::chrono::time_point<std::chrono::steady_clock> pauseTime;
 

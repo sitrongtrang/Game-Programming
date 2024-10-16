@@ -12,6 +12,9 @@
 #include "../headers/menu/Main_menu.h"
 #include "../headers/menu/Pause_menu.h"
 #include "../headers/menu/Game_menu.h"
+#include "../headers/utils.h"
+#include "../headers/keySetMenu.h"
+#include "../headers/keyBinding.h"
 
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
@@ -19,6 +22,8 @@ float square_size = 0.1f; // Size of the square
 
 int score1 = 0;
 int score2 = 0;
+bool game_running = true;
+bool game_paused = false;
 
 // Clear color variable
 ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -68,41 +73,45 @@ GLuint LoadTextureFromFile(const char *filename)
 }
 
 // Function to render a simple square
-void RenderSquare() {
-    glBegin(GL_QUADS);  // Start drawing a quad (square)
-    glColor3f(0.0f, 1.0f, 0.0f);  // Green color
-    glVertex2f(square_x - square_size, square_y - square_size);  // Bottom-left
-    glVertex2f(square_x + square_size, square_y - square_size);  // Bottom-right
-    glVertex2f(square_x + square_size, square_y + square_size);  // Top-right
-    glVertex2f(square_x - square_size, square_y + square_size);  // Top-left
+void RenderSquare()
+{
+    glBegin(GL_QUADS);                                          // Start drawing a quad (square)
+    glColor3f(0.0f, 1.0f, 0.0f);                                // Green color
+    glVertex2f(square_x - square_size, square_y - square_size); // Bottom-left
+    glVertex2f(square_x + square_size, square_y - square_size); // Bottom-right
+    glVertex2f(square_x + square_size, square_y + square_size); // Top-right
+    glVertex2f(square_x - square_size, square_y + square_size); // Top-left
     glEnd();
 }
 
-int main(int, char**) {
+int main(int, char **)
+{
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
+    {
         printf("Error: %s\n", SDL_GetError());
         return -1;
     }
 
     // Set up OpenGL context and SDL window
-    const char* glsl_version = "#version 130";
+    const char *glsl_version = "#version 130";
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
-    SDL_Window* window = SDL_CreateWindow("Tiny Football Game",
+    SDL_Window *window = SDL_CreateWindow("Tiny Football Game",
                                           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                           SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
-    SDL_GL_SetSwapInterval(1);  // Enable vsync
+    SDL_GL_SetSwapInterval(1); // Enable vsync
 
     // Initialize Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
     ImGui::StyleColorsDark();
 
     // Set up ImGui for SDL and OpenGL
@@ -126,7 +135,7 @@ int main(int, char**) {
     startTime = std::chrono::steady_clock::now();
     GameState state = GameState::INTRODUCTION;
     // Main loop
-    while (state != GameState::QUIT)
+    while (game_running)
     {
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -134,15 +143,13 @@ int main(int, char**) {
             ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
             {
-                state = GameState::QUIT;
-                break;
+                game_running = false;
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
             {
-                state = state != GameState::PAUSED ? GameState::PAUSED : GameState::PLAYING;
-                if (state == GameState::PAUSED)
+                game_paused = !game_paused;
+                if (game_paused)
                 {
-                    state = GameState::PAUSED;
                     pauseTime = std::chrono::steady_clock::now();
                 }
                 else
@@ -157,7 +164,6 @@ int main(int, char**) {
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
         glClear(GL_COLOR_BUFFER_BIT);
-        // Show splash screen only once
         if (state == GameState::INTRODUCTION)
         {
             SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -170,10 +176,10 @@ int main(int, char**) {
             renderBackground(background_texture);
             renderMainMenu(state);
         }
-        else if (state == GameState::PAUSED)
+        else if (game_paused)
         {
             keySetMenu.Render(game_paused);
-            renderPauseMenu(state, score1, score2);
+            // renderPauseMenu(state, score1, score2);
         }
         else if (state == GameState::GAME_OVER)
         {
@@ -181,7 +187,7 @@ int main(int, char**) {
         }
         else if (state == GameState::PLAYING)
         {
-            
+
             renderGameMenu(state, score1, score2);
             UpdateGame();
             RenderSquare();
