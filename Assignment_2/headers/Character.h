@@ -25,6 +25,7 @@ public:
 
     void setPos(SDL_FPoint newPos);
     void setVel(SDL_FPoint newVel);
+    void applyAcc(SDL_FPoint force);
 };
 
 #endif

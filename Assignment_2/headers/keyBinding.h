@@ -24,6 +24,11 @@ enum class PlayerAction {
     Action3,
     None
 };
+
+struct Actions {
+    int character num;
+    PlayerAction action;
+};
 class KeyBinding {
 public:
     
@@ -36,6 +41,7 @@ public:
 
     SDL_Keycode getPlayer1Key(PlayerAction action) const;
     SDL_Keycode getPlayer2Key(PlayerAction action) const;
+    Actions getAction(SDL_Keycode key) const;
     bool isKeyInUse(SDL_Keycode key, PlayerAction action) const;
 
 private:

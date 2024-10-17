@@ -4,7 +4,7 @@
 // Screen dimensions
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
-
+#define NUM_CHARACTER 3 
 // Player dimensions
 const int PLAYER_WIDTH = 20;
 const int PLAYER_HEIGHT = 100;
