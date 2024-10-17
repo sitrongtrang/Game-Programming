@@ -61,8 +61,8 @@ CXX = g++
 TARGET = tiny_football
 
 # Source files for tiny_football, keySetMenu, keyBinding, and ImGui
-SRC = tiny_football.cpp ./src/utils.cpp ./src/keySetMenu.cpp ./src/keyBinding.cpp ./src/Physics.cpp ./src/Ball.cpp ./src/Footballer.cpp ./src/Surface.cpp ./src/Wind.cpp ./src/Character.cpp ./src/GameManager.cpp
-MENU_SRC = $(wildcard ./src/menu/*.cpp) ./src/Constant.cpp
+SRC = tiny_football.cpp ./src/keySetMenu.cpp ./src/keyBinding.cpp ./src/Physics.cpp ./src/Ball.cpp ./src/Footballer.cpp ./src/Surface.cpp
+MENU_SRC = $(wildcard ./src/Menu/*.cpp) ./src/Constant.cpp
 IMGUI_DIR = ./imgui
 IMGUI_SRC = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 IMGUI_BACKEND = $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
@@ -82,7 +82,7 @@ UNAME_S := $(shell uname -s)
 # Platform-specific configurations
 ifeq ($(UNAME_S), Linux) # LINUX
     ECHO_MESSAGE = "Building for Linux"
-    LIBS = -lGL -ldl `sdl2-config --libs`
+    LIBS = -lGL -ldl `sdl2-config --libs` -lSDL2_image
     CXXFLAGS += `sdl2-config --cflags`
 endif
 

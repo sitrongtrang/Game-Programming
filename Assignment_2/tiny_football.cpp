@@ -162,10 +162,10 @@ int main(int, char **)
         glClear(GL_COLOR_BUFFER_BIT);
         if (state == GameState::INTRODUCTION)
         {
-            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
+            // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            // renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
             state = GameState::MAIN_MENU;
-            SDL_DestroyRenderer(renderer);
+            // SDL_DestroyRenderer(renderer);
         }
         else if (state == GameState::MAIN_MENU)
         {

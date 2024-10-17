@@ -1,5 +1,8 @@
 #include "../headers/keyBinding.h"
 #include "keyBinding.h"
+#include "keySetMenu.h"
+#include <iostream>
+#include <unordered_map>
 
 // Global instance of KeyBinding
 KeyBinding keyBindingsInstance;
@@ -29,45 +32,47 @@ void KeyBinding::initializeDefaultKeyBindings() {
 }
 
 // Change key for Player 1
-void KeyBinding::changePlayer1Key(PlayerAction action,bool& waitingForKey) {
+void KeyBinding::changePlayer1Key(PlayerAction action,KeySetState& waitingForKey) {
     switch (action) {
-        case PlayerAction::MoveUp:    changeKey(player1Bindings.moveUp); break;
-        case PlayerAction::MoveDown:  changeKey(player1Bindings.moveDown); break;
-        case PlayerAction::MoveLeft:  changeKey(player1Bindings.moveLeft); break;
-        case PlayerAction::MoveRight: changeKey(player1Bindings.moveRight); break;
-        case PlayerAction::Action1:   changeKey(player1Bindings.action1); break;
-        case PlayerAction::Action2:   changeKey(player1Bindings.action2); break;
-        case PlayerAction::Action3:   changeKey(player1Bindings.action3); break;
+        case PlayerAction::MoveUp:    changeKey(player1Bindings.moveUp,waitingForKey); break;
+        case PlayerAction::MoveDown:  changeKey(player1Bindings.moveDown,waitingForKey); break;
+        case PlayerAction::MoveLeft:  changeKey(player1Bindings.moveLeft,waitingForKey); break;
+        case PlayerAction::MoveRight: changeKey(player1Bindings.moveRight,waitingForKey); break;
+        case PlayerAction::Action1:   changeKey(player1Bindings.action1,waitingForKey); break;
+        case PlayerAction::Action2:   changeKey(player1Bindings.action2,waitingForKey); break;
+        case PlayerAction::Action3:   changeKey(player1Bindings.action3,waitingForKey); break;
     }
-    waitingForKey=false;
 }
 
 // Change key for Player 2
-void KeyBinding::changePlayer2Key(PlayerAction action,bool& waitingForKey) {
+void KeyBinding::changePlayer2Key(PlayerAction action,KeySetState& waitingForKey) {
     switch (action) {
-        case PlayerAction::MoveUp:    changeKey(player2Bindings.moveUp); break;
-        case PlayerAction::MoveDown:  changeKey(player2Bindings.moveDown); break;
-        case PlayerAction::MoveLeft:  changeKey(player2Bindings.moveLeft); break;
-        case PlayerAction::MoveRight: changeKey(player2Bindings.moveRight); break;
-        case PlayerAction::Action1:   changeKey(player2Bindings.action1); break;
-        case PlayerAction::Action2:   changeKey(player2Bindings.action2); break;
-        case PlayerAction::Action3:   changeKey(player2Bindings.action3); break;
+        case PlayerAction::MoveUp:    changeKey(player2Bindings.moveUp,waitingForKey); break;
+        case PlayerAction::MoveDown:  changeKey(player2Bindings.moveDown,waitingForKey); break;
+        case PlayerAction::MoveLeft:  changeKey(player2Bindings.moveLeft,waitingForKey); break;
+        case PlayerAction::MoveRight: changeKey(player2Bindings.moveRight,waitingForKey); break;
+        case PlayerAction::Action1:   changeKey(player2Bindings.action1,waitingForKey); break;
+        case PlayerAction::Action2:   changeKey(player2Bindings.action2,waitingForKey); break;
+        case PlayerAction::Action3:   changeKey(player2Bindings.action3,waitingForKey); break;
     }
-    waitingForKey=false;
 
 }
 
 // Change key by capturing user input
-void KeyBinding::changeKey(SDL_Keycode& key) {
+void KeyBinding::changeKey(SDL_Keycode& key,KeySetState& waitingForKey) {
     SDL_Event event;
-    bool waitingForKey = true;
 
-    while (waitingForKey) {
+    while (waitingForKey!=KeySetState::NotWaiting) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_KEYDOWN) {
                 key = event.key.keysym.sym;  // Update key binding
+                if (hasSingleDuplicateKey()){
+                    waitingForKey=KeySetState::DupplicateKey;
+                }
+                else{
+                    waitingForKey=KeySetState::NotWaiting;
+                }
                 printf("Key pressed: %s\n", SDL_GetKeyName(key));
-                waitingForKey = false;       // Exit the loop
             }
         }
     }
@@ -105,27 +110,48 @@ SDL_Keycode KeyBinding::getPlayer2Key(PlayerAction action) const {
     }
     return SDLK_UNKNOWN; // Invalid action
 }
-bool KeyBinding::isKeyInUse(SDL_Keycode key, PlayerAction action) const {
+bool KeyBinding::hasSingleDuplicateKey() const {
+    std::unordered_map<SDL_Keycode, int> keyUsage; // To store key and its count of usage
+    int duplicateCount = 0; // Count of keys that are used more than once
+
+    // Helper lambda to add key usage
+    auto addKeyUsage = [&](SDL_Keycode key) {
+        if (keyUsage.find(key) != keyUsage.end()) {
+            keyUsage[key]++;
+        } else {
+            keyUsage[key] = 1;
+        }
+    };
+
     // Check Player 1 bindings
-    if (key == getPlayer1Key(PlayerAction::MoveUp) && action != PlayerAction::MoveUp) return true;
-    if (key == getPlayer1Key(PlayerAction::MoveDown) && action != PlayerAction::MoveDown) return true;
-    if (key == getPlayer1Key(PlayerAction::MoveLeft) && action != PlayerAction::MoveLeft) return true;
-    if (key == getPlayer1Key(PlayerAction::MoveRight) && action != PlayerAction::MoveRight) return true;
-    if (key == getPlayer1Key(PlayerAction::Action1) && action != PlayerAction::Action1) return true;
-    if (key == getPlayer1Key(PlayerAction::Action2) && action != PlayerAction::Action2) return true;
-    if (key == getPlayer1Key(PlayerAction::Action3) && action != PlayerAction::Action3) return true;
+    addKeyUsage(getPlayer1Key(PlayerAction::MoveUp));
+    addKeyUsage(getPlayer1Key(PlayerAction::MoveDown));
+    addKeyUsage(getPlayer1Key(PlayerAction::MoveLeft));
+    addKeyUsage(getPlayer1Key(PlayerAction::MoveRight));
+    addKeyUsage(getPlayer1Key(PlayerAction::Action1));
+    addKeyUsage(getPlayer1Key(PlayerAction::Action2));
+    addKeyUsage(getPlayer1Key(PlayerAction::Action3));
 
     // Check Player 2 bindings
-    if (key == getPlayer2Key(PlayerAction::MoveUp) && action != PlayerAction::MoveUp) return true;
-    if (key == getPlayer2Key(PlayerAction::MoveDown) && action != PlayerAction::MoveDown) return true;
-    if (key == getPlayer2Key(PlayerAction::MoveLeft) && action != PlayerAction::MoveLeft) return true;
-    if (key == getPlayer2Key(PlayerAction::MoveRight) && action != PlayerAction::MoveRight) return true;
-    if (key == getPlayer2Key(PlayerAction::Action1) && action != PlayerAction::Action1) return true;
-    if (key == getPlayer2Key(PlayerAction::Action2) && action != PlayerAction::Action2) return true;
-    if (key == getPlayer2Key(PlayerAction::Action3) && action != PlayerAction::Action3) return true;
+    addKeyUsage(getPlayer2Key(PlayerAction::MoveUp));
+    addKeyUsage(getPlayer2Key(PlayerAction::MoveDown));
+    addKeyUsage(getPlayer2Key(PlayerAction::MoveLeft));
+    addKeyUsage(getPlayer2Key(PlayerAction::MoveRight));
+    addKeyUsage(getPlayer2Key(PlayerAction::Action1));
+    addKeyUsage(getPlayer2Key(PlayerAction::Action2));
+    addKeyUsage(getPlayer2Key(PlayerAction::Action3));
 
-    return false; // Key is not in use
+    // Count how many keys are used more than once
+    for (const auto& entry : keyUsage) {
+        if (entry.second > 1) {
+            duplicateCount++;
+        }
+    }
+
+    // Return true if there is exactly one duplicate
+    return duplicateCount == 1;
 }
+
 
 Actions KeyBinding::getAction(SDL_Keycode key) const {
     Actions action;

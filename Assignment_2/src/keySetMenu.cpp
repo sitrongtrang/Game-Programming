@@ -39,9 +39,15 @@ void KeySetMenu::Render(bool& game_paused) {
     ImGui::Separator();  // Separate action buttons from other options
     ImGui::Spacing();
 
-    if (waitingForKey) {
+    if (waitingForKey==KeySetState::WaitingForAnyKey) {
         ImGui::Text("Waiting for key press...");
-    } else {
+    }else if (waitingForKey==KeySetState::DupplicateKey)
+    {
+        ImGui::Text("Duplicated key, please try another");
+
+    }
+     
+    else {
         // Calculate the total width of both buttons
         float buttonWidth = 150.0f;  // Width of each button
         float totalButtonWidth = 2 * buttonWidth + ImGui::GetStyle().ItemSpacing.x; // Adding spacing between buttons
@@ -114,7 +120,7 @@ void KeySetMenu::renderActionKeys() {
 // Function to render a single key button
 void KeySetMenu::renderKeyButton(PlayerAction action, const char* label,float width ,float height) {
     SDL_Keycode currentKey = isPlayer1Selected ? keyBindingsInstance.getPlayer1Key(action) : keyBindingsInstance.getPlayer2Key(action);
-    if (waitingForKey && selectedAction == action) {
+    if (waitingForKey!=KeySetState::NotWaiting && selectedAction == action) {
         ImGui::Button("Press a new key", ImVec2(width,height));
         if (isPlayer1Selected) {
             keyBindingsInstance.changePlayer1Key(action,waitingForKey);
@@ -124,7 +130,7 @@ void KeySetMenu::renderKeyButton(PlayerAction action, const char* label,float wi
     } else {
         if (ImGui::Button(SDL_GetKeyName(currentKey), ImVec2(width,height))) {
             selectedAction = action;
-            waitingForKey = true;
+            waitingForKey = KeySetState::WaitingForAnyKey;
 
         }
     }
@@ -135,7 +141,7 @@ void KeySetMenu::renderResumeButton(bool& game_paused) {
     ImGui::Separator();  // Separate action buttons from other options
     ImGui::Spacing();
 
-    if (waitingForKey) {
+    if (waitingForKey!=KeySetState::NotWaiting) {
         ImGui::Text("Waiting for key press...");
     } else {
         ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 150) * 0.5f);  // Center the button

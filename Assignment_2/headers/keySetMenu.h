@@ -5,6 +5,7 @@
 #include "utils.h"
 #include <imgui.h>
 
+
 class KeySetMenu {
 public:
     // Constructor
@@ -31,7 +32,7 @@ private:
 
     KeyBinding& keyBindingsInstance; // Reference to key bindings instance
     bool isPlayer1Selected;           // Track which player is selected
-    bool waitingForKey = false;       // Indicates if waiting for key input
+    KeySetState waitingForKey = KeySetState::NotWaiting;       // Indicates if waiting for key input
     PlayerAction selectedAction;      // Currently selected action to change key
     const int HEIGHT=SCREEN_HEIGHT*70/100;
     const int WIDTH=SCREEN_WIDTH*70/100;

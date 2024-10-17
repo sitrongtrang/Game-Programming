@@ -4,6 +4,11 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
+enum class KeySetState {
+    NotWaiting,
+    WaitingForAnyKey,
+    DupplicateKey,
+};
 // Structure for player key bindings
 struct PlayerKeyBindings {
     SDL_Keycode moveUp;
@@ -35,21 +40,21 @@ public:
 
     KeyBinding();  // Constructor to initialize key bindings
 
-    void changePlayer1Key(PlayerAction action, bool &waitingForKey);
-    void changePlayer2Key(PlayerAction action, bool &waitingForKey);
+    void changePlayer1Key(PlayerAction action, KeySetState &waitingForKey);
+    void changePlayer2Key(PlayerAction action, KeySetState &waitingForKey);
     void resetKeyBindings();
 
     SDL_Keycode getPlayer1Key(PlayerAction action) const;
     SDL_Keycode getPlayer2Key(PlayerAction action) const;
     Actions getAction(SDL_Keycode key) const;
-    bool isKeyInUse(SDL_Keycode key, PlayerAction action) const;
+    bool hasSingleDuplicateKey() const;
 
 private:
     PlayerKeyBindings player1Bindings;
     PlayerKeyBindings player2Bindings;
 
     void initializeDefaultKeyBindings();
-    void changeKey(SDL_Keycode &key);
+    void changeKey(SDL_Keycode &key, KeySetState &waitingForKey);
 };
 
 // Global instance of KeyBinding
