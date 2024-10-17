@@ -26,7 +26,7 @@ enum class PlayerAction {
 };
 
 struct Actions {
-    int character num;
+    int character_num;
     PlayerAction action;
 };
 class KeyBinding {

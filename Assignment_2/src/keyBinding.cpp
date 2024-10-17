@@ -127,7 +127,7 @@ bool KeyBinding::isKeyInUse(SDL_Keycode key, PlayerAction action) const {
     return false; // Key is not in use
 }
 
-Actions KeyBinding::getAction(SDL_keycode key) const {
+Actions KeyBinding::getAction(SDL_Keycode key) const {
     Actions action;
     if (key == player1Bindings.moveUp) {
         action.character_num = 1;
