@@ -1,8 +1,8 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
-#include"keyBinding.h"
-#include"Character.h"
+#include "keyBinding.h"
+#include "Character.h"
 
 #define MOVEMENT_FORCE 1.0f
 

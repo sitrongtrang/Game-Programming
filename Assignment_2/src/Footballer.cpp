@@ -1,11 +1,13 @@
 #include "Footballer.h"
+#include "Character.h"
 
-Footballer::Footballer(float mass, float ropeLength, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : Physics(mass, initPos, initVel, initAcc), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller({0, 0}) {}
+Footballer::Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+    : Physics(mass, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller) {}
 
 void Footballer::update(float deltaTime) {
 
-    this->applyRopeConstraint(this->puller); 
+    this->draw();
+    this->applyRopeConstraint(); 
     this->applyForce(this->getFrictionForce());
 
     float newX = this->obstructedX? this->pos.x : this->pos.x + this->vel.x * deltaTime; // only change position if not obstructed
@@ -23,9 +25,9 @@ void Footballer::update(float deltaTime) {
     this->setObstructedY(false);
 }
 
-void Footballer::applyRopeConstraint(SDL_FPoint source) {
+void Footballer::applyRopeConstraint() {
 
-    SDL_FPoint direction = {source.x - this->pos.x, source.y - this->pos.y};
+    SDL_FPoint direction = {this->puller->getPos().x - this->pos.x, this->puller->getPos().y - this->pos.y};
 
     float dist = sqrt(direction.x * direction.x + direction.y * direction.y);
 
@@ -89,5 +91,9 @@ void Footballer::collideSurface(Physics& surface) {
         this->setObstructedY(true);
     }
 
+}
+
+void Footballer::draw() {
+    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
 }
 

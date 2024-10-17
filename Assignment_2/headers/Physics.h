@@ -2,6 +2,7 @@
 #define PHYSICS_H
 
 #include <SDL2/SDL.h>
+#include "utils.h"
 
 class Physics
 {
@@ -19,6 +20,8 @@ public:
     void applyForce(SDL_FPoint force); // Affected by external forces (drag, wind, sand, etc.)
 
     virtual void update(float deltaTime); // Update position, velocity, acceleration
+
+    virtual void draw() = 0;
 
     // Getters
     float getMass() const;

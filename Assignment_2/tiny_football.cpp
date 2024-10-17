@@ -15,6 +15,8 @@
 #include "../headers/utils.h"
 #include "../headers/keySetMenu.h"
 #include "../headers/keyBinding.h"
+#include "../headers/Ball.h"
+#include "../headers/Surface.h"
 
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
@@ -73,20 +75,14 @@ GLuint LoadTextureFromFile(const char *filename)
 }
 
 // Function to render a simple square
-void RenderSquare()
-{
-    glBegin(GL_QUADS);                                          // Start drawing a quad (square)
-    glColor3f(0.0f, 1.0f, 0.0f);                                // Green color
-    glVertex2f(square_x - square_size, square_y - square_size); // Bottom-left
-    glVertex2f(square_x + square_size, square_y - square_size); // Bottom-right
-    glVertex2f(square_x + square_size, square_y + square_size); // Top-right
-    glVertex2f(square_x - square_size, square_y + square_size); // Top-left
-    glEnd();
-}
+
 
 int main(int, char **)
 {
     // Initialize SDL
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f});
+    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
         printf("Error: %s\n", SDL_GetError());
@@ -192,7 +188,9 @@ int main(int, char **)
 
             renderGameMenu(state, score1, score2);
             UpdateGame();
-            RenderSquare();
+            // RenderSquare();
+            ball->draw();
+            surface->draw();
         }
 
         // Rendering
