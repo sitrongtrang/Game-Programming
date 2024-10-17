@@ -6,7 +6,7 @@ Surface::Surface(SDL_FPoint initPos)
     // Depends on the colliding box of the object
     // TODO: implement after colliding boxes are done
     
-SDL_FPoint Surface::getNormal() {
+SDL_FPoint Surface::getNormal() const {
     SDL_FPoint normal = {0, 1};
     return normal;
 }

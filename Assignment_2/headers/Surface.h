@@ -7,7 +7,7 @@ class Surface : public Physics {
 public:
     Surface(SDL_FPoint initPos);
     
-    SDL_FPoint getNormal() override;
+    SDL_FPoint getNormal() const override;
 
     bool detectCollision(Physics& other) override;
     void onCollision(Physics& other) override;
