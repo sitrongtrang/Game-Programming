@@ -17,6 +17,8 @@
 #include "../headers/keyBinding.h"
 #include "../headers/Ball.h"
 #include "../headers/Surface.h"
+#include "../headers/inputManager.h"
+#include "../headers/Character.h"
 
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
