@@ -29,7 +29,8 @@ public:
     Character* getTeamACharacter(int index) const;
     Character* getTeamBCharacter(int index) const;
     Physics* getPhysicsObject(int index) const;
-
+    Character** getTeamACharacters();  
+    Character** getTeamBCharacters();
     int getPhysicsObjectCount() const { return MAX_PHYSICS_OBJECTS; }
 
     Wind* getWind() const { return wind; }

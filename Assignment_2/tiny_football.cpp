@@ -19,7 +19,7 @@
 #include "../headers/Surface.h"
 #include "../headers/inputManager.h"
 #include "../headers/Character.h"
-
+#include "../headers/GameManager.h"
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
 float square_size = 0.1f; // Size of the square
@@ -84,6 +84,8 @@ int main(int, char **)
     // Initialize SDL
     Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
+    GameManager * gameManager = GameManager::getInstance();
+    InputManager inputManaget(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -133,6 +135,7 @@ int main(int, char **)
     startTime = std::chrono::steady_clock::now();
     GameState state = GameState::INTRODUCTION;
     // Main loop
+
     while (game_running)
     {
         SDL_Event event;
@@ -155,7 +158,7 @@ int main(int, char **)
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
             } else if (event.type== SDL_KEYDOWN) {
-                inputManaget.input(event.key.keysym.sym); // Change later
+                inputManager->input(event.key.keysym.sym);
             }
         }
 
@@ -191,7 +194,9 @@ int main(int, char **)
             renderGameMenu(state, score1, score2);
             UpdateGame();
             // RenderSquare();
+            Character * test = gameManager->getTeamACharacters()[0];
             ball->draw();
+            test->draw();
             surface->draw();
         }
 

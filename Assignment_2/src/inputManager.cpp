@@ -47,10 +47,10 @@ void InputManager::changePlayer(Character * player, PlayerAction action) const {
 void InputManager::movePlayer(Character * player, PlayerAction action) const {
     switch (action)
     {
-    case (PlayerAction::MoveUp): player->applyAcc({0 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
-    case (PlayerAction::MoveDown): player->applyAcc({0 * MOVEMENT_FORCE, -1 * MOVEMENT_FORCE}); break;
-    case (PlayerAction::MoveLeft): player->applyAcc({-1 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
-    case (PlayerAction::MoveRight): player->applyAcc({MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveUp): player->setAcc({0 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveDown): player->setAcc({0 * MOVEMENT_FORCE, -1 * MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveLeft): player->setAcc({-1 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveRight): player->setAcc({MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
     default: return;
     }
 }

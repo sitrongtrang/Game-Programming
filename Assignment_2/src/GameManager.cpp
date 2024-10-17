@@ -68,3 +68,5 @@ Physics* GameManager::getPhysicsObject(int index) const {
     return nullptr; 
 }
 
+Character** GameManager::getTeamACharacters() { return teamACharacters; }  
+Character** GameManager::getTeamBCharacters() { return teamBCharacters; }
