@@ -95,6 +95,6 @@ void Footballer::collideSurface(Physics& surface) {
 }
 
 void Footballer::draw() {
-    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
 }
 

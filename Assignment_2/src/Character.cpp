@@ -1,10 +1,16 @@
 #include "Character.h"
 
-Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : radius(radius), pos(initPos), vel(initVel), acc(initAcc) {
+Character::Character(SDL_Surface *surf, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+    : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
+        sprSheet("./assets/Player/Slime-Sheet.png", 1, 4) {
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;
         }
+
+        // for test only
+        sprSheet.select_sprite(0, 0);
+        window_surface = surf;
+
     }
 
 Character::~Character() {}
@@ -48,5 +54,8 @@ void Character::setFootballer(int i, Footballer* footballer) {
 }
 
 void Character::draw() {
-    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+
+    SDL_Rect pos = SDL_Rect{this->pos.x, this->pos.y, this->radius*2, this->radius*2};
+    sprSheet.draw(window_surface, &pos);
 }

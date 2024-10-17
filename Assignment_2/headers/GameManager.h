@@ -22,12 +22,15 @@ private:
 
     Wind* wind; 
 
-    GameManager();
+    SDL_Surface *window_surface;
+
+    GameManager(SDL_Surface *window_surf);
 
 public:
-    static GameManager* getInstance();
+    static GameManager* getInstance(SDL_Surface *window_surf);
 
     void update(float deltaTime);
+    SDL_Surface* GetSurf();
 
     Character* getTeamACharacter(int index) const;
     Character* getTeamBCharacter(int index) const;

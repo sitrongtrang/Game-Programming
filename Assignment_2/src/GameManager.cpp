@@ -3,12 +3,14 @@
 
 GameManager* GameManager::instance = nullptr;
 
-GameManager::GameManager() {
+GameManager::GameManager(SDL_Surface *window_surf) {
     wind = Wind::getInstance();
 
+    window_surface = window_surf;
+
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character(0.1f, {0.0f, 0.0f});
-        teamBCharacters[i] = new Character(0.1f, {0.0f, 0.0f});
+        teamACharacters[i] = new Character(window_surface, 0.1f, {0.0f, 0.0f});
+        teamBCharacters[i] = new Character(window_surface, 0.1f, {0.0f, 0.0f});
     }
 
     for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {
@@ -21,12 +23,16 @@ GameManager::GameManager() {
     }
 }
 
-GameManager* GameManager::getInstance() {
+GameManager* GameManager::getInstance(SDL_Surface *window_surf) {
     if (!instance) {
-        instance = new GameManager();
+        instance = new GameManager(window_surf);
 
     }
     return instance;
+}
+
+SDL_Surface* GameManager::GetSurf(){
+    return this->window_surface;
 }
 
 void GameManager::update(float deltaTime) {
@@ -44,6 +50,9 @@ void GameManager::update(float deltaTime) {
         object->update(deltaTime); 
     }
 }
+
+
+
 
 Character* GameManager::getTeamACharacter(int index) const {
     if (index >= 0 && index < NUM_CHAR) {

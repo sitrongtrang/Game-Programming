@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "utils.h"
-
+#include "Spritesheet.h"
 
 class Footballer;
 class Character {
@@ -14,8 +14,12 @@ private:
     SDL_FPoint acc;
     float radius;
 
+    Spritesheet sprSheet;
+    SDL_Surface *window_surface;
+    
+
 public:
-    Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Character(SDL_Surface *surf, float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
 
     ~Character();
 

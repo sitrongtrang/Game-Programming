@@ -86,8 +86,7 @@ int main(int, char **)
     // Initialize SDL
     Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
-    GameManager * gameManager = GameManager::getInstance();
-    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
+    
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -108,6 +107,11 @@ int main(int, char **)
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
+    SDL_Surface *window_surface = SDL_GetWindowSurface(window);
+
+    //
+    GameManager * gameManager = GameManager::getInstance(window_surface);
+    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     // Initialize Dear ImGui context
     IMGUI_CHECKVERSION();
