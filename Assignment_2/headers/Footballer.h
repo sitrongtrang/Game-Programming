@@ -11,8 +11,7 @@ protected:
     bool obstructedX, obstructedY; // footballer is obstructed in x/y direction
     float ropeLength;
     float radius;
-    // TODO: implement puller later
-    Character* puller; // the character that pulls the footballer
+    Character* puller; 
 public:
     Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f});
 

@@ -6,6 +6,7 @@ Footballer::Footballer(float mass, float radius, float ropeLength, Character* pu
 
 void Footballer::update(float deltaTime) {
 
+    this->draw();
     this->applyRopeConstraint(); 
     this->applyForce(this->getFrictionForce());
 

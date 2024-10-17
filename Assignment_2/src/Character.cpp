@@ -1,7 +1,7 @@
 #include "Character.h"
 
-Character::Character(SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : pos(initPos), vel(initVel), acc(initAcc) {
+Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+    : radius(radius), pos(initPos), vel(initVel), acc(initAcc) {
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;
         }
@@ -11,6 +11,8 @@ Character::~Character() {}
 
 void Character::update(float deltaTime)
 {
+    this->draw();
+
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
     this->setPos(newPos);
 
@@ -38,4 +40,8 @@ void Character::setVel(SDL_FPoint newVel) { vel = newVel; }
 void Character::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 void Character::setFootballer(int i, Footballer* footballer) {
     footballers[i] = footballer;
+}
+
+void Character::draw() {
+    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
 }

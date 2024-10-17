@@ -12,8 +12,8 @@ GameManager::GameManager() {
     Character* teamBCharacters[NUM_CHAR];  
 
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character({0.0f, 0.0f});
-        teamBCharacters[i] = new Character({0.0f, 0.0f});
+        teamACharacters[i] = new Character(50, {0.0f, 0.0f});
+        teamBCharacters[i] = new Character(50, {0.0f, 0.0f});
     }
 
     for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {

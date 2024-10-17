@@ -14,6 +14,8 @@ void Physics::applyForce(SDL_FPoint force)
 
 void Physics::update(float deltaTime)
 {
+    this->draw();
+    
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
     this->setPos(newPos);
 

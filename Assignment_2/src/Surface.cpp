@@ -1,10 +1,7 @@
 #include "Surface.h"
 
-Surface::Surface(float width, float height, SDL_FPoint initPos, SDL_FPoint normal) 
+Surface::Surface(SDL_FPoint initPos, SDL_FPoint normal, float width, float height) 
     : Physics(1000000, initPos), width(width), height(height), normal(normal) {}
-
-    // Depends on the colliding box of the object
-    // TODO: implement after colliding boxes are done
 
 float Surface::getWidth() const { return width; }
 float Surface::getHeight() const {return height; }
@@ -20,5 +17,5 @@ void Surface::onCollision(Physics& other) {
 }
 
 void Surface::draw() {
-    RenderRectangle(this->pos.x, this->pos.y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    RenderRectangle(this->pos.x, this->pos.y, this->width, this->height);
 }

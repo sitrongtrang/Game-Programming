@@ -9,7 +9,7 @@ private:
     SDL_FPoint normal;
 
 public:
-    Surface(float width, float height, SDL_FPoint initPos, SDL_FPoint normal);
+    Surface(SDL_FPoint initPos, SDL_FPoint normal, float width = SCREEN_WIDTH, float height = SCREEN_HEIGHT);
 
     float getWidth() const;
     float getHeight() const;

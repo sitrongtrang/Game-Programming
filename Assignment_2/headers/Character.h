@@ -13,9 +13,10 @@ private:
     SDL_FPoint pos; 
     SDL_FPoint vel; 
     SDL_FPoint acc;
+    float radius;
 
 public:
-    Character(SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
 
     ~Character();
 
@@ -30,6 +31,8 @@ public:
     void setVel(SDL_FPoint newVel);
     void setAcc(SDL_FPoint newAcc);
     void setFootballer(int i, Footballer* footballer);
+
+    void draw();
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "../headers/keySetMenu.h"
 #include "../headers/keyBinding.h"
 #include "../headers/Ball.h"
+#include "../headers/Surface.h"
 
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
@@ -80,6 +81,7 @@ int main(int, char **)
 {
     // Initialize SDL
     Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f});
+    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -186,6 +188,7 @@ int main(int, char **)
             UpdateGame();
             // RenderSquare();
             ball->draw();
+            surface->draw();
         }
 
         // Rendering
