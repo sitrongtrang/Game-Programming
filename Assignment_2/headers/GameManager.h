@@ -18,7 +18,7 @@ private:
     Character* teamBCharacters[NUM_CHAR];  
     Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
     Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
-    Physics* physics[MAX_PHYSICS_OBJECTS]; // Physics objects
+    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR]; 
 
     Wind* wind; 
 

@@ -33,7 +33,7 @@ const int NUM_FOOTBALLER = 3;
 const int NUM_CHAR = 3;
 
 // Rope length
-const float ROPE_LENGTH = 5;
+const float ROPE_LENGTH = 1;
 
 const int CIRCLE_SEGMENTS = 1000;
 

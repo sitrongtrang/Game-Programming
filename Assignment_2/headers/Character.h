@@ -21,6 +21,8 @@ public:
 
     void update(float deltaTime);
 
+    void applyRopeConstraint(SDL_FPoint force);
+
     SDL_FPoint getPos() const;
     SDL_FPoint getVel() const;
     SDL_FPoint getAcc() const;

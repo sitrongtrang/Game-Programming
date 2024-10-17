@@ -16,6 +16,8 @@ GameManager::GameManager() {
         teamACharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamAFootballers[i]);
         teamBFootballers[i] = new Footballer(300, 0.1f, ROPE_LENGTH, teamBCharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
         teamBCharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamBFootballers[i]);
+        physics[i] = teamAFootballers[i];
+        physics[i + NUM_FOOTBALLER * NUM_CHAR] = teamBFootballers[i];
     }
 }
 
@@ -28,7 +30,7 @@ GameManager* GameManager::getInstance() {
 }
 
 void GameManager::update(float deltaTime) {
-    // wind->update(deltaTime);
+    wind->update(deltaTime);
 
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 

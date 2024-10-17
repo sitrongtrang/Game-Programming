@@ -196,11 +196,12 @@ int main(int, char **)
             renderGameMenu(state, score1, score2);
             UpdateGame();
             // RenderSquare();
-            Character * test = gameManager->getTeamBCharacter(0);
-            // ball->draw();
-            test->update(0.016f);
+            // Character * test = gameManager->getTeamBCharacter(0);
+            // // ball->draw();
+            // test->update(0.016f);
             // test->draw();
             // surface->draw();
+            gameManager->update(0.016f);
         }
 
         // Rendering

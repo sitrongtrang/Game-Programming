@@ -23,17 +23,21 @@ void Character::update(float deltaTime)
     this->setAcc(newAcc);
 }
 
+void Character::applyRopeConstraint(SDL_FPoint force) {
+    this->setAcc({acc.x - force.x / 10, acc.y - force.y / 10});
+}
+
 SDL_FPoint Character::getPos() const { return pos; }
 SDL_FPoint Character::getVel() const { return vel; }
 SDL_FPoint Character::getAcc() const { return acc; }
 Footballer* Character::getFootballer(int i) const { return footballers[i]; }
 
 void Character::setPos(SDL_FPoint newPos) { 
-    if (newPos.x < SCREEN_WIDTH && newPos.x > 0) {
+    if (newPos.x > -SCREEN_WIDTH / 2 && newPos.x < SCREEN_WIDTH / 2) {
         pos.x = newPos.x;
     }
 
-    if (newPos.y < SCREEN_WIDTH && newPos.y > 0) {
+    if (newPos.y > -SCREEN_HEIGHT / 2 && newPos.y < SCREEN_HEIGHT / 2) {
         pos.y = newPos.y;
     }
 }
