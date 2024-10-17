@@ -38,7 +38,7 @@ void Character::setPos(SDL_FPoint newPos) {
     }
 }
 void Character::setVel(SDL_FPoint newVel) { vel = newVel; }
-void Character::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
+void Character::setAcc(SDL_FPoint newAcc) { acc = newAcc; }
 void Character::setFootballer(int i, Footballer* footballer) {
     footballers[i] = footballer;
 }

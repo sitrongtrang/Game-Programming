@@ -20,6 +20,8 @@
 #include "../headers/inputManager.h"
 #include "../headers/Character.h"
 #include "../headers/GameManager.h"
+#include <stdio.h>
+
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
 float square_size = 0.1f; // Size of the square
@@ -82,10 +84,10 @@ GLuint LoadTextureFromFile(const char *filename)
 int main(int, char **)
 {
     // Initialize SDL
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f});
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
     GameManager * gameManager = GameManager::getInstance();
-    InputManager inputManaget(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
+    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -194,10 +196,11 @@ int main(int, char **)
             renderGameMenu(state, score1, score2);
             UpdateGame();
             // RenderSquare();
-            Character * test = gameManager->getTeamACharacters()[0];
-            ball->draw();
-            test->draw();
-            surface->draw();
+            Character * test = gameManager->getTeamBCharacter(0);
+            // ball->draw();
+            test->update(0.016f);
+            // test->draw();
+            // surface->draw();
         }
 
         // Rendering

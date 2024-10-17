@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 #include "utils.h"
 
-#define NUM_FOOTBALLER 3
 
 class Footballer;
 class Character {
