@@ -1,7 +1,5 @@
 #include "../headers/inputManager.h"
 
-InputManager inputManager;
-
 InputManager::InputManager(Character ** character_1, Character ** character_2) {
     p1_charater = character_1;
     p2_charater = character_2;
@@ -49,10 +47,10 @@ void InputManager::changePlayer(Character * player, PlayerAction action) const {
 void InputManager::movePlayer(Character * player, PlayerAction action) const {
     switch (action)
     {
-    case (PlayerAction::MoveUp): player->applyAcc({0.0f, 1.0f}); break;
-    case (PlayerAction::MoveDown): player->applyAcc({0.0f, -1.0f}); break;
-    case (PlayerAction::MoveLeft): player->applyAcc({-1.0f, 0.0f}); break;
-    case (PlayerAction::MoveRight): player->applyAcc({1.0f, 0.0f}); break;
+    case (PlayerAction::MoveUp): player->applyAcc({0 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveDown): player->applyAcc({0 * MOVEMENT_FORCE, -1 * MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveLeft): player->applyAcc({-1 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
+    case (PlayerAction::MoveRight): player->applyAcc({MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
     default: return;
     }
 }

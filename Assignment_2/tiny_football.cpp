@@ -145,7 +145,7 @@ int main(int, char **)
             {
                 game_running = false;
             }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 game_paused = !game_paused;
                 if (game_paused)
@@ -156,6 +156,8 @@ int main(int, char **)
                 {
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
+            } else if (event.type== SDL_KEYDOWN) {
+                inputManaget.input(event.key.keysym.sym); // Change later
             }
         }
 
