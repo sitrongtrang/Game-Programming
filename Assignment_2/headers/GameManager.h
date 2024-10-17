@@ -5,6 +5,7 @@
 #include "Character.h"  
 #include "Footballer.h"
 #include "Physics.h"
+#include "inputManager.h"
 #include "utils.h"
 
 const int MAX_PHYSICS_OBJECTS = 20; // Maximum number of physics objects
@@ -15,6 +16,8 @@ private:
 
     Character* teamACharacters[NUM_CHAR];  
     Character* teamBCharacters[NUM_CHAR];  
+    Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
+    Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
     Physics* physics[MAX_PHYSICS_OBJECTS]; // Physics objects
 
     Wind* wind; 
@@ -29,7 +32,8 @@ public:
     Character* getTeamACharacter(int index) const;
     Character* getTeamBCharacter(int index) const;
     Physics* getPhysicsObject(int index) const;
-
+    Character** getTeamACharacters();  
+    Character** getTeamBCharacters();
     int getPhysicsObjectCount() const { return MAX_PHYSICS_OBJECTS; }
 
     Wind* getWind() const { return wind; }

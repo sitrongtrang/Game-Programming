@@ -1,19 +1,14 @@
 #include "GameManager.h"
+#include <stdio.h>
 
 GameManager* GameManager::instance = nullptr;
 
 GameManager::GameManager() {
     wind = Wind::getInstance();
 
-    Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
-    Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
-
-    Character* teamACharacters[NUM_CHAR];  
-    Character* teamBCharacters[NUM_CHAR];  
-
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character(50, {0.0f, 0.0f});
-        teamBCharacters[i] = new Character(50, {0.0f, 0.0f});
+        teamACharacters[i] = new Character(0.1f, {0.0f, 0.0f});
+        teamBCharacters[i] = new Character(0.1f, {0.0f, 0.0f});
     }
 
     for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {
@@ -27,12 +22,13 @@ GameManager::GameManager() {
 GameManager* GameManager::getInstance() {
     if (!instance) {
         instance = new GameManager();
+
     }
     return instance;
 }
 
 void GameManager::update(float deltaTime) {
-    wind->update(deltaTime);
+    // wind->update(deltaTime);
 
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 
@@ -68,3 +64,5 @@ Physics* GameManager::getPhysicsObject(int index) const {
     return nullptr; 
 }
 
+Character** GameManager::getTeamACharacters() { return teamACharacters; }  
+Character** GameManager::getTeamBCharacters() { return teamBCharacters; }

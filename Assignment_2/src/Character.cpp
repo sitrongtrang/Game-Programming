@@ -25,6 +25,7 @@ void Character::update(float deltaTime)
 
 SDL_FPoint Character::getPos() const { return pos; }
 SDL_FPoint Character::getVel() const { return vel; }
+SDL_FPoint Character::getAcc() const { return acc; }
 Footballer* Character::getFootballer(int i) const { return footballers[i]; }
 
 void Character::setPos(SDL_FPoint newPos) { 
@@ -37,7 +38,7 @@ void Character::setPos(SDL_FPoint newPos) {
     }
 }
 void Character::setVel(SDL_FPoint newVel) { vel = newVel; }
-void Character::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
+void Character::setAcc(SDL_FPoint newAcc) { acc = newAcc; }
 void Character::setFootballer(int i, Footballer* footballer) {
     footballers[i] = footballer;
 }

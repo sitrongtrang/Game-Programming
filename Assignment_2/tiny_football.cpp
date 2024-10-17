@@ -17,6 +17,10 @@
 #include "../headers/keyBinding.h"
 #include "../headers/Ball.h"
 #include "../headers/Surface.h"
+#include "../headers/inputManager.h"
+#include "../headers/Character.h"
+#include "../headers/GameManager.h"
+#include <stdio.h>
 
 float square_x = 0.0f;    // Square's X position
 float square_y = 0.0f;    // Square's Y position
@@ -80,8 +84,10 @@ GLuint LoadTextureFromFile(const char *filename)
 int main(int, char **)
 {
     // Initialize SDL
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f});
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
+    GameManager * gameManager = GameManager::getInstance();
+    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -131,6 +137,7 @@ int main(int, char **)
     startTime = std::chrono::steady_clock::now();
     GameState state = GameState::INTRODUCTION;
     // Main loop
+
     while (game_running)
     {
         SDL_Event event;
@@ -141,7 +148,7 @@ int main(int, char **)
             {
                 game_running = false;
             }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 game_paused = !game_paused;
                 if (game_paused)
@@ -152,6 +159,8 @@ int main(int, char **)
                 {
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
+            } else if (event.type== SDL_KEYDOWN) {
+                inputManager->input(event.key.keysym.sym);
             }
         }
 
@@ -162,10 +171,10 @@ int main(int, char **)
         glClear(GL_COLOR_BUFFER_BIT);
         if (state == GameState::INTRODUCTION)
         {
-            // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            // renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
+            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
             state = GameState::MAIN_MENU;
-            // SDL_DestroyRenderer(renderer);
+            SDL_DestroyRenderer(renderer);
         }
         else if (state == GameState::MAIN_MENU)
         {
@@ -187,8 +196,11 @@ int main(int, char **)
             renderGameMenu(state, score1, score2);
             UpdateGame();
             // RenderSquare();
-            ball->draw();
-            surface->draw();
+            Character * test = gameManager->getTeamBCharacter(0);
+            // ball->draw();
+            test->update(0.016f);
+            // test->draw();
+            // surface->draw();
         }
 
         // Rendering

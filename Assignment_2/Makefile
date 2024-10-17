@@ -71,7 +71,7 @@ IMGUI_BACKEND = $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp $(IMGUI_DIR)/backends/
 ALL_SRC = $(SRC) $(IMGUI_SRC) $(IMGUI_BACKEND) $(MENU_SRC)
 
 # Object files
-OBJS = tiny_football.o ./src/utils.o ./src/keySetMenu.o ./src/keyBinding.o ./src/Physics.o ./src/Ball.o ./src/Footballer.o ./src/Surface.o ./src/Wind.o ./src/Character.o ./src/GameManager.o $(IMGUI_SRC:.cpp=.o) $(IMGUI_BACKEND:.cpp=.o) $(MENU_SRC:.cpp=.o)
+OBJS = tiny_football.o ./src/utils.o ./src/keySetMenu.o ./src/keyBinding.o ./src/Physics.o ./src/Ball.o ./src/Footballer.o ./src/Surface.o ./src/Wind.o ./src/Character.o ./src/GameManager.o ./src/inputManager.o $(IMGUI_SRC:.cpp=.o) $(IMGUI_BACKEND:.cpp=.o) $(MENU_SRC:.cpp=.o)
 
 # Compiler flags
 CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I./headers -g -Wall -Wformat  # Include headers path

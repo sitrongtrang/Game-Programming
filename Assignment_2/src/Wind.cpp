@@ -1,4 +1,4 @@
-#include "wind.h"
+#include "../headers/Wind.h"
 #include <cstdlib>  
 #include <ctime>   
 #include "utils.h" 
