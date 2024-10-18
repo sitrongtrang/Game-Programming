@@ -22,12 +22,12 @@ private:
 
     Wind* wind; 
 
-    SDL_Surface *window_surface;
+    SDL_Renderer *renderer;
 
-    GameManager(SDL_Surface *window_surf);
+    GameManager(SDL_Renderer *renderer);
 
 public:
-    static GameManager* getInstance(SDL_Surface *window_surf);
+    static GameManager* getInstance(SDL_Renderer *renderer);
 
     void update(float deltaTime);
     SDL_Surface* GetSurf();

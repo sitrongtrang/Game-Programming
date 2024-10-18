@@ -1,34 +1,36 @@
 #include "Spritesheet.h"
 #include <iostream> 
 
-Spritesheet::Spritesheet(char const *path, int row, int column) 
-    : m_spritesheet_image(nullptr) {  // Initialize m_spritesheet_image to nullptr
-    // Load the image from file
-    m_spritesheet_image = IMG_Load(path);
-    
-    // Error handling for failed image load
-    if (!m_spritesheet_image) {
+Spritesheet::Spritesheet(char const *path, SDL_Renderer *renderer, int row, int column) 
+    : m_texture(nullptr), m_renderer(renderer){  // Initialize m_spritesheet_image to nullptr
+   
+    // Load the image into a texture
+    SDL_Surface* tempSurface = IMG_Load(path);
+    if (!tempSurface) {
         std::cerr << "Failed to load sprite sheet: " << IMG_GetError() << std::endl;
-        return;  // Return early if the image failed to load
-    }
-
-    // Ensure no division by zero
-    if (row == 0 || column == 0) {
-        std::cerr << "Invalid row/column values (must be non-zero)" << std::endl;
         return;
     }
 
-    // Set up the clipping rectangle dimensions
-    m_clip.w = m_spritesheet_image->w / column;
-    m_clip.h = m_spritesheet_image->h / row;
+    // Create a texture from the loaded surface
+    m_texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+    SDL_FreeSurface(tempSurface);  // We don't need the surface anymore, free it
+
+    if (!m_texture) {
+        std::cerr << "Failed to create texture from surface: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    // Set up the clipping rectangle
+    m_clip.w = tempSurface->w / column;
+    m_clip.h = tempSurface->h / row;
 
     
 }
 
 Spritesheet::~Spritesheet() {
-    // Free the image surface only if it was loaded successfully
-    if (m_spritesheet_image) {
-        SDL_FreeSurface(m_spritesheet_image);
+
+    if (m_texture) {
+        SDL_DestroyTexture(m_texture);
     }
 }
 
@@ -37,13 +39,10 @@ void Spritesheet::select_sprite(int x, int y) {
     // Calculate the position of the selected sprite in the sheet
     m_clip.x = x * m_clip.w;
     m_clip.y = y * m_clip.h;
+    
 }
 
 // Draw the selected sprite onto the window surface
-void Spritesheet::draw(SDL_Surface *window_surface, SDL_Rect *position) {
-    if (m_spritesheet_image) {
-    
-       SDL_BlitSurface(m_spritesheet_image, &m_clip, window_surface, position);
-      
-    }
+void Spritesheet::draw(SDL_Rect *position) {
+    SDL_RenderCopy(m_renderer, m_texture, &m_clip, position);    
 }

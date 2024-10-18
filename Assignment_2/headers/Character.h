@@ -15,11 +15,11 @@ private:
     float radius;
 
     Spritesheet sprSheet;
-    SDL_Surface *window_surface;
+    SDL_Renderer *renderer;
     
 
 public:
-    Character(SDL_Surface *surf, float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Character(SDL_Renderer *renderer, float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
 
     ~Character();
 

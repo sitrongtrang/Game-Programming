@@ -3,12 +3,12 @@
 
 GameManager* GameManager::instance = nullptr;
 
-GameManager::GameManager() {
+GameManager::GameManager(SDL_Renderer *renderer) {
     wind = Wind::getInstance();
 
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
-        teamBCharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
+        teamACharacters[i] = new Character(renderer, CHAR_RAD, {0.0f, 0.0f});
+        teamBCharacters[i] = new Character(renderer, CHAR_RAD, {0.0f, 0.0f});
     }
 
     for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {
@@ -21,9 +21,9 @@ GameManager::GameManager() {
     }
 }
 
-GameManager* GameManager::getInstance() {
+GameManager* GameManager::getInstance(SDL_Renderer *renderer) {
     if (!instance) {
-        instance = new GameManager();
+        instance = new GameManager(renderer);
 
     }
     return instance;

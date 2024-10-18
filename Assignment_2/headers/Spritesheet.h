@@ -7,14 +7,15 @@
 class Spritesheet{
     private:
         SDL_Rect m_clip;
-        SDL_Surface *m_spritesheet_image;
+        SDL_Texture *m_texture;
+        SDL_Renderer *m_renderer;
 
     public:
-        Spritesheet(char const *path, int row, int column);
+        Spritesheet(char const *path, SDL_Renderer *m_renderer, int row, int column);
         ~Spritesheet();
 
         void select_sprite(int x, int y);
-        void draw(SDL_Surface *window_surface, SDL_Rect* position);
+        void draw(SDL_Rect* position);
 
 };
 

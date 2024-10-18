@@ -107,10 +107,10 @@ int main(int, char **)
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
-    SDL_Surface *window_surface = SDL_GetWindowSurface(window);
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     //
-    GameManager * gameManager = GameManager::getInstance(window_surface);
+    GameManager * gameManager = GameManager::getInstance(renderer);
     InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     // Initialize Dear ImGui context
@@ -168,6 +168,8 @@ int main(int, char **)
             }
         }
 
+        
+
         // Start the ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
@@ -175,10 +177,10 @@ int main(int, char **)
         glClear(GL_COLOR_BUFFER_BIT);
         if (state == GameState::INTRODUCTION)
         {
-            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+           // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
             state = GameState::MAIN_MENU;
-            SDL_DestroyRenderer(renderer);
+           // SDL_DestroyRenderer(renderer);
         }
         else if (state == GameState::MAIN_MENU)
         {
@@ -196,23 +198,22 @@ int main(int, char **)
         }
         else if (state == GameState::PLAYING)
         {
-
-            renderGameMenu(state, score1, score2);
-            UpdateGame();
-            // RenderSquare();
-            // Character * test = gameManager->getTeamBCharacter(0);
-            // // ball->draw();
-            // test->update(0.016f);
-            // test->draw();
-            // surface->draw();
+            
+            SDL_RenderClear(renderer);
+            //UpdateGame();
             gameManager->update(0.016f);
-            SDL_UpdateWindowSurface(window); 
+            renderGameMenu(state, score1, score2);
+        
         }
-
+        
         // Rendering
+        SDL_RenderPresent(renderer); 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
+
+        
+        //SDL_Delay(1);
     }
 
     // Cleanup
