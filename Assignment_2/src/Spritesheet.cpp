@@ -44,6 +44,6 @@ void Spritesheet::draw(SDL_Surface *window_surface, SDL_Rect *position) {
     if (m_spritesheet_image) {
         
        // SDL_BlitSurface(m_spritesheet_image, &m_clip, window_surface, position);
-       SDL_BlitSurface(m_spritesheet_image, NULL, window_surface, NULL);
+       SDL_BlitSurface(m_spritesheet_image, &m_clip, window_surface, position);
     }
 }

@@ -206,6 +206,7 @@ int main(int, char **)
             // test->draw();
             // surface->draw();
             gameManager->update(0.016f);
+            SDL_UpdateWindowSurface(window); 
         }
 
         // Rendering
