@@ -174,7 +174,10 @@ int main(int, char **)
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
+
         glClear(GL_COLOR_BUFFER_BIT);
+        SDL_RenderClear(renderer);
+
         if (state == GameState::INTRODUCTION)
         {
            // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -199,7 +202,7 @@ int main(int, char **)
         else if (state == GameState::PLAYING)
         {
             
-            SDL_RenderClear(renderer);
+            
             //UpdateGame();
             gameManager->update(0.016f);
             renderGameMenu(state, score1, score2);
@@ -207,7 +210,7 @@ int main(int, char **)
         }
         
         // Rendering
-        SDL_RenderPresent(renderer); 
+       // SDL_RenderPresent(renderer); 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
