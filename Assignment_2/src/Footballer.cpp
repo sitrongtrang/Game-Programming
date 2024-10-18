@@ -8,7 +8,7 @@ void Footballer::update(float deltaTime) {
 
     this->draw();
     this->applyRopeConstraint(); 
-    // this->applyForce(this->getFrictionForce());
+    this->applyForce(this->getFrictionForce());
 
     float newX = this->obstructedX? this->pos.x : this->pos.x + this->vel.x * deltaTime; // only change position if not obstructed
     float newY = this->obstructedY? this->pos.y : this->pos.y + this->vel.y * deltaTime; // only change position if not obstructed
@@ -35,23 +35,23 @@ void Footballer::applyRopeConstraint() {
         direction.x /= dist;
         direction.y /= dist;
 
-        // Calculate the stretch distance beyond the chain's length
+        // Calculate the stretch distance beyond the rope's length
         float stretch = dist - this->ropeLength;
 
-        // Apply a force proportional to how much the chain is stretched (like Hooke's law)
-        float k = 20.0f; // stiffness constant for the chain
+        // Apply a force proportional to how much the rope is stretched (like Hooke's law)
+        float k = 3.0f; // stiffness constant for the rope
         SDL_FPoint force = {k * stretch * direction.x, k * stretch * direction.y};
 
         // Apply the calculated force to pull the character
         this->applyForce(force);
-        this->puller->applyRopeConstraint(force);
-    }
+        // this->puller->applyRopeConstraint(force);
+    } 
 }
 
 SDL_FPoint Footballer::getFrictionForce() {
     if (this->vel.x == 0 && this->vel.y == 0)
         return {0, 0};
-    float friction_magnitude = 0.02f * this->mass * 9.8f; // F_friction = μ * m * g
+    float friction_magnitude = 0.05f * this->mass * 9.8f; // F_friction = μ * m * g
     float friction_x = friction_magnitude * (-this->vel.x)/sqrt(this->vel.x * this->vel.x + this->vel.y * this->vel.y);
     float friction_y = friction_magnitude * (-this->vel.y)/sqrt(this->vel.x * this->vel.x + this->vel.y * this->vel.y);
     SDL_FPoint f_friction = {friction_x, friction_y};

@@ -46,3 +46,5 @@ void Wind::update(float deltaTime) {
         }
     }
 }
+
+bool Wind::isWindActive() const { return windActive; }

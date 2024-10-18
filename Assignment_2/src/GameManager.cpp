@@ -7,14 +7,14 @@ GameManager::GameManager() {
     wind = Wind::getInstance();
 
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character(0.1f, {0.0f, 0.0f});
-        teamBCharacters[i] = new Character(0.1f, {0.0f, 0.0f});
+        teamACharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
+        teamBCharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
     }
 
     for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {
-        teamAFootballers[i] = new Footballer(300, 0.1f, ROPE_LENGTH, teamACharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
+        teamAFootballers[i] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamACharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
         teamACharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamAFootballers[i]);
-        teamBFootballers[i] = new Footballer(300, 0.1f, ROPE_LENGTH, teamBCharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
+        teamBFootballers[i] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamBCharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
         teamBCharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamBFootballers[i]);
         physics[i] = teamAFootballers[i];
         physics[i + NUM_FOOTBALLER * NUM_CHAR] = teamBFootballers[i];
