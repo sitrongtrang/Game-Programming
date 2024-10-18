@@ -26,14 +26,17 @@ const float WIND_DURATION_MAX = 3.0f;
 const int WIND_CHANCE = 10;
 const int CHANGE_WIND_DIR_CHANCE =  5;
 
-// Number of footballers per character
-const int NUM_FOOTBALLER = 3;
+// Footballer stats
+const int NUM_FOOTBALLER = 3; // per character
+const float FOOTBALLER_RAD = 0.03f; // size
+const float FOOTBALLER_MASS = 3.0f; // mass
 
-// Number of characters per team
-const int NUM_CHAR = 3;
+// Character stats
+const int NUM_CHAR = 3; // per team
+const float CHAR_RAD = 0.05f; // size
 
 // Rope length
-const float ROPE_LENGTH = 1;
+const float ROPE_LENGTH = 0.0001f;
 
 const int CIRCLE_SEGMENTS = 1000;
 

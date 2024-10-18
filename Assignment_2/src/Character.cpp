@@ -1,4 +1,6 @@
 #include "Character.h"
+#include <iostream>
+
 
 Character::Character(SDL_Surface *surf, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
@@ -8,7 +10,7 @@ Character::Character(SDL_Surface *surf, float radius, SDL_FPoint initPos, SDL_FP
         }
 
         // for test only
-        sprSheet.select_sprite(0, 0);
+        sprSheet.select_sprite(0, 1);
         window_surface = surf;
 
     }
@@ -55,7 +57,7 @@ void Character::setFootballer(int i, Footballer* footballer) {
 
 void Character::draw() {
     //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
-
+    //std::cerr << "Pos: " <<  this->pos.x <<std::endl;
     SDL_Rect pos = SDL_Rect{this->pos.x, this->pos.y, this->radius*2, this->radius*2};
     sprSheet.draw(window_surface, &pos);
 }
