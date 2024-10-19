@@ -33,11 +33,11 @@ SDL_FPoint Character::getAcc() const { return acc; }
 Footballer* Character::getFootballer(int i) const { return footballers[i]; }
 
 void Character::setPos(SDL_FPoint newPos) { 
-    if (newPos.x > -SCREEN_WIDTH / 2 && newPos.x < SCREEN_WIDTH / 2) {
+    if (newPos.x > -1.0f + radius && newPos.x < 1.0f - radius) {
         pos.x = newPos.x;
     }
 
-    if (newPos.y > -SCREEN_HEIGHT / 2 && newPos.y < SCREEN_HEIGHT / 2) {
+    if (newPos.y > -1.0f + radius && newPos.y < 1.0f - radius) {
         pos.y = newPos.y;
     }
 }

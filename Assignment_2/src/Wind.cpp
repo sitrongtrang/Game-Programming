@@ -47,4 +47,6 @@ void Wind::update(float deltaTime) {
     }
 }
 
+SDL_FPoint Wind::getDirection() const { return direction; }
+
 bool Wind::isWindActive() const { return windActive; }

@@ -2,7 +2,8 @@
 #define GAMEMANAGER_H
 
 #include "Wind.h"    
-#include "Ball.h"     
+#include "Ball.h"    
+#include "Surface.h" 
 #include "Character.h"  
 #include "Footballer.h"
 #include "Physics.h"
@@ -21,7 +22,9 @@ private:
     Character* teamBCharacters[NUM_CHAR];  
     Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
     Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
-    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR + 1]; 
+    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR + 5]; 
+
+    Surface* topEdge, *bottomEdge, *leftEdge, *rightEdge;
 
     Wind* wind; 
 

@@ -36,10 +36,10 @@ void Physics::setPos(SDL_FPoint newPos) { this->pos = newPos; }
 void Physics::setVel(SDL_FPoint newVel) { this->vel = newVel; }
 void Physics::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 
-void Physics::handleCollision(Physics &other)
+void Physics::handleCollision(Physics* other)
 {
 
-    if (other.getMass() == INF)
+    if (other->getMass() == INF)
     {
         this->collideSurface(other);
     }
@@ -49,12 +49,12 @@ void Physics::handleCollision(Physics &other)
         return;
     }
 
-    SDL_FPoint normal = {other.getPos().x - this->pos.x, other.getPos().y - this->pos.y};
+    SDL_FPoint normal = {other->getPos().x - this->pos.x, other->getPos().y - this->pos.y};
     float normalLength = std::sqrt(normal.x * normal.x + normal.y * normal.y);
     normal.x /= normalLength;
     normal.y /= normalLength;
 
-    SDL_FPoint relVel = {other.getVel().x - this->vel.x, other.getVel().y - this->vel.y};
+    SDL_FPoint relVel = {other->getVel().x - this->vel.x, other->getVel().y - this->vel.y};
 
     // Velocity along the normal
     float velAlongNormal = relVel.x * normal.x + relVel.y * normal.y;
@@ -70,7 +70,7 @@ void Physics::handleCollision(Physics &other)
 
     // Calculate impulse scalar
     float impulseScalar = -(1 + restitution) * velAlongNormal;
-    impulseScalar /= (1 / this->mass + 1 / other.getMass());
+    impulseScalar /= (1 / this->mass + 1 / other->getMass());
 
     // Apply impulse
     SDL_FPoint impulse = {impulseScalar * normal.x, impulseScalar * normal.y};
@@ -78,14 +78,14 @@ void Physics::handleCollision(Physics &other)
     SDL_FPoint newVel = {this->vel.x - (1 / this->mass) * impulse.x, this->vel.y - (1 / this->mass) * impulse.y};
     this->setVel(newVel);
 
-    SDL_FPoint otherNewVel = {other.getVel().x + (1 / other.getMass()) * impulse.x, other.getVel().y + (1 / other.getMass()) * impulse.y};
-    other.setVel(otherNewVel);
+    SDL_FPoint otherNewVel = {other->getVel().x + (1 / other->getMass()) * impulse.x, other->getVel().y + (1 / other->getMass()) * impulse.y};
+    other->setVel(otherNewVel);
 
     this->onCollision(other);
-    other.onCollision(*this);
+    other->onCollision(this);
 }
 
-void Physics::collideSurface(Physics &surface)
+void Physics::collideSurface(Physics* surface)
 {
     return;
 }

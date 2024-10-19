@@ -29,6 +29,16 @@ GameManager::GameManager() {
 
     ball = new Ball(BALL_MASS, BALL_RAD, {0.0f, 0.0f});
     physics[2 * NUM_FOOTBALLER * NUM_CHAR] = ball;
+
+    topEdge = new Surface({0.0f, 1.5f}, {0.0f, -1.0f}, SCREEN_WIDTH, 1.0f);
+    bottomEdge = new Surface({0.0f, -1.5f}, {0.0f, 1.0f}, SCREEN_WIDTH, 1.0f);
+    leftEdge = new Surface({-1.5f, 0.0f}, {1.0f, 0.0f}, 1.0f, SCREEN_HEIGHT);
+    rightEdge = new Surface({1.5f, 0.0f}, {-1.0f, 0.0f}, 1.0f, SCREEN_HEIGHT);
+
+    physics[2 * NUM_FOOTBALLER * NUM_CHAR + 1] = topEdge;
+    physics[2 * NUM_FOOTBALLER * NUM_CHAR + 2] = bottomEdge;
+    physics[2 * NUM_FOOTBALLER * NUM_CHAR + 3] = leftEdge;
+    physics[2 * NUM_FOOTBALLER * NUM_CHAR + 4] = rightEdge;
 }
 
 GameManager* GameManager::getInstance() {
@@ -41,7 +51,7 @@ GameManager* GameManager::getInstance() {
 
 void GameManager::update(float deltaTime) {
     wind->update(deltaTime);
-    ball->update(deltaTime);
+    ball->applyForce(wind->getDirection());
 
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 
@@ -53,6 +63,14 @@ void GameManager::update(float deltaTime) {
 
     for (Physics* object : physics) {
         object->update(deltaTime); 
+    }
+
+    for (Physics* object : physics) {
+        for (Physics* other : physics) {
+            if (object->detectCollision(other)) {
+                object->handleCollision(other);
+            }
+        }
     }
 }
 

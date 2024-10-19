@@ -13,8 +13,8 @@
 
 // Constants
 const float PI = 3.14159265358979;
-const float MU = 0.05f; // friction coefficient
-const float K = 20.0f; // stiffness coefficient
+const float MU = 0.07f; // friction coefficient
+const float K = 15.0f; // stiffness coefficient
 const float INF = std::numeric_limits<float>::infinity(); // infinite
 
 // Screen dimensions
@@ -30,9 +30,9 @@ const float BALL_RAD = 0.05f;
 const float BALL_MASS = 0.1f;
 
 // Wind stats
-const float COOLDOWN = 10.0f;
-const float WIND_FORCE_MAX = 5.0f;
-const float WIND_DURATION_MAX = 3.0f;
+const float COOLDOWN = 5.0f;
+const float WIND_FORCE_MAX = 0.2f;
+const float WIND_DURATION_MAX = 1.0f;
 const int WIND_CHANCE = 10;
 const int CHANGE_WIND_DIR_CHANCE =  5;
 
@@ -44,10 +44,10 @@ const float FOOTBALLER_MASS = 3.0f; // mass
 // Character stats
 const int NUM_CHAR = 3; // per team
 const float CHAR_RAD = 0.05f; // size
-const float MOVEMENT_FORCE = 0.3f;
+const float MOVEMENT_FORCE = 0.5f;
 
 // Rope length
-const float ROPE_LENGTH = 0.3f;
+const float ROPE_LENGTH = 0.2f;
 
 const int CIRCLE_SEGMENTS = 1000;
 

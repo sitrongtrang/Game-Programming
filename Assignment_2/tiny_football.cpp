@@ -22,9 +22,9 @@
 #include "../headers/GameManager.h"
 #include <stdio.h>
 
-float square_x = 0.0f;    // Square's X position
-float square_y = 0.0f;    // Square's Y position
-float square_size = 0.1f; // Size of the square
+// float square_x = 0.0f;    // Square's X position
+// float square_y = 0.0f;    // Square's Y position
+// float square_size = 0.1f; // Size of the square
 
 int score1 = 0;
 int score2 = 0;
@@ -36,18 +36,18 @@ ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 KeySetMenu keySetMenu(keyBindingsInstance);
 
 // Function to update the game logic
-void UpdateGame()
-{
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_UP])
-        square_y += 0.01f; // Move up
-    if (state[SDL_SCANCODE_DOWN])
-        square_y -= 0.01f; // Move down
-    if (state[SDL_SCANCODE_LEFT])
-        square_x -= 0.01f; // Move left
-    if (state[SDL_SCANCODE_RIGHT])
-        square_x += 0.01f; // Move right
-}
+// void UpdateGame()
+// {
+//     const Uint8 *state = SDL_GetKeyboardState(NULL);
+//     if (state[SDL_SCANCODE_UP])
+//         square_y += 0.01f; // Move up
+//     if (state[SDL_SCANCODE_DOWN])
+//         square_y -= 0.01f; // Move down
+//     if (state[SDL_SCANCODE_LEFT])
+//         square_x -= 0.01f; // Move left
+//     if (state[SDL_SCANCODE_RIGHT])
+//         square_x += 0.01f; // Move right
+// }
 GLuint LoadTextureFromFile(const char *filename)
 {
     SDL_Surface *surface = IMG_Load(filename);
@@ -194,7 +194,7 @@ int main(int, char **)
         {
 
             renderGameMenu(state, score1, score2);
-            UpdateGame();
+            // UpdateGame();
             // RenderSquare();
             // Character * test = gameManager->getTeamBCharacter(0);
             // // ball->draw();

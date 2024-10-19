@@ -3,17 +3,17 @@
 Ball::Ball(float mass, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : Physics(mass, initPos, initVel, initAcc), radius(radius) {}
 
-void Ball::onCollision(Physics& other) {
+void Ball::onCollision(Physics* other) {
     return;
 } 
 
-bool Ball::detectCollision(Physics& other) {
+bool Ball::detectCollision(Physics* other) {
     return false;
 }
 
-void Ball::collideSurface(Physics& surface) {
+void Ball::collideSurface(Physics* surface) {
     
-    SDL_FPoint normal = surface.getNormal();
+    SDL_FPoint normal = surface->getNormal();
 
     float dotProduct = this->vel.x * normal.x + this->vel.y * normal.y;
 

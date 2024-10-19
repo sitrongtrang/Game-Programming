@@ -63,17 +63,17 @@ bool Footballer::getObstructedY() { return this->obstructedY; }
 void Footballer::setObstructedX(bool obsX) { this->obstructedX = obsX; }
 void Footballer::setObstructedY(bool obsY) { this->obstructedY = obsY; }
 
-void Footballer::onCollision(Physics& other) {
+void Footballer::onCollision(Physics* other) {
     return;
 } 
 
-bool Footballer::detectCollision(Physics& other) {
+bool Footballer::detectCollision(Physics* other) {
     return false;
 }
 
-void Footballer::collideSurface(Physics& surface) {
+void Footballer::collideSurface(Physics* surface) {
 
-    SDL_FPoint normal = surface.getNormal();
+    SDL_FPoint normal = surface->getNormal();
 
     // Velocity along the normal
     float velAlongNormal = this->vel.x * normal.x + this->vel.y * normal.y;
