@@ -11,8 +11,8 @@ private:
 public:
     Surface(SDL_FPoint initPos, SDL_FPoint normal, float width = SCREEN_WIDTH, float height = SCREEN_HEIGHT);
 
-    float getWidth() const;
-    float getHeight() const;
+    float getWidth() const override;
+    float getHeight() const override;
     SDL_FPoint getNormal() const override;
 
     bool detectCollision(Physics* other) override;

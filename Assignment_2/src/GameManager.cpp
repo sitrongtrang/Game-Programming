@@ -65,10 +65,11 @@ void GameManager::update(float deltaTime) {
         object->update(deltaTime); 
     }
 
-    for (Physics* object : physics) {
-        for (Physics* other : physics) {
-            if (object->detectCollision(other)) {
-                object->handleCollision(other);
+    for (int i = 0; i < 2 * NUM_FOOTBALLER * NUM_CHAR + 5; i++) {
+        for (int j = 0; j < 2 * NUM_FOOTBALLER * NUM_CHAR + 5; j++) {
+            if (physics[i]->detectCollision(physics[j])) {
+                physics[i]->handleCollision(physics[j]);
+                // printf("Object %d collides with object %d", i, j);
             }
         }
     }

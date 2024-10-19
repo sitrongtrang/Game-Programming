@@ -4,16 +4,22 @@
 #include <SDL2/SDL.h>
 #include "utils.h"
 
+enum class ColliderType {
+    Rectangle,
+    Circle,
+};
+
 class Physics
 {
 protected:
     float mass;     // Mass of the object
+    ColliderType colliderType; 
     SDL_FPoint pos; // Position (2D vector)
     SDL_FPoint vel; // Velocity (2D vector)
     SDL_FPoint acc; // Acceleration (2D vector)
 
 public:
-    Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Physics(float mass, ColliderType colliderType, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
 
     virtual ~Physics();
 
@@ -25,9 +31,13 @@ public:
 
     // Getters
     float getMass() const;
+    ColliderType getColliderType() const;
     SDL_FPoint getPos() const;
     SDL_FPoint getVel() const;
     SDL_FPoint getAcc() const;
+    virtual float getRadius() const;
+    virtual float getWidth() const;
+    virtual float getHeight() const;
     virtual SDL_FPoint getNormal() const;
 
     // Setters

@@ -20,8 +20,9 @@ public:
     void applyRopeConstraint(); // physics for being dragged by the rope
     SDL_FPoint getFrictionForce(); // calculate friction force
 
-    bool getObstructedX();
-    bool getObstructedY();
+    bool getObstructedX() const;
+    bool getObstructedY() const;
+    float getRadius() const override;
 
     void setObstructedX(bool obsX);
     void setObstructedY(bool obsY);

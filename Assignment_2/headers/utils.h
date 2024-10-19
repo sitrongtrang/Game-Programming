@@ -7,6 +7,7 @@
 #include "../headers/menu/Pause_menu.h"
 #include "../headers/menu/Game_menu.h"
 #include <math.h>
+#include <algorithm>
 #include <limits>
 #include <SDL2/SDL.h>
 
@@ -14,7 +15,7 @@
 // Constants
 const float PI = 3.14159265358979;
 const float MU = 0.07f; // friction coefficient
-const float K = 15.0f; // stiffness coefficient
+const float K = 20.0f; // stiffness coefficient
 const float INF = std::numeric_limits<float>::infinity(); // infinite
 
 // Screen dimensions
@@ -54,9 +55,12 @@ const int CIRCLE_SEGMENTS = 1000;
 float randRange(float min, float max);
 
 void RenderRectangle(float rect_x, float rect_y, float width, float height);
-
 void RenderCircle(float circ_x, float circ_y, float radius, int num_segments);
 
 SDL_FPoint* getFootballerInitPos(float charX, float charY, float radius);
+
+bool sphere_sphereCollision(SDL_FPoint center1, float radius1, SDL_FPoint center2, float radius2);
+bool sphere_rectCollision(SDL_FPoint center1, float radius, SDL_FPoint center2, float width, float height);
+bool rect_rectCollision(SDL_FPoint center1, float width1, float height1, SDL_FPoint center2, float width2, float height2);
 
 #endif // UTILS_H

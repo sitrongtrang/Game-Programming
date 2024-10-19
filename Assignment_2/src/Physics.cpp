@@ -1,8 +1,8 @@
 #include "Physics.h"
 #include <math.h>
 
-Physics::Physics(float mass, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc)
-    : mass(mass), pos(initPos), vel(initVel), acc(initAcc) {}
+Physics::Physics(float mass, ColliderType colliderType, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc)
+    : mass(mass), colliderType(colliderType), pos(initPos), vel(initVel), acc(initAcc) {}
 
 Physics::~Physics() {}
 
@@ -27,10 +27,14 @@ void Physics::update(float deltaTime)
 }
 
 float Physics::getMass() const { return this->mass; }
+ColliderType Physics::getColliderType() const { return this->colliderType; }
 SDL_FPoint Physics::getPos() const { return this->pos; }
 SDL_FPoint Physics::getVel() const { return this->vel; }
 SDL_FPoint Physics::getAcc() const { return this->acc; }
 SDL_FPoint Physics::getNormal() const { return {0, 0}; }
+float Physics::getRadius() const { return 0; }
+float Physics::getWidth() const { return 0; }
+float Physics::getHeight() const { return 0; }
 
 void Physics::setPos(SDL_FPoint newPos) { this->pos = newPos; }
 void Physics::setVel(SDL_FPoint newVel) { this->vel = newVel; }
