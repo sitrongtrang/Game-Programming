@@ -24,10 +24,10 @@ private:
 
     SDL_Renderer *renderer;
 
-    GameManager(SDL_Renderer *renderer);
+    GameManager();
 
 public:
-    static GameManager* getInstance(SDL_Renderer *renderer);
+    static GameManager* getInstance();
 
     void update(float deltaTime);
     SDL_Surface* GetSurf();

@@ -107,10 +107,10 @@ int main(int, char **)
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    
 
     //
-    GameManager * gameManager = GameManager::getInstance(renderer);
+    GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     // Initialize Dear ImGui context
@@ -177,10 +177,10 @@ int main(int, char **)
         glClear(GL_COLOR_BUFFER_BIT);
         if (state == GameState::INTRODUCTION)
         {
-           // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             renderIntroduction(renderer, "./images/hcmut_icon.jpg", 5000);
             state = GameState::MAIN_MENU;
-           // SDL_DestroyRenderer(renderer);
+            SDL_DestroyRenderer(renderer);
         }
         else if (state == GameState::MAIN_MENU)
         {
@@ -199,7 +199,7 @@ int main(int, char **)
         else if (state == GameState::PLAYING)
         {
             
-            SDL_RenderClear(renderer);
+          //  SDL_RenderClear(renderer);
             //UpdateGame();
             gameManager->update(0.016f);
             renderGameMenu(state, score1, score2);
@@ -207,7 +207,7 @@ int main(int, char **)
         }
         
         // Rendering
-        SDL_RenderPresent(renderer); 
+        //SDL_RenderPresent(renderer); 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);

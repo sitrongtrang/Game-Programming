@@ -2,15 +2,15 @@
 #include <iostream>
 
 
-Character::Character(SDL_Renderer *renderer, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
-        sprSheet("./assets/Player/Slime-Sheet.png", renderer, 1, 5) {
+        sprSheet("./assets/Player/Slime-Sheet.png", 1, 5) {
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;
         }
 
         // for test only
-        sprSheet.select_sprite(0, 0);
+        sprSheet.select_sprite(0, 4);
 
     }
 
@@ -18,7 +18,12 @@ Character::~Character() {}
 
 void Character::update(float deltaTime)
 {
+    
     this->draw();
+
+    this->frame = (this->frame+1) % this->MAX_FRAME;
+    std::cerr <<  this->frame << std::endl;
+    sprSheet.select_sprite(0, this->frame);
 
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
     this->setPos(newPos);
@@ -57,6 +62,6 @@ void Character::setFootballer(int i, Footballer* footballer) {
 void Character::draw() {
     //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
     
-    SDL_Rect posRect = {static_cast<int>(this->pos.x), static_cast<int>(this->pos.y), static_cast<int>((this->radius+100) * 2), static_cast<int>((this->radius +100) * 2)};
-    sprSheet.draw(&posRect);
+    
+    sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
 }

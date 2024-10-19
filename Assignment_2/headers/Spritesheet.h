@@ -2,21 +2,25 @@
 #define SPRITESHEET_H
 
 #include "Constant.h"
+#include <GL/gl.h> // Include OpenGL headers
 
+class Spritesheet {
+private:
+    SDL_Rect m_clip;     // Clipping rectangle for sprites
+    GLuint m_texture;    // OpenGL texture ID
+    int m_row;           // Number of rows in the sprite sheet
+    int m_column;        // Number of columns in the sprite sheet
 
-class Spritesheet{
-    private:
-        SDL_Rect m_clip;
-        SDL_Texture *m_texture;
-        SDL_Renderer *m_renderer;
+public:
+    // Constructor
+    Spritesheet(const char* path, int row, int column);
+    // Destructor
+    ~Spritesheet();
 
-    public:
-        Spritesheet(char const *path, SDL_Renderer *m_renderer, int row, int column);
-        ~Spritesheet();
-
-        void select_sprite(int x, int y);
-        void draw(SDL_Rect* position);
-
+    // Select a specific sprite
+    void select_sprite(int x, int y);
+    // Draw the selected sprite at the specified position
+    void draw(float x, float y, float width, float height);
 };
 
-#endif //SPRITESHEET_H
+#endif // SPRITESHEET_H
