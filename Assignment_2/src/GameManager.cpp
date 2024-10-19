@@ -6,19 +6,29 @@ GameManager* GameManager::instance = nullptr;
 GameManager::GameManager() {
     wind = Wind::getInstance();
 
-    for (int i = 0; i < NUM_FOOTBALLER; i++) {
-        teamACharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
-        teamBCharacters[i] = new Character(CHAR_RAD, {0.0f, 0.0f});
+    for (int i = 0; i < NUM_CHAR; i++) {
+        SDL_FPoint pullerAPos = {-0.3f * (i % 2 + 1), (i-1) * 0.5f};
+        SDL_FPoint pullerBPos = {0.3f * (i % 2 + 1), (i-1) * 0.5f};
+
+        teamACharacters[i] = new Character(CHAR_RAD, pullerAPos);
+        teamBCharacters[i] = new Character(CHAR_RAD, pullerBPos);
+
+        SDL_FPoint* footballerAInitPos = getFootballerInitPos(pullerAPos.x, pullerAPos.y, -ROPE_LENGTH);
+        SDL_FPoint* footballerBInitPos = getFootballerInitPos(pullerBPos.x, pullerBPos.y, ROPE_LENGTH);
+
+        for (int j = 0; j < NUM_FOOTBALLER; j++) {
+            teamAFootballers[i * NUM_FOOTBALLER + j] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamACharacters[i], footballerAInitPos[j]);
+            teamACharacters[i]->setFootballer(j, teamAFootballers[i * NUM_FOOTBALLER + j]);
+            teamBFootballers[i * NUM_FOOTBALLER + j] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamBCharacters[i], footballerBInitPos[j]);
+            teamBCharacters[i]->setFootballer(j, teamBFootballers[i * NUM_FOOTBALLER + j]);
+
+            physics[i * NUM_FOOTBALLER + j] = teamAFootballers[i * NUM_FOOTBALLER + j];
+            physics[i * NUM_FOOTBALLER + j + NUM_FOOTBALLER * NUM_CHAR] = teamBFootballers[i * NUM_FOOTBALLER + j];
+        }
     }
 
-    for (int i = 0; i < NUM_FOOTBALLER * NUM_CHAR; i++) {
-        teamAFootballers[i] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamACharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
-        teamACharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamAFootballers[i]);
-        teamBFootballers[i] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamBCharacters[i / NUM_FOOTBALLER], {0.0f, 0.0f});
-        teamBCharacters[i / NUM_FOOTBALLER]->setFootballer(i % NUM_FOOTBALLER, teamBFootballers[i]);
-        physics[i] = teamAFootballers[i];
-        physics[i + NUM_FOOTBALLER * NUM_CHAR] = teamBFootballers[i];
-    }
+    ball = new Ball(BALL_MASS, BALL_RAD, {0.0f, 0.0f});
+    physics[2 * NUM_FOOTBALLER * NUM_CHAR] = ball;
 }
 
 GameManager* GameManager::getInstance() {
@@ -31,6 +41,7 @@ GameManager* GameManager::getInstance() {
 
 void GameManager::update(float deltaTime) {
     wind->update(deltaTime);
+    ball->update(deltaTime);
 
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 

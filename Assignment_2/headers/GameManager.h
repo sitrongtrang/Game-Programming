@@ -1,7 +1,8 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include "Wind.h"         
+#include "Wind.h"    
+#include "Ball.h"     
 #include "Character.h"  
 #include "Footballer.h"
 #include "Physics.h"
@@ -14,11 +15,13 @@ class GameManager {
 private:
     static GameManager* instance;
 
+    Ball* ball;
+
     Character* teamACharacters[NUM_CHAR];  
     Character* teamBCharacters[NUM_CHAR];  
     Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
     Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
-    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR]; 
+    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR + 1]; 
 
     Wind* wind; 
 

@@ -39,12 +39,12 @@ void Physics::setAcc(SDL_FPoint newAcc) { this->acc = newAcc; }
 void Physics::handleCollision(Physics &other)
 {
 
-    if (other.getMass() == 1000000)
+    if (other.getMass() == INF)
     {
         this->collideSurface(other);
     }
 
-    if (this->mass == 1000000)
+    if (this->mass == INF)
     {
         return;
     }
