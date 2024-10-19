@@ -62,3 +62,29 @@ void InputManager::movePlayer(Character * player, PlayerAction action) const {
         default: return;
     }
 }
+
+void InputManager::stopPlayer(Character * player) const {
+    player->setVel({0, 0});
+}
+
+void InputManager::release(SDL_Keycode key) const {
+    Actions action_mapped = keyBindingsInstance.getAction(key);
+    Character * character;
+    switch (action_mapped.character_num)
+    {
+        case 1: character = p1; break;
+        case 2: character = p2; break;
+        default: return;
+    }
+    switch(action_mapped.action)
+    {
+        case (PlayerAction::MoveUp):
+        case (PlayerAction::MoveDown):
+        case (PlayerAction::MoveLeft):
+        case (PlayerAction::MoveRight):
+            stopPlayer(character);
+            break;
+        default:
+            return;
+    }
+}
