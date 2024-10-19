@@ -8,6 +8,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <iostream>
 #include <chrono>
 
 extern std::chrono::time_point<std::chrono::steady_clock> startTime;

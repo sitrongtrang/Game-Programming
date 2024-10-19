@@ -50,9 +50,10 @@ GameManager* GameManager::getInstance() {
 }
 
 void GameManager::update(float deltaTime) {
+    
     wind->update(deltaTime);
     ball->applyForce(wind->getDirection());
-
+    
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 
     }
