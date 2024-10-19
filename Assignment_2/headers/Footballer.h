@@ -26,9 +26,9 @@ public:
     void setObstructedX(bool obsX);
     void setObstructedY(bool obsY);
 
-    bool detectCollision(Physics& other) override;
-    void onCollision(Physics& other) override;
-    void collideSurface(Physics& surface) override;
+    bool detectCollision(Physics* other) override;
+    void onCollision(Physics* other) override;
+    void collideSurface(Physics* surface) override;
 
     void draw() override;
 };

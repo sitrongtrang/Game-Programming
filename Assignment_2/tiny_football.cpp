@@ -22,9 +22,9 @@
 #include "../headers/GameManager.h"
 #include <stdio.h>
 
-float square_x = 0.0f;    // Square's X position
-float square_y = 0.0f;    // Square's Y position
-float square_size = 0.1f; // Size of the square
+// float square_x = 0.0f;    // Square's X position
+// float square_y = 0.0f;    // Square's Y position
+// float square_size = 0.1f; // Size of the square
 
 int score1 = 0;
 int score2 = 0;
@@ -36,18 +36,18 @@ ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 KeySetMenu keySetMenu(keyBindingsInstance);
 
 // Function to update the game logic
-void UpdateGame()
-{
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
-    if (state[SDL_SCANCODE_UP])
-        square_y += 0.01f; // Move up
-    if (state[SDL_SCANCODE_DOWN])
-        square_y -= 0.01f; // Move down
-    if (state[SDL_SCANCODE_LEFT])
-        square_x -= 0.01f; // Move left
-    if (state[SDL_SCANCODE_RIGHT])
-        square_x += 0.01f; // Move right
-}
+// void UpdateGame()
+// {
+//     const Uint8 *state = SDL_GetKeyboardState(NULL);
+//     if (state[SDL_SCANCODE_UP])
+//         square_y += 0.01f; // Move up
+//     if (state[SDL_SCANCODE_DOWN])
+//         square_y -= 0.01f; // Move down
+//     if (state[SDL_SCANCODE_LEFT])
+//         square_x -= 0.01f; // Move left
+//     if (state[SDL_SCANCODE_RIGHT])
+//         square_x += 0.01f; // Move right
+// }
 GLuint LoadTextureFromFile(const char *filename)
 {
     SDL_Surface *surface = IMG_Load(filename);
@@ -86,7 +86,8 @@ int main(int, char **)
     // Initialize SDL
     Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
-    
+    GameManager * gameManager = GameManager::getInstance();
+    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -107,11 +108,6 @@ int main(int, char **)
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1); // Enable vsync
-    
-
-    //
-    GameManager * gameManager = GameManager::getInstance();
-    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
 
     // Initialize Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -168,8 +164,6 @@ int main(int, char **)
             }
         }
 
-        
-
         // Start the ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
@@ -198,22 +192,22 @@ int main(int, char **)
         }
         else if (state == GameState::PLAYING)
         {
-            
-          //  SDL_RenderClear(renderer);
-            //UpdateGame();
-            gameManager->update(0.016f);
+
             renderGameMenu(state, score1, score2);
-        
+            // UpdateGame();
+            // RenderSquare();
+            // Character * test = gameManager->getTeamBCharacter(0);
+            // // ball->draw();
+            // test->update(0.016f);
+            // test->draw();
+            // surface->draw();
+            gameManager->update(0.016f);
         }
-        
+
         // Rendering
-        //SDL_RenderPresent(renderer); 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
-
-        
-        //SDL_Delay(1);
     }
 
     // Cleanup

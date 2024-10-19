@@ -30,3 +30,19 @@ void RenderCircle(float circ_x, float circ_y, float radius, int num_segments) {
 
     glEnd();
 }
+
+SDL_FPoint* getFootballerInitPos(float charX, float charY, float radius) {
+
+    SDL_FPoint* footballers = new SDL_FPoint[NUM_FOOTBALLER];
+
+    float angleIncrement = 2 * PI / NUM_FOOTBALLER; 
+
+    for (int i = 0; i < NUM_FOOTBALLER; ++i) {
+        float angle = i * angleIncrement;
+
+        footballers[i].x = charX + radius * cos(angle);
+        footballers[i].y = charY + radius * sin(angle);
+    }
+
+    return footballers;
+}

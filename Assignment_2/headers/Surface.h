@@ -15,8 +15,8 @@ public:
     float getHeight() const;
     SDL_FPoint getNormal() const override;
 
-    bool detectCollision(Physics& other) override;
-    void onCollision(Physics& other) override;
+    bool detectCollision(Physics* other) override;
+    void onCollision(Physics* other) override;
 
     void draw() override;
 };

@@ -4,7 +4,6 @@
 #include "keyBinding.h"
 #include "Character.h"
 
-#define MOVEMENT_FORCE 10
 
 class InputManager {
 private:
