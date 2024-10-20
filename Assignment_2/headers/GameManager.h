@@ -35,6 +35,8 @@ public:
 
     void update(float deltaTime);
 
+    void newGame(InputManager* inputManager);
+
     Character* getTeamACharacter(int index) const;
     Character* getTeamBCharacter(int index) const;
     Physics* getPhysicsObject(int index) const;

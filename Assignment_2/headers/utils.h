@@ -14,7 +14,7 @@
 
 // Constants
 const float PI = 3.14159265358979;
-const float MU = 0.07f; // friction coefficient
+const float MU = 0.1f; // friction coefficient
 const float K = 20.0f; // stiffness coefficient
 const float INF = std::numeric_limits<float>::infinity(); // infinite
 

@@ -35,7 +35,7 @@ void renderMainMenu(GameState &state)
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.8f, 0.8f, 1.0f));
     if (ImGui::Button("START", buttonSize))
     {
-        state = GameState::PLAYING;
+        state = GameState::NEW_GAME;
         startTime = std::chrono::steady_clock::now();
     }
 

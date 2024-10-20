@@ -20,6 +20,7 @@ enum GameState
 {
     INTRODUCTION,
     MAIN_MENU,
+    NEW_GAME,
     PLAYING,
     PAUSED,
     GAME_OVER,

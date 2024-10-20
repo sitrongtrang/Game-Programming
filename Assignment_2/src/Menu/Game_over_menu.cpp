@@ -48,7 +48,7 @@ void renderGameOver(GameState &state, int &score1, int &score2)
     ImGui::SetCursorPosY(210.0f);
     if (ImGui::Button("RETRY", ImVec2(200, 50)))
     {
-        state = GameState::PLAYING;
+        state = GameState::NEW_GAME;
         startTime = std::chrono::steady_clock::now();
         score1 = 0;
         score2 = 0;

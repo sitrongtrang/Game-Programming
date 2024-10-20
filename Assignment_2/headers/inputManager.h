@@ -3,6 +3,7 @@
 
 #include "keyBinding.h"
 #include "Character.h"
+#include <set>
 
 
 class InputManager {
