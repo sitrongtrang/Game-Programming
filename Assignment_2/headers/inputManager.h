@@ -12,10 +12,12 @@ private:
 protected:
     Character * p1;
     Character * p2;
-    void changePlayer(Character * player, PlayerAction action) const ;
+    void changePlayer(Character * player, PlayerAction action)  ;
     void movePlayer(Character * player, PlayerAction action) const;
+    int char_num=0;
+
 public:
-    void input(SDL_Keycode key) const;
+    void input(SDL_Keycode key);
     InputManager(Character ** character_1, Character ** character_2);
 };
 

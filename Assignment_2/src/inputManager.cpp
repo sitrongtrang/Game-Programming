@@ -7,13 +7,13 @@ InputManager::InputManager(Character ** character_1, Character ** character_2) {
     p2 = character_2[0];
 }
 
-void InputManager::input(SDL_Keycode key) const {  
+void InputManager::input(SDL_Keycode key) {  
     Actions action_mapped = keyBindingsInstance.getAction(key);
     Character * character;
     switch (action_mapped.character_num)
     {
-    case 1: character = p1; break;
-    case 2: character = p2; break;
+    case 1: character = p1_charater_list[char_num]; break;
+    case 2: character = p2_charater_list[char_num]; break;
     default: return;
     }
 
@@ -35,8 +35,7 @@ void InputManager::input(SDL_Keycode key) const {
     }
 }; 
 
-void InputManager::changePlayer(Character * player, PlayerAction action) const {
-    int char_num;
+void InputManager::changePlayer(Character * player, PlayerAction action)  {
     switch (action)
     {
     case (PlayerAction::Action1): char_num= 0 ;break;
