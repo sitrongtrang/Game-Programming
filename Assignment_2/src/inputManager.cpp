@@ -23,6 +23,7 @@ void InputManager::input(SDL_Keycode key) {
         case (PlayerAction::MoveDown):
         case (PlayerAction::MoveLeft):
         case (PlayerAction::MoveRight):
+            pressedKeys.insert(key); 
             movePlayer(character, action_mapped.action);
             break;
         case (PlayerAction::Action1):
@@ -57,9 +58,15 @@ void InputManager::movePlayer(Character * player, PlayerAction action) const {
     {
         case (PlayerAction::MoveUp): player->setVel({0 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
         case (PlayerAction::MoveDown): player->setVel({0 * MOVEMENT_FORCE, -1 * MOVEMENT_FORCE}); break;
-        case (PlayerAction::MoveLeft): player->setVel({-1 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
+        case (PlayerAction::MoveLeft): player->setVel({-1 * MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
         case (PlayerAction::MoveRight): player->setVel({MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
         default: return;
+    }
+}
+
+void InputManager::stopPlayerIfNoKeysPressed(Character *player) const {
+    if (pressedKeys.empty()) {
+        stopPlayer(player); 
     }
 }
 
@@ -67,7 +74,7 @@ void InputManager::stopPlayer(Character * player) const {
     player->setVel({0, 0});
 }
 
-void InputManager::release(SDL_Keycode key) const {
+void InputManager::release(SDL_Keycode key) {
     Actions action_mapped = keyBindingsInstance.getAction(key);
     Character * character;
     switch (action_mapped.character_num)
@@ -82,7 +89,9 @@ void InputManager::release(SDL_Keycode key) const {
         case (PlayerAction::MoveDown):
         case (PlayerAction::MoveLeft):
         case (PlayerAction::MoveRight):
-            stopPlayer(character);
+            // stopPlayer(character);
+            pressedKeys.erase(key);
+            stopPlayerIfNoKeysPressed(character);
             break;
         default:
             return;

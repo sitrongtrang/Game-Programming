@@ -3,12 +3,14 @@
 
 #include "keyBinding.h"
 #include "Character.h"
+#include <set>
 
 
 class InputManager {
 private:
     Character ** p1_charater_list; 
     Character ** p2_charater_list; 
+    std::set<SDL_Keycode> pressedKeys;
 protected:
     Character * p1;
     Character * p2;
@@ -17,7 +19,8 @@ protected:
     void stopPlayer(Character * player) const;
 public:
     void input(SDL_Keycode key);
-    void release(SDL_Keycode key) const;
+    void release(SDL_Keycode key);
+    void stopPlayerIfNoKeysPressed(Character *player) const;
     InputManager(Character ** character_1, Character ** character_2);
 };
 
