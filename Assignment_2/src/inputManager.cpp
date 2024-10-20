@@ -1,6 +1,13 @@
 #include "../headers/inputManager.h"
 
-InputManager::InputManager(Character ** character_1, Character ** character_2) {
+InputManager::InputManager() {
+    // p1_charater_list = character_1;
+    // p2_charater_list = character_2;
+    // p1 = character_1[0];
+    // p2 = character_2[0];
+}
+
+void InputManager::setCharacters(Character** character_1, Character** character_2) {
     p1_charater_list = character_1;
     p2_charater_list = character_2;
     p1 = character_1[0];

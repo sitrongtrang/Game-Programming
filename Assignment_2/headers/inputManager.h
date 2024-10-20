@@ -21,7 +21,8 @@ public:
     void input(SDL_Keycode key);
     void release(SDL_Keycode key);
     void stopPlayerIfNoKeysPressed(Character *player) const;
-    InputManager(Character ** character_1, Character ** character_2);
+    void setCharacters(Character** character_1, Character** character_2);
+    InputManager();
 };
 
 #endif
