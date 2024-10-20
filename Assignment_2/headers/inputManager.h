@@ -7,14 +7,14 @@
 
 class InputManager {
 private:
-    Character ** p1_charater_list; 
-    Character ** p2_charater_list; 
+
 protected:
-    Character * p1;
-    Character * p2;
-    void changePlayer(Character * player, PlayerAction action)  ;
+    void changePlayer(int player, PlayerAction action)  ;
     void movePlayer(Character * player, PlayerAction action) const;
-    int char_num=0;
+    Character ** p1_character_list; 
+    Character ** p2_character_list; 
+    int char_num[2];
+
 
 public:
     void input(SDL_Keycode key);

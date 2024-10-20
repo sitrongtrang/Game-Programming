@@ -156,49 +156,49 @@ bool KeyBinding::hasSingleDuplicateKey() const {
 Actions KeyBinding::getAction(SDL_Keycode key) const {
     Actions action;
     if (key == player1Bindings.moveUp) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::MoveUp;
     } else if (key == player1Bindings.moveDown) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::MoveDown;
     } else if (key == player1Bindings.moveLeft) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::MoveLeft;
     } else if (key == player1Bindings.moveRight) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::MoveRight;
     } else if (key == player1Bindings.action1) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::Action1;
     } else if (key == player1Bindings.action2) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::Action2;
     } else if (key == player1Bindings.action3) {
-        action.character_num = 1;
+        action.character_num = 0;
         action.action = PlayerAction::Action3;
     } else if (key == player2Bindings.moveUp) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::MoveUp;
     } else if (key == player2Bindings.moveDown) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::MoveDown;
     } else if (key == player2Bindings.moveLeft) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::MoveLeft;
     } else if (key == player2Bindings.moveRight) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::MoveRight;
     } else if (key == player2Bindings.action1) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::Action1;
     } else if (key == player2Bindings.action2) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::Action2;
     } else if (key == player2Bindings.action3) {
-        action.character_num = 2;
+        action.character_num = 1;
         action.action = PlayerAction::Action3;
     } else {
-        action.character_num = 0;
+        action.character_num = -1;
         action.action = PlayerAction::None;
     }
     return action;
