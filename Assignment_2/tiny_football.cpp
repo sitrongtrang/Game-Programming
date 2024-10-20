@@ -161,6 +161,8 @@ int main(int, char **)
                 }
             } else if (event.type== SDL_KEYDOWN) {
                 inputManager->input(event.key.keysym.sym);
+            } else if (event.type== SDL_KEYUP) {
+                inputManager->release(event.key.keysym.sym);
             }
         }
 
