@@ -12,7 +12,7 @@ void renderBackground(GLuint background_texture)
 
     ImGui::End();
 }
-void renderMainMenu(GameState &state)
+void renderMainMenu(GameState &state, bool &game_running)
 {
     ImGui::SetNextWindowBgAlpha(0.0f);
     ImGui::Begin("Main Menu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground);
@@ -47,6 +47,7 @@ void renderMainMenu(GameState &state)
     if (ImGui::Button("QUIT", buttonSize))
     {
         state = GameState::QUIT;
+        game_running = false;
     }
 
     ImGui::PopStyleColor();

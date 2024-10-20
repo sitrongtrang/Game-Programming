@@ -2,6 +2,6 @@
 #define GAME_MENU_H
 #include "../Constant.h"
 
-void renderGameMenu(GameState &state, int &score1, int &score2);
+void renderGameMenu(GameState &state, bool &game_paused, int &score1, int &score2);
 
 #endif // GAME_MENU_H

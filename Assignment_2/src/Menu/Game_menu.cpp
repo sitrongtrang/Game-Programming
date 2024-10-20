@@ -1,5 +1,5 @@
 #include "../headers/menu/Game_menu.h"
-void renderGameMenu(GameState &state, int &score1, int &score2)
+void renderGameMenu(GameState &state, bool &game_paused, int &score1, int &score2)
 {
     ImGui::Begin("Game Menu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground);
     ImGui::SetWindowSize(ImVec2(1280, 720));
@@ -27,8 +27,8 @@ void renderGameMenu(GameState &state, int &score1, int &score2)
     sprintf(remainingTimeLabel, "%d : %d", remainingTime / 60, remainingTime % 60);
     if (ImGui::Button(remainingTimeLabel, ImVec2(200, 50)))
     {
-        state = state == GameState::PAUSED ? GameState::PLAYING : GameState::PAUSED;
-        if (state == GameState::PAUSED)
+        game_paused = !game_paused;
+        if (game_paused)
         {
             pauseTime = std::chrono::steady_clock::now();
         }
