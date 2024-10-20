@@ -66,14 +66,14 @@ void Character::draw() {
 }
 
 void Character::drawRope() {
-    glColor3f(0.8f, 0.6f, 0.2f);  // Rope color (brownish)
-    glLineWidth(4.0f);  // Thicker line for rope effect
+    glColor3f(0.8f, 0.6f, 0.2f);  
+    glLineWidth(4.0f);  
 
     for (int i = 0; i < NUM_FOOTBALLER; i++) {
         if (footballers[i] != nullptr) {
-            // Get footballer's position and adjust for center
+           
             SDL_FPoint footballerPos = footballers[i]->getPos();
-            float footballerRadius = footballers[i]->getRadius();  // Assuming Footballer has radius
+            float footballerRadius = footballers[i]->getRadius(); 
 
             // Adjust positions to center of character and footballer
             float characterCenterX = this->pos.x + this->radius;
@@ -82,23 +82,23 @@ void Character::drawRope() {
             float footballerCenterX = footballerPos.x + footballerRadius;
             float footballerCenterY = footballerPos.y + footballerRadius;
 
-            // Let's divide the line into segments to create a rope-like look
-            const int segments = 20;  // More segments for smoother rope
+           
+            const int segments = 20;  
             float dx = (footballerCenterX - characterCenterX) / segments;
             float dy = (footballerCenterY - characterCenterY) / segments;
 
-            glBegin(GL_LINE_STRIP);  // Continuous line
+            glBegin(GL_LINE_STRIP);  
 
             for (int j = 0; j <= segments; j++) {
                 float segmentX = characterCenterX + j * dx;
                 float segmentY = characterCenterY + j * dy;
 
-                // Optional wave effect
+               
                 float waveAmplitude = 0.006f;
                 float waveFrequency = 5.0f;
                 float offset = sin(j * waveFrequency) * waveAmplitude;
 
-                // Apply wave effect to Y axis for horizontal ropes, X axis for vertical ropes
+                
                 if (abs(footballerCenterX - characterCenterX) > abs(footballerCenterY - characterCenterY)) {
                     segmentY += offset;
                 } else {
@@ -111,7 +111,7 @@ void Character::drawRope() {
         }
     }
 
-    // Reset to default settings
-    glColor3f(1.0f, 1.0f, 1.0f);  // Reset color
-    glLineWidth(1.0f);  // Reset line width
+  
+    glColor3f(1.0f, 1.0f, 1.0f);  
+    glLineWidth(1.0f);  
 }
