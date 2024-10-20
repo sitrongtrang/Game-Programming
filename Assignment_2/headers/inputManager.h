@@ -8,6 +8,7 @@
 
 class InputManager {
 private:
+    std::set<SDL_Keycode> pressedKeys;
 
 protected:
     void changePlayer(int player, PlayerAction action)  ;
@@ -15,11 +16,14 @@ protected:
     Character ** p1_character_list; 
     Character ** p2_character_list; 
     int char_num[2];
-
+    void stopPlayer(Character * player) const;
 
 public:
     void input(SDL_Keycode key);
-    InputManager(Character ** character_1, Character ** character_2);
+    void release(SDL_Keycode key);
+    void stopPlayerIfNoKeysPressed(Character *player) const;
+    void setCharacters(Character** character_1, Character** character_2);
+    InputManager();
 };
 
 #endif

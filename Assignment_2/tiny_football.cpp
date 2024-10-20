@@ -84,8 +84,6 @@ GLuint LoadTextureFromFile(const char *filename)
 int main(int, char **)
 {
     // Initialize SDL
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
-    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
     GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager();
 

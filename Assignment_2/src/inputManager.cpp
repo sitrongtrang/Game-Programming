@@ -1,14 +1,16 @@
 #include "../headers/inputManager.h"
 
-InputManager::InputManager(Character ** character_1, Character ** character_2) {
-    p1_character_list = character_1;
-    p2_character_list = character_2;
+InputManager::InputManager() {
     
     char_num[0] = 0;  // For player 1
     char_num[1] = 0;  // For player 2
 }
 
-void InputManager::input(SDL_Keycode key) {  
+void InputManager::setCharacters(Character** character_1, Character** character_2) {
+    p1_character_list = character_1;
+    p2_character_list = character_2;
+}
+
 void InputManager::input(SDL_Keycode key) {  
     Actions action_mapped = keyBindingsInstance.getAction(key);
     Character * character;
@@ -25,6 +27,7 @@ void InputManager::input(SDL_Keycode key) {
     case (PlayerAction::MoveDown):
     case (PlayerAction::MoveLeft):
     case (PlayerAction::MoveRight):
+        pressedKeys.insert(key); 
         movePlayer(character, action_mapped.action);
         break;
     case (PlayerAction::Action1):
@@ -45,7 +48,7 @@ void InputManager::changePlayer(int player, PlayerAction action)  {
     case (PlayerAction::Action3): char_num[player]= 2 ;break;
     default: return;
     }
-    return player_list[char_num];
+    // return player_list[char_num];
 }
 
 void InputManager::movePlayer(Character * player, PlayerAction action) const {
@@ -74,8 +77,8 @@ void InputManager::release(SDL_Keycode key) {
     Character * character;
     switch (action_mapped.character_num)
     {
-        case 1: character = p1; break;
-        case 2: character = p2; break;
+        case 0: character = p1_character_list[char_num[0]]; break;
+        case 1: character = p2_character_list[char_num[1]]; break;
         default: return;
     }
     switch(action_mapped.action)
@@ -92,3 +95,4 @@ void InputManager::release(SDL_Keycode key) {
             return;
     }
 }
+
