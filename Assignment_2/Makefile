@@ -61,7 +61,7 @@ CXX = g++
 TARGET = tiny_football
 
 # Source files for tiny_football, keySetMenu, keyBinding, and ImGui
-SRC = tiny_football.cpp ./src/keySetMenu.cpp ./src/keyBinding.cpp ./src/Physics.cpp ./src/Ball.cpp ./src/Footballer.cpp ./src/Surface.cpp ./src/Spritesheet.cpp
+SRC = tiny_football.cpp ./src/keySetMenu.cpp ./src/keyBinding.cpp ./src/Physics.cpp ./src/Ball.cpp ./src/Footballer.cpp ./src/Surface.cpp ./src/Spritesheet.cpp ./src/inputManager.cpp
 MENU_SRC = $(wildcard ./src/Menu/*.cpp) ./src/Constant.cpp
 IMGUI_DIR = ./imgui
 IMGUI_SRC = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp

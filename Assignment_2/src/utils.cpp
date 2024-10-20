@@ -46,3 +46,37 @@ SDL_FPoint* getFootballerInitPos(float charX, float charY, float radius) {
 
     return footballers;
 }
+
+bool sphere_sphereCollision(SDL_FPoint center1, float radius1, SDL_FPoint center2, float radius2) {
+    float center_dist_squared = (center1.x - center2.x) * (center1.x - center2.x) + (center1.y - center2.y) * (center1.y - center2.y);
+    float sum_rad = radius1 + radius2;
+    return center_dist_squared <= sum_rad * sum_rad;
+}
+
+bool sphere_rectCollision(SDL_FPoint center1, float radius, SDL_FPoint center2, float width, float height) {
+    float half_width = width / 2;
+    float half_height = height / 2;
+
+    float closest_x = std::max(center2.x - half_width, std::min(center1.x, center2.x + half_width));
+    float closest_y = std::max(center2.y - half_height, std::min(center1.y, center2.y + half_height));
+
+    float distance_x = center1.x - closest_x;
+    float distance_y = center1.y - closest_y;
+
+    if ((distance_x * distance_x + distance_y * distance_y) < (radius * radius))
+        return true;
+    return false;
+}
+
+
+bool rect_rectCollision(SDL_FPoint center1, float width1, float height1, SDL_FPoint center2, float width2, float height2) {
+    float half_width1 = width1 / 2;
+    float half_height1 = height1 / 2;
+    float half_width2 = width2 / 2;
+    float half_height2 = height2 / 2;
+    
+    if (std::abs(center1.x - center2.x) < half_width1 + half_width2 
+        && std::abs(center1.y - center2.y) < half_height1 + half_height2)
+        return true;
+    return false;
+}

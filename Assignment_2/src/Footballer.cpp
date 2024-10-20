@@ -2,7 +2,7 @@
 #include "Character.h"
 
 Footballer::Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : Physics(mass, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller) {}
+    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller) {}
 
 void Footballer::update(float deltaTime) {
 
@@ -57,8 +57,9 @@ SDL_FPoint Footballer::getFrictionForce() {
     return f_friction;
 }
 
-bool Footballer::getObstructedX() { return this->obstructedX; }
-bool Footballer::getObstructedY() { return this->obstructedY; }
+bool Footballer::getObstructedX() const { return this->obstructedX; }
+bool Footballer::getObstructedY() const { return this->obstructedY; }
+float Footballer::getRadius() const { return this->radius; }
 
 void Footballer::setObstructedX(bool obsX) { this->obstructedX = obsX; }
 void Footballer::setObstructedY(bool obsY) { this->obstructedY = obsY; }
@@ -68,7 +69,12 @@ void Footballer::onCollision(Physics* other) {
 } 
 
 bool Footballer::detectCollision(Physics* other) {
-    return false;
+    if (this == other) return false;
+    if (other->getColliderType() == ColliderType::Circle) {
+        return sphere_sphereCollision(this->pos, this->radius, other->getPos(), other->getRadius());
+    } else {
+        return sphere_rectCollision(this->pos, this->radius, other->getPos(), other->getWidth(), other->getHeight());
+    }
 }
 
 void Footballer::collideSurface(Physics* surface) {

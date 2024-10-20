@@ -1,18 +1,27 @@
 #include "Ball.h"
 
 Ball::Ball(float mass, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : Physics(mass, initPos, initVel, initAcc), radius(radius),
+    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius),
     sprSheet("./assets/Ball/MyBall-Sheet.png", 1, 4, 4, 0.1f)  {
         std::cerr <<"Flag " <<std::endl;
         sprSheet.select_sprite(0, 0);
     }
+
+
+float Ball::getRadius() const { return this->radius; }
 
 void Ball::onCollision(Physics* other) {
     return;
 } 
 
 bool Ball::detectCollision(Physics* other) {
-    return false;
+    if (this == other) return false;
+    if (other->getColliderType() == ColliderType::Circle) {
+        return sphere_sphereCollision(this->pos, this->radius, other->getPos(), other->getRadius());
+    } else {
+        return sphere_rectCollision(this->pos, this->radius, other->getPos(), other->getWidth(), other->getHeight());
+    }
+    // return false;
 }
 
 void Ball::collideSurface(Physics* surface) {

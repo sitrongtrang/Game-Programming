@@ -86,7 +86,7 @@ int main(int, char **)
 {
     // Initialize SDL
    
-    
+
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -139,9 +139,8 @@ int main(int, char **)
     //
     Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
-    //
     GameManager * gameManager = GameManager::getInstance();
-    InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());
+    InputManager* inputManager = new InputManager();
 
     // Main loop
     Uint32 previousTicks = SDL_GetTicks(); // Initialize the ticks
@@ -167,7 +166,11 @@ int main(int, char **)
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
             } else if (event.type== SDL_KEYDOWN) {
-                inputManager->input(event.key.keysym.sym);
+                if (state == GameState::PLAYING)
+                    inputManager->input(event.key.keysym.sym);
+            } else if (event.type== SDL_KEYUP) {
+                if (state == GameState::PLAYING)
+                    inputManager->release(event.key.keysym.sym);
             }
         }
 
@@ -190,6 +193,11 @@ int main(int, char **)
         {
             renderBackground(background_texture);
             renderMainMenu(state);
+        }
+        else if (state == GameState::NEW_GAME) 
+        {
+            gameManager->newGame(inputManager);
+            state = GameState::PLAYING;
         }
         else if (game_paused)
         {
