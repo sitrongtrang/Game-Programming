@@ -62,6 +62,7 @@ SDL_FPoint Footballer::getFrictionForce() {
     return f_friction;
 }
 
+
 bool Footballer::getObstructedX() const { return this->obstructedX; }
 bool Footballer::getObstructedY() const { return this->obstructedY; }
 float Footballer::getRadius() const { return this->radius; }

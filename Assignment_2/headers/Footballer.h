@@ -26,6 +26,7 @@ public:
     bool getObstructedX() const;
     bool getObstructedY() const;
     float getRadius() const override;
+    
 
     void setObstructedX(bool obsX);
     void setObstructedY(bool obsY);

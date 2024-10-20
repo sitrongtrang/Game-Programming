@@ -60,6 +60,58 @@ void Character::setFootballer(int i, Footballer* footballer) {
 }
 
 void Character::draw() {
-    
+    drawRope();
     sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
+    
+}
+
+void Character::drawRope() {
+    glColor3f(0.8f, 0.6f, 0.2f);  // Rope color (brownish)
+    glLineWidth(4.0f);  // Thicker line for rope effect
+
+    for (int i = 0; i < NUM_FOOTBALLER; i++) {
+        if (footballers[i] != nullptr) {
+            // Get footballer's position and adjust for center
+            SDL_FPoint footballerPos = footballers[i]->getPos();
+            float footballerRadius = footballers[i]->getRadius();  // Assuming Footballer has radius
+
+            // Adjust positions to center of character and footballer
+            float characterCenterX = this->pos.x + this->radius;
+            float characterCenterY = this->pos.y + this->radius;
+
+            float footballerCenterX = footballerPos.x + footballerRadius;
+            float footballerCenterY = footballerPos.y + footballerRadius;
+
+            // Let's divide the line into segments to create a rope-like look
+            const int segments = 20;  // More segments for smoother rope
+            float dx = (footballerCenterX - characterCenterX) / segments;
+            float dy = (footballerCenterY - characterCenterY) / segments;
+
+            glBegin(GL_LINE_STRIP);  // Continuous line
+
+            for (int j = 0; j <= segments; j++) {
+                float segmentX = characterCenterX + j * dx;
+                float segmentY = characterCenterY + j * dy;
+
+                // Optional wave effect
+                float waveAmplitude = 0.006f;
+                float waveFrequency = 5.0f;
+                float offset = sin(j * waveFrequency) * waveAmplitude;
+
+                // Apply wave effect to Y axis for horizontal ropes, X axis for vertical ropes
+                if (abs(footballerCenterX - characterCenterX) > abs(footballerCenterY - characterCenterY)) {
+                    segmentY += offset;
+                } else {
+                    segmentX += offset;
+                }
+
+                glVertex2f(segmentX, segmentY);
+            }
+            glEnd();
+        }
+    }
+
+    // Reset to default settings
+    glColor3f(1.0f, 1.0f, 1.0f);  // Reset color
+    glLineWidth(1.0f);  // Reset line width
 }

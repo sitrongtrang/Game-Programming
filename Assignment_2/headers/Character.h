@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 #include "utils.h"
 #include "Spritesheet.h"
+#include "Footballer.h"
 
-class Footballer;
 class Character {
 private:
     Footballer* footballers[NUM_FOOTBALLER];
@@ -38,6 +38,7 @@ public:
     void setFootballer(int i, Footballer* footballer);
 
     void draw();
+    void drawRope();
 };
 
 #endif
