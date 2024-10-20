@@ -1,7 +1,12 @@
 #include "Ball.h"
 
 Ball::Ball(float mass, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius) {}
+    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius),
+    sprSheet("./assets/Ball/MyBall-Sheet.png", 1, 4, 4, 0.1f)  {
+    
+        sprSheet.select_sprite(0, 0);
+    }
+
 
 float Ball::getRadius() const { return this->radius; }
 
@@ -30,5 +35,12 @@ void Ball::collideSurface(Physics* surface) {
 }
 
 void Ball::draw() {
-    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
+}
+
+void Ball::update(float deltatime){
+    Physics::update(deltatime);
+    sprSheet.update(deltatime);
+
 }

@@ -1,18 +1,30 @@
 #include "Character.h"
+#include <iostream>
+
 
 Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : radius(radius), pos(initPos), vel(initVel), acc(initAcc) {
+    : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
+        sprSheet("./assets/Player/Slime-Sheet.png", 1, 5, 5, 0.1f) {
+        
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;
         }
+
+        // for test only
+        sprSheet.select_sprite(4, 0);
+    
+
     }
 
 Character::~Character() {}
 
 void Character::update(float deltaTime)
 {
+   
     this->draw();
-
+    
+    sprSheet.update(deltaTime);
+     
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
     this->setPos(newPos);
 
@@ -48,5 +60,6 @@ void Character::setFootballer(int i, Footballer* footballer) {
 }
 
 void Character::draw() {
-    RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    
+    sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
 }

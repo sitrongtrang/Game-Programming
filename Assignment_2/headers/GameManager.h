@@ -28,12 +28,15 @@ private:
 
     Wind* wind; 
 
+    SDL_Renderer *renderer;
+
     GameManager();
 
 public:
     static GameManager* getInstance();
 
     void update(float deltaTime);
+    SDL_Surface* GetSurf();
 
     void newGame(InputManager* inputManager);
 

@@ -2,10 +2,12 @@
 #define BALL_H
 
 #include "Physics.h"
-
+#include "Spritesheet.h"
 class Ball : public Physics {
 private:
     float radius;
+    Spritesheet sprSheet;
+
 public:
     Ball(float mass, float radius, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f});
 
@@ -16,6 +18,7 @@ public:
     void collideSurface(Physics* surface) override; 
 
     void draw() override;
+    void update(float deltatime) override;
 };
 
 #endif

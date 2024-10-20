@@ -21,6 +21,7 @@
 #include "../headers/Character.h"
 #include "../headers/GameManager.h"
 #include <stdio.h>
+#include <iostream>
 
 // float square_x = 0.0f;    // Square's X position
 // float square_y = 0.0f;    // Square's Y position
@@ -77,12 +78,43 @@ GLuint LoadTextureFromFile(const char *filename)
 
     return textureID;
 }
+void DrawField(GLuint textureID)
+{
+    // Enable 2D textures
+    glEnable(GL_TEXTURE_2D);
+    
+    // Bind the background texture
+    glBindTexture(GL_TEXTURE_2D, textureID);
 
-// Function to render a simple square
+    // Set the clear color and clear the screen
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Optional: if you want a different clear color
+    // glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up the coordinates for drawing a full-screen quad
+    glBegin(GL_QUADS);
+    
+    // Specify texture coordinates and vertices
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f); // Bottom-left corner
+    glTexCoord2f(1.0f, 0.0f); glVertex2f( 1.0f, -1.0f); // Bottom-right corner
+    glTexCoord2f(1.0f, 1.0f); glVertex2f( 1.0f,  1.0f); // Top-right corner
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f,  1.0f); // Top-left corner
+    
+    glEnd();
+
+    // Unbind the texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Disable 2D textures
+    glDisable(GL_TEXTURE_2D);
+}
+
+
 
 int main(int, char **)
 {
     // Initialize SDL
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
+    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
     GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager();
 
@@ -133,8 +165,19 @@ int main(int, char **)
 
     startTime = std::chrono::steady_clock::now();
     GameState state = GameState::INTRODUCTION;
-    // Main loop
 
+    //
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
+    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
+    GameManager * gameManager = GameManager::getInstance();
+    InputManager* inputManager = new InputManager();
+
+    // Init Field
+    GLuint field_texture = LoadTextureFromFile("./assets/Field/Field.png");
+
+
+    // Main loop
+    Uint32 previousTicks = SDL_GetTicks(); // Initialize the ticks
     while (game_running)
     {
         SDL_Event event;
@@ -169,6 +212,9 @@ int main(int, char **)
             }
         }
 
+        Uint32 currentTicks = SDL_GetTicks();
+        float deltaTime = (currentTicks - previousTicks) / 1000.0f; // Convert to seconds
+        previousTicks = currentTicks;
         // Start the ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
@@ -203,21 +249,17 @@ int main(int, char **)
         else if (state == GameState::PLAYING)
         {
 
-            renderGameMenu(state, game_paused, score1, score2);
-            // UpdateGame();
-            // RenderSquare();
-            // Character * test = gameManager->getTeamBCharacter(0);
-            // // ball->draw();
-            // test->update(0.016f);
-            // test->draw();
-            // surface->draw();
-            gameManager->update(0.016f);
+            DrawField(field_texture);
+            gameManager->update(deltaTime);
+            renderGameMenu(state, score1, score2);
         }
 
         // Rendering
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
+
+        SDL_Delay(16);
     }
 
     // Cleanup
