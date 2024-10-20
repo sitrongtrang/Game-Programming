@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h> // Include GL and GLU headers
 
-Spritesheet::Spritesheet(const char* path, int row, int column)
+Spritesheet::Spritesheet(const char* path, int row, int column, int max_frame, float  frameDuration)
     : m_texture(0), m_row(row), m_column(column)
 {
     // Load the image into a surface
@@ -47,6 +47,10 @@ Spritesheet::Spritesheet(const char* path, int row, int column)
     SDL_FreeSurface(tempSurface);
 
     std::cout << "Sprite sheet loaded successfully." << std::endl;
+
+    // Setup stat
+    MAX_FRAME = max_frame;
+    this->frameDuration = frameDuration;
 }
 
 Spritesheet::~Spritesheet() {
@@ -59,10 +63,10 @@ Spritesheet::~Spritesheet() {
 
 // Select the sprite at row `x` and column `y`
 void Spritesheet::select_sprite(int x, int y) {
-    if (x >= m_row || y >= m_column) {
-        std::cerr << "Sprite selection out of bounds: (" << x << ", " << y << ")" << std::endl;
-        return;
-    }
+    // if (x >= m_row || y >= m_column) {
+    //     std::cerr << "Sprite selection out of bounds: (" << x << ", " << y << ")" << std::endl;
+    //     return;
+    // }
 
     // Calculate the position of the selected sprite in the sheet
     m_clip.x = x * m_clip.w;
@@ -100,4 +104,15 @@ void Spritesheet::draw(float x, float y, float width, float height) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
+}
+
+
+void Spritesheet::update(float deltaTime){
+    // Handle frame update for animation
+    animationTime += deltaTime; // Accumulate time
+    if (animationTime >= frameDuration) { // If it's time to update the frame
+        animationTime = 0.0f; // Reset accumulator
+        frame = (frame + 1) % MAX_FRAME; // Loop through frames
+        this->select_sprite(frame, 0); // Update sprite selection
+    }
 }

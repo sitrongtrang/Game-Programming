@@ -10,6 +10,7 @@ GameManager::GameManager() {
         SDL_FPoint pullerAPos = {-0.3f * (i % 2 + 1), (i-1) * 0.5f};
         SDL_FPoint pullerBPos = {0.3f * (i % 2 + 1), (i-1) * 0.5f};
 
+       
         teamACharacters[i] = new Character(CHAR_RAD, pullerAPos);
         teamBCharacters[i] = new Character(CHAR_RAD, pullerBPos);
 

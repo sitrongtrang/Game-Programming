@@ -85,8 +85,7 @@ GLuint LoadTextureFromFile(const char *filename)
 int main(int, char **)
 {
     // Initialize SDL
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
-    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
+   
     
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -137,6 +136,9 @@ int main(int, char **)
     startTime = std::chrono::steady_clock::now();
     GameState state = GameState::INTRODUCTION;
 
+    //
+    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
+    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
     //
     GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager(gameManager->getTeamACharacters(), gameManager->getTeamBCharacters());

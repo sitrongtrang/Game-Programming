@@ -16,10 +16,7 @@ private:
 
     Spritesheet sprSheet;
     
-    int frame;           // Current frame index
-    const int MAX_FRAME = 5; // Total number of frames in the spritesheet
-    float frameDuration; // Duration for each frame
-    float animationTime; // Time accumulator for animation
+    
 
 public:
     Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});

@@ -4,14 +4,15 @@
 
 Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
-        sprSheet("./assets/Player/Slime-Sheet.png", 1, 5) {
+        sprSheet("./assets/Player/Slime-Sheet.png", 1, 5, 5, 0.1f) {
         
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;
         }
 
         // for test only
-        sprSheet.select_sprite(0, 4);
+        sprSheet.select_sprite(4, 0);
+    
 
     }
 
@@ -22,13 +23,7 @@ void Character::update(float deltaTime)
    
     this->draw();
     
-    // Handle frame update for animation
-    animationTime += deltaTime; // Accumulate time
-    if (animationTime >= frameDuration) { // If it's time to update the frame
-        animationTime = 0.0f; // Reset accumulator
-        frame = (frame + 1) % MAX_FRAME; // Loop through frames
-        sprSheet.select_sprite(0, frame); // Update sprite selection
-    }
+    sprSheet.update(deltaTime);
      
     SDL_FPoint newPos = {this->pos.x + this->vel.x * deltaTime, this->pos.y + this->vel.y * deltaTime};
     this->setPos(newPos);
