@@ -80,7 +80,6 @@ GLuint LoadTextureFromFile(const char *filename)
 
 // Function to render a simple square
 
-
 int main(int, char **)
 {
     // Initialize SDL
@@ -157,10 +156,14 @@ int main(int, char **)
                 {
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
-            } else if (event.type== SDL_KEYDOWN) {
+            }
+            else if (event.type == SDL_KEYDOWN)
+            {
                 if (state == GameState::PLAYING)
                     inputManager->input(event.key.keysym.sym);
-            } else if (event.type== SDL_KEYUP) {
+            }
+            else if (event.type == SDL_KEYUP)
+            {
                 if (state == GameState::PLAYING)
                     inputManager->release(event.key.keysym.sym);
             }
@@ -181,16 +184,16 @@ int main(int, char **)
         else if (state == GameState::MAIN_MENU)
         {
             renderBackground(background_texture);
-            renderMainMenu(state);
+            renderMainMenu(state,game_running);
         }
-        else if (state == GameState::NEW_GAME) 
+        else if (state == GameState::NEW_GAME)
         {
             gameManager->newGame(inputManager);
             state = GameState::PLAYING;
         }
         else if (game_paused)
         {
-            keySetMenu.Render(game_paused);
+            keySetMenu.Render(state, game_paused);
             // renderPauseMenu(state, score1, score2);
         }
         else if (state == GameState::GAME_OVER)
@@ -200,7 +203,7 @@ int main(int, char **)
         else if (state == GameState::PLAYING)
         {
 
-            renderGameMenu(state, score1, score2);
+            renderGameMenu(state, game_paused, score1, score2);
             // UpdateGame();
             // RenderSquare();
             // Character * test = gameManager->getTeamBCharacter(0);

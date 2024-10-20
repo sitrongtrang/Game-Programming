@@ -3,6 +3,6 @@
 #include "../Constant.h"
 
 void renderBackground(GLuint background_texture);
-void renderMainMenu(GameState &state);
+void renderMainMenu(GameState &state, bool &game_running);
 
 #endif // MAIN_MENU_H
