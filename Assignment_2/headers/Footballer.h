@@ -2,6 +2,7 @@
 #define FOOTBALLER_H
 
 #include "Physics.h"
+#include "Spritesheet.h"
 #include <math.h>
 
 class Character;
@@ -12,6 +13,8 @@ protected:
     float ropeLength;
     float radius;
     Character* puller; 
+    Spritesheet sprSheet;
+
 public:
     Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel={0.0f, 0.0f}, SDL_FPoint initAcc={0.0f, 0.0f});
 

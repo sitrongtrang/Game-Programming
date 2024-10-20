@@ -2,9 +2,14 @@
 #include "Character.h"
 
 Footballer::Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
-    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller) {}
+    : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller),
+        sprSheet("./assets/Footballer/Footballer.png", 1, 1, 1, 0) {
+            
+            sprSheet.select_sprite(0,0);
+        }
 
 void Footballer::update(float deltaTime) {
+    std::cerr <<"Flag "<<std::endl;
 
     this->draw();
     this->applyRopeConstraint(); 
@@ -101,5 +106,6 @@ void Footballer::collideSurface(Physics* surface) {
 
 void Footballer::draw() {
     //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
+    sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
 }
 
