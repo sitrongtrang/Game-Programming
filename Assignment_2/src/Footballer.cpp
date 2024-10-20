@@ -9,7 +9,7 @@ Footballer::Footballer(float mass, float radius, float ropeLength, Character* pu
         }
 
 void Footballer::update(float deltaTime) {
-    std::cerr <<"Flag "<<std::endl;
+
 
     this->draw();
     this->applyRopeConstraint(); 

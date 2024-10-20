@@ -38,3 +38,9 @@ void Ball::draw() {
     //RenderCircle(this->pos.x, this->pos.y, this->radius, CIRCLE_SEGMENTS);
     sprSheet.draw(this->pos.x, this->pos.y, this->radius *2, this->radius *2);
 }
+
+void Ball::update(float deltatime){
+    Physics::update(deltatime);
+    sprSheet.update(deltatime);
+
+}

@@ -78,8 +78,36 @@ GLuint LoadTextureFromFile(const char *filename)
 
     return textureID;
 }
+void DrawField(GLuint textureID)
+{
+    // Enable 2D textures
+    glEnable(GL_TEXTURE_2D);
+    
+    // Bind the background texture
+    glBindTexture(GL_TEXTURE_2D, textureID);
 
-// Function to render a simple square
+    // Set the clear color and clear the screen
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Optional: if you want a different clear color
+    // glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up the coordinates for drawing a full-screen quad
+    glBegin(GL_QUADS);
+    
+    // Specify texture coordinates and vertices
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f); // Bottom-left corner
+    glTexCoord2f(1.0f, 0.0f); glVertex2f( 1.0f, -1.0f); // Bottom-right corner
+    glTexCoord2f(1.0f, 1.0f); glVertex2f( 1.0f,  1.0f); // Top-right corner
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f,  1.0f); // Top-left corner
+    
+    glEnd();
+
+    // Unbind the texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Disable 2D textures
+    glDisable(GL_TEXTURE_2D);
+}
+
 
 
 int main(int, char **)
@@ -141,6 +169,10 @@ int main(int, char **)
     Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
     GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager();
+
+    // Init Field
+    GLuint field_texture = LoadTextureFromFile("./assets/Field/Field.png");
+
 
     // Main loop
     Uint32 previousTicks = SDL_GetTicks(); // Initialize the ticks
@@ -211,7 +243,7 @@ int main(int, char **)
         else if (state == GameState::PLAYING)
         {
 
-            
+            DrawField(field_texture);
             gameManager->update(deltaTime);
             renderGameMenu(state, score1, score2);
         }

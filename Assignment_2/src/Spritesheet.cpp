@@ -80,6 +80,10 @@ void Spritesheet::draw(float x, float y, float width, float height) {
         return;
     }
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, m_texture); // Make sure this texture is valid
 

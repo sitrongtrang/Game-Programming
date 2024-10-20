@@ -22,5 +22,5 @@ void Surface::onCollision(Physics* other) {
 }
 
 void Surface::draw() {
-    RenderRectangle(this->pos.x, this->pos.y, this->width, this->height);
+    //RenderRectangle(this->pos.x, this->pos.y, this->width, this->height);
 }

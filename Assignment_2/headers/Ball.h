@@ -18,6 +18,7 @@ public:
     void collideSurface(Physics* surface) override; 
 
     void draw() override;
+    void update(float deltatime) override;
 };
 
 #endif
