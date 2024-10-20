@@ -113,10 +113,8 @@ void DrawField(GLuint textureID)
 int main(int, char **)
 {
     // Initialize SDL
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
-    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
-    GameManager * gameManager = GameManager::getInstance();
-    InputManager* inputManager = new InputManager();
+   
+
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -167,17 +165,15 @@ int main(int, char **)
     GameState state = GameState::INTRODUCTION;
 
     //
-    Ball* ball = new Ball(50, 0.1f, {0.0f, 0.0f}, {0.5f, 0.5f});
-    Surface* surface = new Surface({0.0f, 0.0f}, {0.0f, 1.0f}, 1, 1);
-    GameManager * gameManager = GameManager::getInstance();
-    InputManager* inputManager = new InputManager();
-
     // Init Field
     GLuint field_texture = LoadTextureFromFile("./assets/Field/Field.png");
 
 
     // Main loop
     Uint32 previousTicks = SDL_GetTicks(); // Initialize the ticks
+    GameManager * gameManager = GameManager::getInstance();
+    InputManager* inputManager = new InputManager();
+
     while (game_running)
     {
         SDL_Event event;
@@ -199,14 +195,10 @@ int main(int, char **)
                 {
                     pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
                 }
-            }
-            else if (event.type == SDL_KEYDOWN)
-            {
+            } else if (event.type== SDL_KEYDOWN) {
                 if (state == GameState::PLAYING)
                     inputManager->input(event.key.keysym.sym);
-            }
-            else if (event.type == SDL_KEYUP)
-            {
+            } else if (event.type== SDL_KEYUP) {
                 if (state == GameState::PLAYING)
                     inputManager->release(event.key.keysym.sym);
             }
@@ -230,9 +222,9 @@ int main(int, char **)
         else if (state == GameState::MAIN_MENU)
         {
             renderBackground(background_texture);
-            renderMainMenu(state,game_running);
+            renderMainMenu(state, game_running);
         }
-        else if (state == GameState::NEW_GAME)
+        else if (state == GameState::NEW_GAME) 
         {
             gameManager->newGame(inputManager);
             state = GameState::PLAYING;
@@ -251,7 +243,7 @@ int main(int, char **)
 
             DrawField(field_texture);
             gameManager->update(deltaTime);
-            renderGameMenu(state, score1, score2);
+            renderGameMenu(state, game_paused, score1, score2);
         }
 
         // Rendering
