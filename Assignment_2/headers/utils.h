@@ -6,6 +6,7 @@
 #include "../headers/menu/Main_menu.h"
 #include "../headers/menu/Pause_menu.h"
 #include "../headers/menu/Game_menu.h"
+#include "../headers/SoundPlayer.h"
 #include <math.h>
 #include <algorithm>
 #include <limits>

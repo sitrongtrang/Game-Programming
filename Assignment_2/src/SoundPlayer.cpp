@@ -26,7 +26,7 @@ bool SoundPlayer::init() {
     SDL_AudioSpec desiredSpec;
     SDL_zero(desiredSpec);
     desiredSpec.freq = 44100;
-    desiredSpec.format = AUDIO_S16; // Changed to AUDIO_S16
+    desiredSpec.format = AUDIO_S16; 
     desiredSpec.channels = 2;
     desiredSpec.samples = 4096;
     desiredSpec.callback = audioCallback;
@@ -52,7 +52,7 @@ void SoundPlayer::loadSound(const std::string& soundName, const std::string& fil
 
     sound.position = 0;
     sounds[soundName] = sound;
-    std::cout << "Loaded sound: " << soundName << std::endl; // Confirmation message
+    std::cout << "Loaded sound: " << soundName << std::endl; 
 }
 
 void SoundPlayer::playSound(const std::string& soundName) {
@@ -60,7 +60,7 @@ void SoundPlayer::playSound(const std::string& soundName) {
         Sound* sound = &sounds[soundName];
         sound->position = 0; // Start from the beginning
         playingSounds.push_back(sound);
-        std::cout << "Playing sound: " << soundName << std::endl; // Confirmation message
+        std::cout << "Playing sound: " << soundName << std::endl; 
     } else {
         std::cerr << "Sound not found: " << soundName << std::endl;
     }
@@ -73,13 +73,13 @@ void SoundPlayer::loadBackgroundMusic(const std::string& filePath) {
         return;
     }
     sound.position = 0;
-    backgroundMusic = new Sound(sound); // Store the background music
+    backgroundMusic = new Sound(sound); 
 }
 
 void SoundPlayer::playBackgroundMusic() {
     if (backgroundMusic) {
         playingSounds.push_back(backgroundMusic); // Add background music to playing sounds
-        std::cout << "Playing background music." << std::endl; // Confirmation message
+        std::cout << "Playing background music." << std::endl; 
     }
 }
 
@@ -98,7 +98,7 @@ void SoundPlayer::audioCallback(void* userdata, Uint8* stream, int len) {
         Uint32 remaining = sound->length - sound->position;
         Uint32 bytesToWrite = (remaining < (Uint32)len) ? remaining : (Uint32)len;
 
-        SDL_MixAudioFormat(stream, sound->buffer + sound->position, AUDIO_S16, bytesToWrite, SDL_MIX_MAXVOLUME); // Changed to AUDIO_S16
+        SDL_MixAudioFormat(stream, sound->buffer + sound->position, AUDIO_S16, bytesToWrite, SDL_MIX_MAXVOLUME);
 
         sound->position += bytesToWrite;
 

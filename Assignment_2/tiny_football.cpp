@@ -20,7 +20,6 @@
 #include "../headers/inputManager.h"
 #include "../headers/Character.h"
 #include "../headers/GameManager.h"
-#include "../headers/SoundPlayer.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -113,7 +112,7 @@ void LoadAllSound(SoundPlayer *soundPlayer){
 
     soundPlayer->loadSound("kick", "./assets/sounds/Gameplay/kick.wav");
     soundPlayer->loadSound("goal", "./assets/sounds/Gameplay/goal.wav");
-
+    soundPlayer->loadSound("UI/click", "./assets/sounds/UI/click.wav");
 }
 
 
