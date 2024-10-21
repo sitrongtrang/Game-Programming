@@ -201,6 +201,7 @@ int main(int, char **)
             if (event.type == SDL_QUIT)
             {
                 game_running = false;
+                soundPlayer->playSound("UI/click");
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {

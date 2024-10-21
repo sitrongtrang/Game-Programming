@@ -1,4 +1,5 @@
 #include "../headers/menu/Main_menu.h"
+#include "../headers/SoundPlayer.h"
 void renderBackground(GLuint background_texture)
 {
     ImGui::SetNextWindowBgAlpha(0.0f);
@@ -14,6 +15,7 @@ void renderBackground(GLuint background_texture)
 }
 void renderMainMenu(GameState &state, bool &game_running)
 {
+    SoundPlayer* soundPlayer = SoundPlayer::getInstance();
     ImGui::SetNextWindowBgAlpha(0.0f);
     ImGui::Begin("Main Menu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground);
     ImGui::SetWindowSize(ImVec2(800, 400));
@@ -35,6 +37,8 @@ void renderMainMenu(GameState &state, bool &game_running)
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.8f, 0.8f, 1.0f));
     if (ImGui::Button("START", buttonSize))
     {
+        soundPlayer->playSound("UI/click");
+
         state = GameState::NEW_GAME;
         startTime = std::chrono::steady_clock::now();
     }
@@ -46,6 +50,8 @@ void renderMainMenu(GameState &state, bool &game_running)
     ImGui::SetCursorPosY(240.0f);
     if (ImGui::Button("QUIT", buttonSize))
     {
+        soundPlayer->playSound("UI/click");
+
         state = GameState::QUIT;
         game_running = false;
     }

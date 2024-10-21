@@ -3,6 +3,7 @@
 #include "../headers/utils.h"
 #include <iostream>
 
+
 // Constructor
 KeySetMenu::KeySetMenu(KeyBinding &keyBindings)
     : keyBindingsInstance(keyBindings), isPlayer1Selected(true) {}
@@ -10,6 +11,7 @@ KeySetMenu::KeySetMenu(KeyBinding &keyBindings)
 // Function to render the Key Set Menu
 void KeySetMenu::Render(GameState &state, bool &game_paused)
 {
+    SoundPlayer* soundPlayer = SoundPlayer::getInstance();
 
     ImVec2 displaySize = ImGui::GetIO().DisplaySize;
 
@@ -31,6 +33,7 @@ void KeySetMenu::Render(GameState &state, bool &game_paused)
     // Toggle between Player 1 and Player 2
     if (ImGui::Button(isPlayer1Selected ? "Switch to Player 2" : "Switch to Player 1"))
     {
+        soundPlayer->playSound("UI/click");
         isPlayer1Selected = !isPlayer1Selected; // Toggle player selection
     }
 
@@ -62,6 +65,8 @@ void KeySetMenu::Render(GameState &state, bool &game_paused)
         // Render the Resume Game button
         if (ImGui::Button("Resume Game", ImVec2(buttonWidth, 40)))
         {
+            soundPlayer->playSound("UI/click");
+
             game_paused = false; // Resume the game
             pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
         }
@@ -72,11 +77,15 @@ void KeySetMenu::Render(GameState &state, bool &game_paused)
         // Render the Reset to Default button
         if (ImGui::Button("Reset to Default", ImVec2(buttonWidth, 40)))
         {
+            soundPlayer->playSound("UI/click");
+
             keyBindingsInstance.resetKeyBindings(); // Reset key bindings to defaults
         }
         ImGui::SameLine();
         if (ImGui::Button("Main menu", ImVec2(2 * buttonWidth, 40)))
         {
+            soundPlayer->playSound("UI/click");
+
             game_paused = false;
             state = GameState::MAIN_MENU;
             pausedDuration = 0;
@@ -135,6 +144,8 @@ void KeySetMenu::renderActionKeys()
 // Function to render a single key button
 void KeySetMenu::renderKeyButton(PlayerAction action, const char *label, float width, float height)
 {
+
+
     SDL_Keycode currentKey = isPlayer1Selected ? keyBindingsInstance.getPlayer1Key(action) : keyBindingsInstance.getPlayer2Key(action);
     if (waitingForKey != KeySetState::NotWaiting && selectedAction == action)
     {

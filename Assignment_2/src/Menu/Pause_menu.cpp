@@ -1,6 +1,11 @@
 #include "../headers/menu/Pause_menu.h"
+#include "../headers/SoundPlayer.h"
+
+
 void renderPauseMenu(GameState &state, int &score1, int &score2)
 {
+    SoundPlayer* soundPlayer = SoundPlayer::getInstance();
+
     ImGui::Begin("GAME PAUSED", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
     ImGui::SetWindowSize(ImVec2(320, 400));
     ImGui::SetWindowPos(ImVec2(440, 210));
@@ -19,6 +24,8 @@ void renderPauseMenu(GameState &state, int &score1, int &score2)
     ImGui::SetCursorPosY(120.0f);
     if (ImGui::Button("RESUME", ImVec2(200, 50)))
     {
+        std::cout<<"114124";
+        soundPlayer->playSound("UI/click");
         state = GameState::PLAYING;
         pausedDuration += std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - pauseTime).count();
     }
@@ -28,6 +35,7 @@ void renderPauseMenu(GameState &state, int &score1, int &score2)
     ImGui::SetCursorPosY(210.0f);
     if (ImGui::Button("RESTART", ImVec2(200, 50)))
     {
+        soundPlayer->playSound("UI/click");
         state = GameState::PLAYING;
         startTime = std::chrono::steady_clock::now();
         score1 = 0;
@@ -40,6 +48,7 @@ void renderPauseMenu(GameState &state, int &score1, int &score2)
     ImGui::SetCursorPosY(300.0f);
     if (ImGui::Button("MAIN MENU", ImVec2(200, 50)))
     {
+        soundPlayer->playSound("UI/click");
         state = GameState::MAIN_MENU;
         pausedDuration = 0;
     }
