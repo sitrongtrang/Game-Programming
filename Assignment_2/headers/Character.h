@@ -19,7 +19,7 @@ private:
     
 
 public:
-    Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
+    Character(int teamNum, float radius, SDL_FPoint initPos, SDL_FPoint initVel = {0.0f, 0.0f}, SDL_FPoint initAcc = {0.0f, 0.0f});
 
     ~Character();
 

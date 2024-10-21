@@ -2,9 +2,9 @@
 #include <iostream>
 
 
-Character::Character(float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+Character::Character(int teamNum, float radius, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : radius(radius), pos(initPos), vel(initVel), acc(initAcc),
-        sprSheet("./assets/Player/Slime-Sheet.png", 1, 5, 5, 0.1f) {
+        sprSheet(CHARACTER_SPRITE[teamNum], 1, 5, 5, 0.1f) {
         
         for (int i = 0; i < NUM_FOOTBALLER; i++) {
             footballers[i] = nullptr;

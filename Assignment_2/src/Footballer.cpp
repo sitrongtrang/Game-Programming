@@ -1,9 +1,9 @@
 #include "Footballer.h"
 #include "Character.h"
 
-Footballer::Footballer(float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
+Footballer::Footballer(int teamNum, float mass, float radius, float ropeLength, Character* puller, SDL_FPoint initPos, SDL_FPoint initVel, SDL_FPoint initAcc) 
     : Physics(mass, ColliderType::Circle, initPos, initVel, initAcc), radius(radius), obstructedX(false), obstructedY(false), ropeLength(ropeLength), puller(puller),
-        sprSheet("./assets/Footballer/Footballer.png", 1, 1, 1, 0) {
+        sprSheet(FOOTBALLER_SPRITE[teamNum], 1, 1, 1, 0) {
             
             sprSheet.select_sprite(0,0);
         }
