@@ -20,13 +20,13 @@
 #include "../headers/inputManager.h"
 #include "../headers/Character.h"
 #include "../headers/GameManager.h"
+#include "../headers/SoundPlayer.h"
 #include <stdio.h>
 #include <iostream>
 
 // float square_x = 0.0f;    // Square's X position
 // float square_y = 0.0f;    // Square's Y position
 // float square_size = 0.1f; // Size of the square
-
 int score1 = 0;
 int score2 = 0;
 bool game_running = true;
@@ -108,6 +108,13 @@ void DrawField(GLuint textureID)
     glDisable(GL_TEXTURE_2D);
 }
 
+void LoadAllSound(SoundPlayer *soundPlayer){
+    soundPlayer->loadBackgroundMusic("./assets/sounds/Gameplay/background.wav");
+
+    soundPlayer->loadSound("kick", "./assets/sounds/Gameplay/kick.wav");
+    soundPlayer->loadSound("goal", "./assets/sounds/Gameplay/goal.wav");
+
+}
 
 
 int main(int, char **)
@@ -169,11 +176,23 @@ int main(int, char **)
     GLuint field_texture = LoadTextureFromFile("./assets/Field/Field.png");
 
 
-    // Main loop
+    // Init Objects
     Uint32 previousTicks = SDL_GetTicks(); // Initialize the ticks
     GameManager * gameManager = GameManager::getInstance();
     InputManager* inputManager = new InputManager();
 
+    // Init SoundPlayer
+    SoundPlayer* soundPlayer = SoundPlayer::getInstance();
+
+    if (!soundPlayer->init()) {
+        return -1;
+    }
+
+    LoadAllSound(soundPlayer);
+    
+    bool backgroundPlayed = false;
+    
+    // Main Loop
     while (game_running)
     {
         SDL_Event event;
@@ -221,26 +240,44 @@ int main(int, char **)
         }
         else if (state == GameState::MAIN_MENU)
         {
+            
             renderBackground(background_texture);
             renderMainMenu(state, game_running);
         }
         else if (state == GameState::NEW_GAME) 
         {
+
+
             gameManager->newGame(inputManager);
             inputManager->newGame();
             state = GameState::PLAYING;
         }
         else if (game_paused)
         {
+            if (backgroundPlayed){
+                backgroundPlayed = false;
+                soundPlayer->stopBackgroundMusic();
+            }
+            
             keySetMenu.Render(state, game_paused);
             // renderPauseMenu(state, score1, score2);
         }
         else if (state == GameState::GAME_OVER)
         {
+            if (backgroundPlayed){
+                backgroundPlayed = false;
+                soundPlayer->stopBackgroundMusic();
+            }
+
             renderGameOver(state, score1, score2);
+            
         }
         else if (state == GameState::PLAYING)
         {
+            if (!backgroundPlayed){
+                soundPlayer->playBackgroundMusic();
+                backgroundPlayed = true;
+            }
 
             DrawField(field_texture);
             gameManager->update(deltaTime, score1, score2);
@@ -259,6 +296,9 @@ int main(int, char **)
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+
+    //
+    soundPlayer->cleanup();
 
     SDL_GL_DeleteContext(gl_context);
     SDL_DestroyWindow(window);
