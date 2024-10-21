@@ -279,7 +279,7 @@ int main(int, char **)
             }
 
             DrawField(field_texture);
-            gameManager->update(deltaTime, score1, score2);
+            gameManager->update(deltaTime, score1, score2, soundPlayer);
             renderGameMenu(state, game_paused, score1, score2);
         }
 

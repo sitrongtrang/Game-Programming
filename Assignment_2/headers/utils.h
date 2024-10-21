@@ -30,6 +30,7 @@ const int PLAYER_HEIGHT = 100;
 // Ball stats
 const float BALL_RAD = 0.05f;
 const float BALL_MASS = 0.1f;
+const float RESET_BALL = 0.5f;
 
 // Wind stats
 const float COOLDOWN = 5.0f;

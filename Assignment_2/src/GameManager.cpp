@@ -63,14 +63,14 @@ void GameManager::newGame(InputManager* inputManager) {
         physics[2 * NUM_FOOTBALLER * NUM_CHAR + 5 + i] = goalAEdges[i];
         physics[2 * NUM_FOOTBALLER * NUM_CHAR + 8 + i] = goalBEdges[i];
     }
-    
+
     inputManager->setCharacters(teamACharacters, teamBCharacters);
 }
 
-void GameManager::update(float deltaTime, int& score1, int& score2) {
+void GameManager::update(float deltaTime, int& score1, int& score2, SoundPlayer* soundPlayer) {
     
     wind->update(deltaTime);
-    ball->applyForce(wind->getDirection());
+    // ball->applyForce(wind->getDirection());
   
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 
@@ -90,14 +90,19 @@ void GameManager::update(float deltaTime, int& score1, int& score2) {
                 physics[i]->handleCollision(physics[j]);
                 // printf("Object %d collides with object %d", i, j);
                 if (physics[i] == ball) {
+                    if (j < 2 * NUM_FOOTBALLER * NUM_CHAR) soundPlayer->playSound("kick");
                     if (physics[j] == goalAEdges[1] && ball->getPos().x < 0.9) {
                         ball->setPos({0.0f, 0.0f});
                         ball->setVel({0.0f, 0.0f});
+                        ball->resetBall(RESET_BALL);
+                        soundPlayer->playSound("goal");
                         score2++;
                     }
                     if (physics[j] == goalBEdges[1] && ball->getPos().x > -0.9) {
                         ball->setPos({0.0f, 0.0f});
                         ball->setVel({0.0f, 0.0f});
+                        ball->resetBall(RESET_BALL);
+                        soundPlayer->playSound("goal");
                         score1++;
                     }
                 }
@@ -128,11 +133,6 @@ Physics* GameManager::getPhysicsObject(int index) const {
     return nullptr; 
 }
 
-// void GameManager::ballInGoal(int& score1, int& score2) {
-//     if (ball->getPos().x > 0.75 && ball->getPos().x < 0.95 && ball->getPos().y > -0.15 && ball->getPos().y < 0.15) 
-//         score1++;
-
-// }
 
 Character** GameManager::getTeamACharacters() { return teamACharacters; }  
 Character** GameManager::getTeamBCharacters() { return teamBCharacters; }
