@@ -34,16 +34,16 @@ void GameManager::newGame(InputManager* inputManager) {
         SDL_FPoint pullerBPos = {0.3f * (i % 2 + 1), (i-1) * 0.5f};
 
        
-        teamACharacters[i] = new Character(CHAR_RAD, pullerAPos);
-        teamBCharacters[i] = new Character(CHAR_RAD, pullerBPos);
+        teamACharacters[i] = new Character(0, CHAR_RAD, pullerAPos);
+        teamBCharacters[i] = new Character(1, CHAR_RAD, pullerBPos);
 
         SDL_FPoint* footballerAInitPos = getFootballerInitPos(pullerAPos.x, pullerAPos.y, -ROPE_LENGTH);
         SDL_FPoint* footballerBInitPos = getFootballerInitPos(pullerBPos.x, pullerBPos.y, ROPE_LENGTH);
 
         for (int j = 0; j < NUM_FOOTBALLER; j++) {
-            teamAFootballers[i * NUM_FOOTBALLER + j] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamACharacters[i], footballerAInitPos[j]);
+            teamAFootballers[i * NUM_FOOTBALLER + j] = new Footballer(0, FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamACharacters[i], footballerAInitPos[j]);
             teamACharacters[i]->setFootballer(j, teamAFootballers[i * NUM_FOOTBALLER + j]);
-            teamBFootballers[i * NUM_FOOTBALLER + j] = new Footballer(FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamBCharacters[i], footballerBInitPos[j]);
+            teamBFootballers[i * NUM_FOOTBALLER + j] = new Footballer(1, FOOTBALLER_MASS, FOOTBALLER_RAD, ROPE_LENGTH, teamBCharacters[i], footballerBInitPos[j]);
             teamBCharacters[i]->setFootballer(j, teamBFootballers[i * NUM_FOOTBALLER + j]);
 
             physics[i * NUM_FOOTBALLER + j] = teamAFootballers[i * NUM_FOOTBALLER + j];

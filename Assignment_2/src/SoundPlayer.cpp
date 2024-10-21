@@ -60,7 +60,7 @@ void SoundPlayer::playSound(const std::string& soundName) {
         Sound* sound = &sounds[soundName];
         sound->position = 0; // Start from the beginning
         playingSounds.push_back(sound);
-        std::cout << "Playing sound: " << soundName << std::endl; 
+        //std::cout << "Playing sound: " << soundName << std::endl; 
     } else {
         std::cerr << "Sound not found: " << soundName << std::endl;
     }

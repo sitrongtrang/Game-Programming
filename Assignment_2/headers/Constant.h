@@ -17,6 +17,15 @@ extern std::chrono::time_point<std::chrono::steady_clock> pauseTime;
 const int countdownDuration = 60;
 extern int pausedDuration;
 
+const char CHARACTER_SPRITE[2][256] = {
+    "./assets/Player/Slime-Sheet.png",
+    "./assets/Player/SlimeBlue-Sheet.png"
+};
+
+const char FOOTBALLER_SPRITE[2][256] = {
+    "./assets/Footballer/Footballer.png",
+    "./assets/Footballer/Footballer2.png"
+};
 enum GameState
 {
     INTRODUCTION,
