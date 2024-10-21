@@ -6,6 +6,11 @@ InputManager::InputManager() {
     char_num[1] = 0;  // For player 2
 }
 
+void InputManager::newGame() {
+    char_num[0] = 0;  
+    char_num[1] = 0;
+}
+
 void InputManager::setCharacters(Character** character_1, Character** character_2) {
     p1_character_list = character_1;
     p2_character_list = character_2;

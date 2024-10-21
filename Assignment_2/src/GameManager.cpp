@@ -63,6 +63,7 @@ void GameManager::newGame(InputManager* inputManager) {
         physics[2 * NUM_FOOTBALLER * NUM_CHAR + 5 + i] = goalAEdges[i];
         physics[2 * NUM_FOOTBALLER * NUM_CHAR + 8 + i] = goalBEdges[i];
     }
+    
     inputManager->setCharacters(teamACharacters, teamBCharacters);
 }
 

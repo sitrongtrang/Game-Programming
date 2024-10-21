@@ -227,6 +227,7 @@ int main(int, char **)
         else if (state == GameState::NEW_GAME) 
         {
             gameManager->newGame(inputManager);
+            inputManager->newGame();
             state = GameState::PLAYING;
         }
         else if (game_paused)

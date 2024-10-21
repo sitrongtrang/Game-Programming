@@ -19,6 +19,7 @@ protected:
     void stopPlayer(Character * player) const;
 
 public:
+    void newGame();
     void input(SDL_Keycode key);
     void release(SDL_Keycode key);
     void stopPlayerIfNoKeysPressed(Character *player) const;
