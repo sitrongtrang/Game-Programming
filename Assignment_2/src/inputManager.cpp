@@ -56,13 +56,14 @@ void InputManager::changePlayer(int player, PlayerAction action)  {
     // return player_list[char_num];
 }
 
+
 void InputManager::movePlayer(Character * player, PlayerAction action) const {
     switch (action)
     {
-        case (PlayerAction::MoveUp): player->setVel({0 * MOVEMENT_FORCE, MOVEMENT_FORCE}); break;
-        case (PlayerAction::MoveDown): player->setVel({0 * MOVEMENT_FORCE, -1 * MOVEMENT_FORCE}); break;
-        case (PlayerAction::MoveLeft): player->setVel({-1 * MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
-        case (PlayerAction::MoveRight): player->setVel({MOVEMENT_FORCE, 0 * MOVEMENT_FORCE}); break;
+        case (PlayerAction::MoveUp): player->setVel({player->getVel().x, MOVEMENT_FORCE}); break;
+        case (PlayerAction::MoveDown): player->setVel({player->getVel().x, -1 * MOVEMENT_FORCE}); break;
+        case (PlayerAction::MoveLeft): player->setVel({-1 * MOVEMENT_FORCE, player->getVel().y}); break;
+        case (PlayerAction::MoveRight): player->setVel({MOVEMENT_FORCE, player->getVel().y}); break;
         default: return;
     }
 }
