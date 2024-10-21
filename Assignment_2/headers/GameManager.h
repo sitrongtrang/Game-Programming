@@ -10,8 +10,6 @@
 #include "inputManager.h"
 #include "utils.h"
 
-const int MAX_PHYSICS_OBJECTS = 20; // Maximum number of physics objects
-
 class GameManager {
 private:
     static GameManager* instance;
@@ -22,9 +20,11 @@ private:
     Character* teamBCharacters[NUM_CHAR];  
     Footballer* teamAFootballers[NUM_FOOTBALLER * NUM_CHAR];
     Footballer* teamBFootballers[NUM_FOOTBALLER * NUM_CHAR];
-    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR + 5]; 
+    Physics* physics[2 * NUM_FOOTBALLER * NUM_CHAR + 11]; 
 
     Surface* topEdge, *bottomEdge, *leftEdge, *rightEdge;
+
+    Surface* goalAEdges[3], *goalBEdges[3];
 
     Wind* wind; 
 
@@ -35,7 +35,7 @@ private:
 public:
     static GameManager* getInstance();
 
-    void update(float deltaTime);
+    void update(float deltaTime, int& score1, int& score2);
     SDL_Surface* GetSurf();
 
     void newGame(InputManager* inputManager);
@@ -45,7 +45,8 @@ public:
     Physics* getPhysicsObject(int index) const;
     Character** getTeamACharacters();  
     Character** getTeamBCharacters();
-    int getPhysicsObjectCount() const { return MAX_PHYSICS_OBJECTS; }
+    int getPhysicsObjectCount() const;
+    void ballInGoal(int& score1, int& score2);
 
     Wind* getWind() const { return wind; }
 };

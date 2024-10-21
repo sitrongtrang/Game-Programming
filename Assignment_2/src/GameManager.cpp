@@ -11,6 +11,13 @@ GameManager::GameManager() {
     leftEdge = new Surface({-1.5f, 0.0f}, {1.0f, 0.0f}, 1.0f, SCREEN_HEIGHT);
     rightEdge = new Surface({1.5f, 0.0f}, {-1.0f, 0.0f}, 1.0f, SCREEN_HEIGHT);
 
+    goalAEdges[0] = new Surface({-0.85f, 0.2f}, {0.0f, 1.0f}, 0.2f, 0.1f);
+    goalAEdges[1] = new Surface({-0.95f, 0.0f}, {1.0f, 0.0f}, 0.1f, 0.4f);
+    goalAEdges[2] = new Surface({-0.85f, -0.2f}, {0.0f, -1.0f}, 0.2f, 0.1f);
+
+    goalBEdges[0] = new Surface({0.85f, 0.2f}, {0.0f, 1.0f}, 0.2f, 0.1f);
+    goalBEdges[1] = new Surface({0.95f, 0.0f}, {-1.0f, 0.0f}, 0.1f, 0.4f);
+    goalBEdges[2] = new Surface({0.85f, -0.2f}, {0.0f, -1.0f}, 0.2f, 0.1f);
 }
 
 GameManager* GameManager::getInstance() {
@@ -52,10 +59,14 @@ void GameManager::newGame(InputManager* inputManager) {
     physics[2 * NUM_FOOTBALLER * NUM_CHAR + 3] = leftEdge;
     physics[2 * NUM_FOOTBALLER * NUM_CHAR + 4] = rightEdge;
 
+    for (int i = 0; i < 3; i++) {
+        physics[2 * NUM_FOOTBALLER * NUM_CHAR + 5 + i] = goalAEdges[i];
+        physics[2 * NUM_FOOTBALLER * NUM_CHAR + 8 + i] = goalBEdges[i];
+    }
     inputManager->setCharacters(teamACharacters, teamBCharacters);
 }
 
-void GameManager::update(float deltaTime) {
+void GameManager::update(float deltaTime, int& score1, int& score2) {
     
     wind->update(deltaTime);
     ball->applyForce(wind->getDirection());
@@ -72,14 +83,27 @@ void GameManager::update(float deltaTime) {
         object->update(deltaTime); 
     }
 
-    for (int i = 0; i < 2 * NUM_FOOTBALLER * NUM_CHAR + 5; i++) {
-        for (int j = 0; j < 2 * NUM_FOOTBALLER * NUM_CHAR + 5; j++) {
+    for (int i = 0; i < 2 * NUM_FOOTBALLER * NUM_CHAR + 11; i++) {
+        for (int j = 0; j < 2 * NUM_FOOTBALLER * NUM_CHAR + 11; j++) {
             if (physics[i]->detectCollision(physics[j])) {
                 physics[i]->handleCollision(physics[j]);
                 // printf("Object %d collides with object %d", i, j);
+                if (physics[i] == ball) {
+                    if (physics[j] == goalAEdges[1] && ball->getPos().x < 0.9) {
+                        ball->setPos({0.0f, 0.0f});
+                        ball->setVel({0.0f, 0.0f});
+                        score2++;
+                    }
+                    if (physics[j] == goalBEdges[1] && ball->getPos().x > -0.9) {
+                        ball->setPos({0.0f, 0.0f});
+                        ball->setVel({0.0f, 0.0f});
+                        score1++;
+                    }
+                }
             }
         }
     }
+    
 }
 
 Character* GameManager::getTeamACharacter(int index) const {
@@ -97,11 +121,17 @@ Character* GameManager::getTeamBCharacter(int index) const {
 }
 
 Physics* GameManager::getPhysicsObject(int index) const {
-    if (index >= 0 && index < MAX_PHYSICS_OBJECTS) {
+    if (index >= 0 && index < 2 * NUM_FOOTBALLER * NUM_CHAR + 11) {
         return physics[index];
     }
     return nullptr; 
 }
+
+// void GameManager::ballInGoal(int& score1, int& score2) {
+//     if (ball->getPos().x > 0.75 && ball->getPos().x < 0.95 && ball->getPos().y > -0.15 && ball->getPos().y < 0.15) 
+//         score1++;
+
+// }
 
 Character** GameManager::getTeamACharacters() { return teamACharacters; }  
 Character** GameManager::getTeamBCharacters() { return teamBCharacters; }

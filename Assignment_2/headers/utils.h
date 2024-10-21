@@ -32,7 +32,7 @@ const float BALL_MASS = 0.1f;
 
 // Wind stats
 const float COOLDOWN = 5.0f;
-const float WIND_FORCE_MAX = 0.2f;
+const float WIND_FORCE_MAX = 0.05f;
 const float WIND_DURATION_MAX = 1.0f;
 const int WIND_CHANCE = 10;
 const int CHANGE_WIND_DIR_CHANCE =  5;
