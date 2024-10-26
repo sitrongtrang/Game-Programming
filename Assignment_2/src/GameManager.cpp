@@ -70,7 +70,7 @@ void GameManager::newGame(InputManager* inputManager) {
 void GameManager::update(float deltaTime, int& score1, int& score2, SoundPlayer* soundPlayer) {
     
     wind->update(deltaTime);
-    // ball->applyForce(wind->getDirection());
+    ball->applyForce(wind->getDirection());
   
     for (Character* character : teamACharacters) {
         character->update(deltaTime); 
