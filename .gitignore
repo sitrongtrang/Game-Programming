@@ -12,3 +12,5 @@
 *.x86_64
 *.hex
 *.exe
+.vscode
+./Assignment_2
