@@ -1,12 +1,13 @@
 import pygame
 GROUND_LEVEL=300
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, speed=1, jump_power=1, gravity=0.01):
+    def __init__(self,all_sprites, x, y, width, height, speed=1, jump_power=1, gravity=0.01):
         super().__init__()
-
+        all_sprites.add(self)
+        self.all_sprites = all_sprites
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
-        self.image.fill((0, 255, 0))  # Green color for placeholder
+        self.image.fill((0, 0, 255))  # Green color for placeholder
 
         # Rect attributes
         self.rect = self.image.get_rect()
@@ -41,12 +42,6 @@ class Character(pygame.sprite.Sprite):
             self.vel_y = 0
 
     def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.move_left()
-        if keys[pygame.K_RIGHT]:
-            self.move_right()
-        if keys[pygame.K_SPACE]:
-            self.jump()
+
 
         self.apply_gravity()

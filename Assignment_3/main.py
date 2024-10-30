@@ -1,4 +1,3 @@
-# Game loop example
 from classes.Player import Player
 import pygame
 
@@ -8,9 +7,11 @@ pygame.init()
 screen_width, screen_height = 800, 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("My Game")
-player = Player(100, 300, 50, 50)
 
-all_sprites = pygame.sprite.Group(player, player.bullets)
+# Create a main sprite group to include all sprites
+all_sprites = pygame.sprite.Group()
+player = Player(all_sprites,100, 300, 50, 50)
+
 
 # Game loop example
 running = True
@@ -18,19 +19,20 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_f:  # Press 'F' to shoot
-                player.shoot()
 
     # Update sprites
     all_sprites.update()
 
     # Draw everything
     screen.fill((30, 30, 30))
+
+    # Draw all sprites (including player and bullets)
     all_sprites.draw(screen)
+
+    # Draw bullets explicitly if needed (not necessary if bullets are in all_sprites)
+    # player.bullets.draw(screen)  # You can keep this line if you want to draw separately
+
     pygame.display.flip()
-
-
 
 # Quit Pygame
 pygame.quit()
