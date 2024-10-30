@@ -1,5 +1,6 @@
 import pygame
 import random
+from classes.BaseItem import BaseItem
 
 # Initialize Pygame
 pygame.init()
@@ -29,6 +30,8 @@ platforms = [
     pygame.Rect(500, SCREEN_HEIGHT - 300, platform_width, platform_height)
 ]
 platform_speed = 2
+
+item = BaseItem(500, 550, 50, 50)
 
 # Game loop
 running = True
@@ -71,6 +74,8 @@ while running:
         if platform.right < 0:  # Reset platform when it moves off screen
             platform.x = SCREEN_WIDTH
             platform.y = random.randint(200, SCREEN_HEIGHT - 50)
+
+    item.draw(screen)
 
     pygame.display.flip()
     clock.tick(30)
