@@ -1,6 +1,7 @@
 import pygame
 import random
-
+from classes.MapSpawner import MapSpawner
+import os
 # Initialize Pygame
 pygame.init()
 
@@ -33,6 +34,8 @@ platform_speed = 2
 # Game loop
 running = True
 clock = pygame.time.Clock()
+mapSpawner = MapSpawner(screen, 1)
+mapSpawner.spawnMap(0)
 
 while running:
     screen.fill(WHITE)
@@ -44,33 +47,9 @@ while running:
                 character_speed_y = jump_speed
                 is_jumping = True
 
-    # Character movement
-    character_speed_y += gravity
-    character_y += character_speed_y
+    mapSpawner.renderMap()
 
-    # Ground check
-    if character_y + CHARACTER_HEIGHT > SCREEN_HEIGHT:
-        character_y = SCREEN_HEIGHT - CHARACTER_HEIGHT
-        character_speed_y = 0
-        is_jumping = False
 
-    # Platform collision
-    character_rect = pygame.Rect(character_x, character_y, CHARACTER_WIDTH, CHARACTER_HEIGHT)
-    for platform in platforms:
-        if character_rect.colliderect(platform) and character_speed_y > 0:
-            character_y = platform.y - CHARACTER_HEIGHT
-            character_speed_y = 0
-            is_jumping = False
-
-    # Draw character
-    pygame.draw.rect(screen, BLUE, character_rect)
-
-    # Draw platforms and move them
-    for platform in platforms:
-        pygame.draw.rect(screen, GREEN, platform)
-        if platform.right < 0:  # Reset platform when it moves off screen
-            platform.x = SCREEN_WIDTH
-            platform.y = random.randint(200, SCREEN_HEIGHT - 50)
 
     pygame.display.flip()
     clock.tick(30)
