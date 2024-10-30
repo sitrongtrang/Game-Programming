@@ -5,7 +5,6 @@ from .Character import Character
 class Player(Character):
     def __init__(self,all_sprites, x, y, width, height):
         super().__init__(all_sprites,x, y, width, height)
-        self.hp=100;
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 500  # Cooldown in milliseconds for shooting
@@ -20,7 +19,7 @@ class Player(Character):
         # Create a temporary hitbox in front of the player
         if self.sword_timer == 0:  # Only create if there's no active sword hitbox
             sword_x = self.rect.right if self.direction == "right" else self.rect.left - 40
-            self.sword_hitbox = pygame.Rect(sword_x, self.rect.y + 10, 400, 20)  # Adjusted size
+            self.sword_hitbox = pygame.Rect(sword_x, self.rect.y + 10, 40, 20)  # Adjusted size
             self.sword_timer = self.sword_duration
 
     def shoot(self):
@@ -70,6 +69,7 @@ class Player(Character):
             hit_enemies = [enemy for enemy in enemies if self.sword_hitbox.colliderect(enemy.rect)]
             for enemy in hit_enemies:
                 enemy.take_damage(1)  # Assuming enemies have a take_damage method
+                print("take dame")
 
 
 class Bullet(pygame.sprite.Sprite):

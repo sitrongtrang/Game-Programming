@@ -1,10 +1,13 @@
 import pygame
 GROUND_LEVEL=300
 class Character(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, width, height, speed=5, jump_power=15, gravity=1):
+    def __init__(self,all_sprites, x, y, width, height,hp=3, speed=5, jump_power=15, gravity=1):
         super().__init__()
+
         all_sprites.add(self)
         self.all_sprites = all_sprites
+
+        self.hp=hp
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
         self.image.fill((0, 0, 255))  # Green color for placeholder
@@ -43,3 +46,8 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         self.apply_gravity()
+
+    def take_damage(self,dame):
+        self.hp-=dame
+        if self.hp <= 0:
+            self.kill()

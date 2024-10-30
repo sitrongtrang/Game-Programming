@@ -1,5 +1,6 @@
 from classes.Player import Player
 from classes.Character import Character
+from classes.CollisionManager import CollisionManager
 import pygame
 
 
@@ -12,10 +13,18 @@ def main():
     pygame.display.set_caption("My Game")
 
     all_sprites = pygame.sprite.Group()
-    player = Player(all_sprites, 100, 300, 50, 50)
+    enemies = pygame.sprite.Group()
 
-    # Example enemy (You would create an Enemy class similarly to Player)
-    enemy = Character(all_sprites, 500, 300, 50, 50)  # Just a placeholder enemy for now
+    # Initialize player and add to all_sprites
+    player = Player(all_sprites, 100, 300, 50, 50)
+    all_sprites.add(player)
+
+    # Initialize enemy, add to both enemies and all_sprites
+    enemy = Character(all_sprites, 500, 300, 50, 50)
+    enemies.add(enemy)
+
+    # Initialize Collision Manager
+    collision_manager = CollisionManager(player, enemies)
 
     # Game loop
     clock = pygame.time.Clock()
@@ -25,13 +34,15 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Update sprites
+        # Handle collisions
+        collision_manager.update()
+
+        # Update all sprites at once
         all_sprites.update()
 
-        # Draw everything
+        # Draw everything at once
         screen.fill((30, 30, 30))
         all_sprites.draw(screen)
-
         pygame.display.flip()
 
         # Control the frame rate
