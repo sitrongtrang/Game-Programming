@@ -23,7 +23,7 @@ class MainMenu:
         self.choose_level_button = MenuButton(
             150, 350, 1, (0, 0, 0), 24, "CHOOSE LEVEL"
         )
-        self.setting_button = MenuButton(150, 400, 1, (0, 0, 0), 24, "SETTING")
+        self.setting_button = MenuButton(150, 400, 1, (0, 0, 0), 24, "SETTINGS")
         self.quit_button = MenuButton(150, 450, 1, (0, 0, 0), 24, "QUIT")
         self.background_music_button = MenuButton(
             150, 350, 1, (0, 0, 0), 24, "MUSIC: OFF"
