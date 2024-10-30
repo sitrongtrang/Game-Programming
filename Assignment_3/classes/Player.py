@@ -5,10 +5,8 @@ from .Character import Character
 class Player(Character):
     def __init__(self,all_sprites, x, y, width, height):
         super().__init__(all_sprites,x, y, width, height)
-
+        self.hp=100;
         # Attributes for attacking
-
-
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 500  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time
@@ -82,7 +80,7 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((10, 5))
         self.image.fill((255, 0, 0))  # Red color for bullets
         self.rect = self.image.get_rect(center=(x, y))
-        self.speed = 1 if direction == "right" else -1  # Set speed based on direction
+        self.speed = 8 if direction == "right" else -8  # Set speed based on direction
 
     def update(self):
         self.rect.x += self.speed  # Move bullet in the set direction

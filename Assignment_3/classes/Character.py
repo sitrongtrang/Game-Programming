@@ -1,7 +1,7 @@
 import pygame
 GROUND_LEVEL=300
 class Character(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, width, height, speed=1, jump_power=1, gravity=0.01):
+    def __init__(self,all_sprites, x, y, width, height, speed=5, jump_power=15, gravity=1):
         super().__init__()
         all_sprites.add(self)
         self.all_sprites = all_sprites
@@ -42,6 +42,4 @@ class Character(pygame.sprite.Sprite):
             self.vel_y = 0
 
     def update(self):
-
-
         self.apply_gravity()
