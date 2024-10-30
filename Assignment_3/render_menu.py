@@ -6,6 +6,7 @@ from classes.GameMenu import GameMenu
 from classes.PauseMenu import PauseMenu
 from classes.GameOverMenu import GameOverMenu
 
+##! delete after finalize game
 # running = True
 pygame.init()
 
