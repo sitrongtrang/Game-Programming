@@ -8,4 +8,4 @@ class ItemBox:
         self.item = item
 
     def update(self):
-        
+        pass

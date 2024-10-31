@@ -1,6 +1,6 @@
 import pygame
-from classes.Player import Player
-from classes.Enemy import Enemy
+from classes.Characters.Player import Player
+from classes.Characters.Enemy import Enemy
 from classes.CollisionManager import CollisionManager
 from classes.Items.BaseItem import BaseItem
 
