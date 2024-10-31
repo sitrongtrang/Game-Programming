@@ -1,4 +1,4 @@
 {
-    "background_music": true,
-    "sound_effect": true
+    "background_music": false,
+    "sound_effect": false
 }

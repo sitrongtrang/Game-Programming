@@ -50,6 +50,8 @@ class PauseMenu:
         self.state = 0
 
     def updateSettingFile(self, value_to_update, new_value):
+        with open("data/settings/settings.json") as file:
+            settings = json.load(file)
         settings[value_to_update] = new_value
         with open("data/settings/settings.json", "w") as file:
             json.dump(settings, file, indent=4)
@@ -66,7 +68,16 @@ class PauseMenu:
 
     def update(self, game_state):
         self.checkInput(game_state)
+
         if self.isSetting:
+            with open("data/settings/settings.json") as file:
+                settings = json.load(file)
+            self.background_music_is_on = settings.get(
+                "background_music", self.background_music_is_on
+            )
+            self.sound_effect_is_on = settings.get(
+                "sound_effect", self.sound_effect_is_on
+            )
             self.drawOptionMenu()
         else:
             self.drawPauseMenu()
@@ -76,7 +87,7 @@ class PauseMenu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if self.isSetting:
                         if self.state > 0:
@@ -88,7 +99,7 @@ class PauseMenu:
                             self.state -= 1
                         else:
                             self.state = 3
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     if self.isSetting:
                         if self.state < 2:
                             self.state += 1
@@ -99,22 +110,14 @@ class PauseMenu:
                             self.state += 1
                         else:
                             self.state = 0
-                if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+                elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                     game_state["pause"] = False
                     game_state["game"] = True
-                if event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RETURN:
                     if self.state == 0:
                         if self.isSetting:
-                            self.background_music_is_on = (
-                                not self.background_music_is_on
-                            )
                             self.updateSettingFile(
-                                "background_music", self.background_music_is_on
-                            )
-                            self.background_music_button.text = (
-                                "MUSIC: OFF"
-                                if not self.background_music_is_on
-                                else "MUSIC: ON"
+                                "background_music", not self.background_music_is_on
                             )
                         else:
                             game_state["pause"] = False
@@ -122,14 +125,10 @@ class PauseMenu:
                             self.pause_time += (
                                 pygame.time.get_ticks() - self.pause_time_start
                             )
-                    if self.state == 1:
+                    elif self.state == 1:
                         if self.isSetting:
-                            self.sound_effect_is_on = not self.sound_effect_is_on
                             self.updateSettingFile(
-                                "sound_effect", self.sound_effect_is_on
-                            )
-                            self.sound_effect_button.text = (
-                                "SFX: OFF" if not self.sound_effect_is_on else "SFX: ON"
+                                "sound_effect", not self.sound_effect_is_on
                             )
                         else:
                             game_state["pause"] = False
@@ -138,24 +137,24 @@ class PauseMenu:
                             self.pause_time = 0
                             self.updateCharacterFile("coin", 0)
                             self.updateCharacterFile("current_hp")
-                    if self.state == 2:
+                    elif self.state == 2:
                         if self.isSetting:
                             self.isSetting = False
                         else:
                             self.isSetting = True
-                    if self.state == 3:
+                    elif self.state == 3:
                         game_state["pause"] = False
                         game_state["menu"] = True
                         self.start_time = None
                         self.pause_time = 0
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.resume_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True
                     self.pause_time = pygame.time.get_ticks() - self.pause_time_start
 
-                if self.restart_button.is_clicked(event.pos):
+                elif self.restart_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True
                     self.start_time = pygame.time.get_ticks()
@@ -163,30 +162,22 @@ class PauseMenu:
                     self.updateCharacterFile("coin", 0)
                     self.updateCharacterFile("current_hp")
 
-                if self.option_button.is_clicked(event.pos):
+                elif self.option_button.is_clicked(event.pos):
                     self.isSetting = True
-                if self.main_menu_button.is_clicked(event.pos):
+                elif self.main_menu_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["menu"] = True
                     self.start_time = None
                     self.pause_time = 0
-                if self.background_music_button.is_clicked(event.pos):
-                    self.background_music_is_on = not self.background_music_is_on
+                elif self.background_music_button.is_clicked(event.pos):
                     self.updateSettingFile(
-                        "background_music", self.background_music_is_on
+                        "background_music", not self.background_music_is_on
                     )
-                    self.background_music_button.text = (
-                        "MUSIC: OFF" if not self.background_music_is_on else "MUSIC: ON"
-                    )
-                if self.sound_effect_button.is_clicked(event.pos):
-                    self.sound_effect_is_on = not self.sound_effect_is_on
-                    self.updateSettingFile("sound_effect", self.sound_effect_is_on)
-                    self.sound_effect_button.text = (
-                        "SFX: OFF" if not self.sound_effect_is_on else "SFX: ON"
-                    )
-                if self.back_button.is_clicked(event.pos):
+                elif self.sound_effect_button.is_clicked(event.pos):
+                    self.updateSettingFile("sound_effect", not self.sound_effect_is_on)
+                elif self.back_button.is_clicked(event.pos):
                     self.isSetting = False
-                if self.main_menu_button.is_clicked(event.pos):
+                elif self.main_menu_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["menu"] = True
                     self.start_time = None
@@ -225,6 +216,12 @@ class PauseMenu:
         # background.fill((0, 0, 0))
         # background.set_alpha(128)
         # self.screen.blit(background, (0, 0))
+        self.background_music_button.text = "MUSIC: " + (
+            "OFF" if not self.background_music_is_on else "ON"
+        )
+        self.sound_effect_button.text = "SFX: " + (
+            "OFF" if not self.sound_effect_is_on else "ON"
+        )
         if self.state == 0:
             self.background_music_button.drawHoverButton(self.screen)
             self.sound_effect_button.drawButton(self.screen)

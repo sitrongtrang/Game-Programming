@@ -36,11 +36,15 @@ class MainMenu:
         self.state = 0
 
     def updateSettingFile(self, value_to_update, new_value):
+        with open("data/settings/settings.json") as setting_file:
+            settings = json.load(setting_file)
         settings[value_to_update] = new_value
         with open("data/settings/settings.json", "w") as file:
             json.dump(settings, file, indent=4)
 
     def updateCharacterFile(self, value_to_update, new_value):
+        with open("data/stat/character.json") as file:
+            character = json.load(file)
         character[value_to_update] = new_value
         with open("data/stat/character.json", "w") as file:
             json.dump(character, file, indent=4)
@@ -55,8 +59,8 @@ class MainMenu:
         elif self.is_setting:
             with open("data/settings/settings.json") as setting_file:
                 settings = json.load(setting_file)
-            self.background_music_is_on = settings.get("background_music", False)
-            self.sound_effect_is_on = settings.get("sound_effect", False)
+            self.background_music_is_on = settings["background_music"]
+            self.sound_effect_is_on = settings["sound_effect"]
             self.screen.fill((0, 0, 0))
             self.drawBackground()
             self.drawSettingMenu()
@@ -104,11 +108,8 @@ class MainMenu:
                 elif event.key == pygame.K_RETURN:
                     if self.state == 0:
                         if self.is_setting:
-                            self.background_music_is_on = (
-                                not self.background_music_is_on
-                            )
                             self.updateSettingFile(
-                                "background_music", self.background_music_is_on
+                                "background_music", not self.background_music_is_on
                             )
                         elif self.is_choosing_level:
                             game_state["menu"] = False
@@ -120,9 +121,8 @@ class MainMenu:
                             self.state = 0
                     elif self.state == 1:
                         if self.is_setting:
-                            self.sound_effect_is_on = not self.sound_effect_is_on
                             self.updateSettingFile(
-                                "sound_effect", self.sound_effect_is_on
+                                "sound_effect", not self.sound_effect_is_on
                             )
                         elif self.is_choosing_level:
                             game_state["menu"] = False
@@ -158,13 +158,11 @@ class MainMenu:
                     self.is_choosing_level = True
                     self.state = 0
                 elif self.background_music_button.is_clicked(event.pos):
-                    self.background_music_is_on = not self.background_music_is_on
                     self.updateSettingFile(
-                        "background_music", self.background_music_is_on
+                        "background_music", not self.background_music_is_on
                     )
                 elif self.sfx_button.is_clicked(event.pos):
-                    self.sound_effect_is_on = not self.sound_effect_is_on
-                    self.updateSettingFile("sound_effect", self.sound_effect_is_on)
+                    self.updateSettingFile("sound_effect", not self.sound_effect_is_on)
                 elif self.back_button.is_clicked(event.pos):
                     self.is_setting = False
                     self.state = 0
