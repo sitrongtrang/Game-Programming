@@ -36,11 +36,15 @@ class MainMenu:
         self.state = 0
 
     def updateSettingFile(self, value_to_update, new_value):
+        with open("data/settings/settings.json") as setting_file:
+            settings = json.load(setting_file)
         settings[value_to_update] = new_value
         with open("data/settings/settings.json", "w") as file:
             json.dump(settings, file, indent=4)
 
     def updateCharacterFile(self, value_to_update, new_value):
+        with open("data/stat/character.json") as file:
+            character = json.load(file)
         character[value_to_update] = new_value
         with open("data/stat/character.json", "w") as file:
             json.dump(character, file, indent=4)
@@ -53,6 +57,10 @@ class MainMenu:
             self.drawBackground()
             self.drawChooseLevelMenu()
         elif self.is_setting:
+            with open("data/settings/settings.json") as setting_file:
+                settings = json.load(setting_file)
+            self.background_music_is_on = settings["background_music"]
+            self.sound_effect_is_on = settings["sound_effect"]
             self.screen.fill((0, 0, 0))
             self.drawBackground()
             self.drawSettingMenu()
@@ -100,11 +108,8 @@ class MainMenu:
                 elif event.key == pygame.K_RETURN:
                     if self.state == 0:
                         if self.is_setting:
-                            self.background_music_is_on = (
-                                not self.background_music_is_on
-                            )
                             self.updateSettingFile(
-                                "background_music", self.background_music_is_on
+                                "background_music", not self.background_music_is_on
                             )
                         elif self.is_choosing_level:
                             game_state["menu"] = False
@@ -116,9 +121,8 @@ class MainMenu:
                             self.state = 0
                     elif self.state == 1:
                         if self.is_setting:
-                            self.sound_effect_is_on = not self.sound_effect_is_on
                             self.updateSettingFile(
-                                "sound_effect", self.sound_effect_is_on
+                                "sound_effect", not self.sound_effect_is_on
                             )
                         elif self.is_choosing_level:
                             game_state["menu"] = False
@@ -154,13 +158,11 @@ class MainMenu:
                     self.is_choosing_level = True
                     self.state = 0
                 elif self.background_music_button.is_clicked(event.pos):
-                    self.background_music_is_on = not self.background_music_is_on
                     self.updateSettingFile(
-                        "background_music", self.background_music_is_on
+                        "background_music", not self.background_music_is_on
                     )
                 elif self.sfx_button.is_clicked(event.pos):
-                    self.sound_effect_is_on = not self.sound_effect_is_on
-                    self.updateSettingFile("sound_effect", self.sound_effect_is_on)
+                    self.updateSettingFile("sound_effect", not self.sound_effect_is_on)
                 elif self.back_button.is_clicked(event.pos):
                     self.is_setting = False
                     self.state = 0
@@ -250,39 +252,3 @@ class MainMenu:
             self.level_two_button.drawButton(self.screen)
             self.return_button.drawHoverButton(self.screen)
         pygame.display.flip()
-
-
-# def main_menu():
-#     global start_ticks
-#     while True:
-#         main_menu_background = pygame.image.load('sprites/main_menu_background.jpg')
-#         main_menu_background = pygame.transform.scale(main_menu_background, (screen_width, screen_height))
-
-#         small_background = pygame.transform.smoothscale(main_menu_background, (screen_width // 8, screen_height // 8))
-#         blurred_background = pygame.transform.smoothscale(small_background, (screen_width, screen_height))
-
-#         screen.blit(blurred_background, (0, 0))
-
-#         draw_text('WHACK A ZOMBIE', big_font, PRESET_COLOURS["white"], screen, screen_width // 2, 150)
-#         start_button = Menu_Button(screen_width // 2 - 125, 275,1,PRESET_COLOURS["black"],40, "START")
-#         start_button.draw(screen)
-
-#         quit_button = Menu_Button(screen_width // 2 - 125/1.25, 375,1.25,PRESET_COLOURS["black"],36, "QUIT")
-#         quit_button.draw(screen)
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 if start_button.is_clicked(event.pos):
-#                     start_ticks = pygame.time.get_ticks()
-#                     return
-#                 if quit_button.is_clicked(event.pos):
-#                     pygame.quit()
-#                     sys.exit()
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_ESCAPE:
-#                     pygame.quit()
-#                     sys.exit()
-
-#         pygame.display.flip()

@@ -41,8 +41,6 @@ class GameMenu:
 
     ##? draw main menu
     def drawGameMenu(self, pause_time):
-        # how to render 2 images on top of each other image at 0,0 0,1
-        # self.screen.blit(self.hp_bar.image_at(0, 0, 1), (0, 0))
 
         self.drawHpBar()
         self.drawHpFrame()

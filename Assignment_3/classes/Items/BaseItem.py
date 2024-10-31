@@ -1,4 +1,5 @@
 import pygame
+from data import constant
 
 
 class BaseItem:
@@ -7,6 +8,7 @@ class BaseItem:
         self.height = height
         self.x = x
         self.y = y
+        self.duration = constant.item_duration
 
     def draw(self, screen):
         rect = pygame.Rect(self.x, self.y, self.width, self.height)
