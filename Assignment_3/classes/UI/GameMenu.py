@@ -1,7 +1,7 @@
 import pygame
 import sys
-from classes.MenuButton import MenuButton
-from classes.LevelButton import LevelButton
+from classes.UI.MenuButton import MenuButton
+from classes.UI.LevelButton import LevelButton
 from classes.Spritesheet import Spritesheet
 import json
 

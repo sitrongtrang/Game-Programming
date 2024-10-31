@@ -1,6 +1,6 @@
 import pygame
 import random
-from classes.BaseItem import BaseItem
+from classes.Items.BaseItem import BaseItem
 
 # Initialize Pygame
 pygame.init()

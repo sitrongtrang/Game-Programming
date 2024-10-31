@@ -1,10 +1,10 @@
 import pygame
 import sys
 from random import randint
-from classes.MainMenu import MainMenu
-from classes.GameMenu import GameMenu
-from classes.PauseMenu import PauseMenu
-from classes.GameOverMenu import GameOverMenu
+from classes.UI.MainMenu import MainMenu
+from classes.UI.GameMenu import GameMenu
+from classes.UI.PauseMenu import PauseMenu
+from classes.UI.GameOverMenu import GameOverMenu
 
 ##! delete after finalize game
 # running = True
