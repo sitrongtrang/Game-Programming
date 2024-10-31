@@ -2,12 +2,13 @@ import pygame
 from .Character import Character
 from .Bullet import Bullet
 
-class Player(Character):
+
+class Enemy(Character):
     def __init__(self,all_sprites, x, y, width, height):
         super().__init__(all_sprites,x, y, width, height)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
-        self.gun_speed = 500  # Cooldown in milliseconds for shooting
+        self.gun_speed = 5000  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time
         self.bullets = pygame.sprite.Group()
         self.sword_hitbox = None  # Placeholder for sword attack hitbox
@@ -29,26 +30,10 @@ class Player(Character):
             self.bullets.add(bullet)  # Add to bullet group
             self.last_shot_time = current_time
 
-    def handle_keys(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            self.move_left()
-            self.direction = "left"  # Set player direction
-        if keys[pygame.K_d]:
-            self.move_right()
-            self.direction = "right"  # Set player direction
-        if keys[pygame.K_w]:
-            self.jump()
-        if keys[pygame.K_m]:  # Sword attack key
-            self.sword_attack()
-        if keys[pygame.K_n]:  # Shoot key
-            self.shoot()
-
     def update(self):
         super().update()  # Update movement and gravity from Character class
-        self.handle_keys()
         self.bullets.update()  # Update bullets
-
+        self.shoot()
         # Update sword timer and deactivate hitbox when time runs out
         if self.sword_timer > 0:
             self.sword_timer -= 1
@@ -62,4 +47,6 @@ class Player(Character):
         # Draw sword hitbox if it's active
         if self.sword_hitbox:
             pygame.draw.rect(surface, (0, 0, 255), self.sword_hitbox)  # Draw the sword hitbox in blue
+
+
 
