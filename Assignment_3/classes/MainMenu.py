@@ -53,6 +53,10 @@ class MainMenu:
             self.drawBackground()
             self.drawChooseLevelMenu()
         elif self.is_setting:
+            with open("data/settings/settings.json") as setting_file:
+                settings = json.load(setting_file)
+            self.background_music_is_on = settings.get("background_music", False)
+            self.sound_effect_is_on = settings.get("sound_effect", False)
             self.screen.fill((0, 0, 0))
             self.drawBackground()
             self.drawSettingMenu()
