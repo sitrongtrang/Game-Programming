@@ -1,10 +1,12 @@
 import pygame
+import math
 from .Character import Character
-from .Bullet import Bullet
+from .Bullet import *
+
 
 class Player(Character):
-    def __init__(self,all_sprites, x, y, width, height):
-        super().__init__(all_sprites,x, y, width, height)
+    def __init__(self, all_sprites, x, y, width, height):
+        super().__init__(all_sprites, x, y, width, height)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 500  # Cooldown in milliseconds for shooting
@@ -24,9 +26,23 @@ class Player(Character):
 
     def shoot(self):
         current_time = pygame.time.get_ticks()
-        if self.has_gun and current_time - self.last_shot_time >= self.gun_speed:
-            bullet = Bullet(self.all_sprites,self.rect.centerx, self.rect.top, self.direction)
-            self.bullets.add(bullet)  # Add to bullet group
+        mouse_buttons = pygame.mouse.get_pressed()
+
+        if self.has_gun and mouse_buttons[0] and current_time - self.last_shot_time >= self.gun_speed:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+            # Update player direction based on mouse position
+            self.direction = "right" if mouse_x > self.rect.centerx else "left"
+
+            # Calculate angle toward the mouse position
+            direction_x = mouse_x - self.rect.centerx
+            direction_y = mouse_y - self.rect.centery
+            angle = math.atan2(direction_y, direction_x)
+
+            # Create bullet heading toward the mouse position with updated direction
+            bullet = Bullet_Player(self.all_sprites, self.rect.centerx, self.rect.centery, angle, self.direction)
+            self.bullets.add(bullet)
+
             self.last_shot_time = current_time
 
     def handle_keys(self):
@@ -41,12 +57,14 @@ class Player(Character):
             self.jump()
         if keys[pygame.K_m]:  # Sword attack key
             self.sword_attack()
-        if keys[pygame.K_n]:  # Shoot key
-            self.shoot()
 
     def update(self):
         super().update()  # Update movement and gravity from Character class
         self.handle_keys()
+
+        # Check for mouse button press to shoot
+        self.shoot()  # Call shoot method on update
+
         self.bullets.update()  # Update bullets
 
         # Update sword timer and deactivate hitbox when time runs out
@@ -62,4 +80,3 @@ class Player(Character):
         # Draw sword hitbox if it's active
         if self.sword_hitbox:
             pygame.draw.rect(surface, (0, 0, 255), self.sword_hitbox)  # Draw the sword hitbox in blue
-

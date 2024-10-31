@@ -1,6 +1,6 @@
 import pygame
 from .Character import Character
-from .Bullet import Bullet
+from .Bullet import Bullet_Enemy
 
 
 class Enemy(Character):
@@ -8,7 +8,7 @@ class Enemy(Character):
         super().__init__(all_sprites,x, y, width, height)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
-        self.gun_speed = 5000  # Cooldown in milliseconds for shooting
+        self.gun_speed = 500  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time
         self.bullets = pygame.sprite.Group()
         self.sword_hitbox = None  # Placeholder for sword attack hitbox
@@ -26,7 +26,7 @@ class Enemy(Character):
     def shoot(self):
         current_time = pygame.time.get_ticks()
         if self.has_gun and current_time - self.last_shot_time >= self.gun_speed:
-            bullet = Bullet(self.all_sprites,self.rect.centerx, self.rect.top, self.direction)
+            bullet = Bullet_Enemy(self.all_sprites,self.rect.centerx, self.rect.top, self.direction)
             self.bullets.add(bullet)  # Add to bullet group
             self.last_shot_time = current_time
 
