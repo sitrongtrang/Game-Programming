@@ -254,39 +254,3 @@ class MainMenu:
             self.level_two_button.drawButton(self.screen)
             self.return_button.drawHoverButton(self.screen)
         pygame.display.flip()
-
-
-# def main_menu():
-#     global start_ticks
-#     while True:
-#         main_menu_background = pygame.image.load('sprites/main_menu_background.jpg')
-#         main_menu_background = pygame.transform.scale(main_menu_background, (screen_width, screen_height))
-
-#         small_background = pygame.transform.smoothscale(main_menu_background, (screen_width // 8, screen_height // 8))
-#         blurred_background = pygame.transform.smoothscale(small_background, (screen_width, screen_height))
-
-#         screen.blit(blurred_background, (0, 0))
-
-#         draw_text('WHACK A ZOMBIE', big_font, PRESET_COLOURS["white"], screen, screen_width // 2, 150)
-#         start_button = Menu_Button(screen_width // 2 - 125, 275,1,PRESET_COLOURS["black"],40, "START")
-#         start_button.draw(screen)
-
-#         quit_button = Menu_Button(screen_width // 2 - 125/1.25, 375,1.25,PRESET_COLOURS["black"],36, "QUIT")
-#         quit_button.draw(screen)
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 if start_button.is_clicked(event.pos):
-#                     start_ticks = pygame.time.get_ticks()
-#                     return
-#                 if quit_button.is_clicked(event.pos):
-#                     pygame.quit()
-#                     sys.exit()
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_ESCAPE:
-#                     pygame.quit()
-#                     sys.exit()
-
-#         pygame.display.flip()
