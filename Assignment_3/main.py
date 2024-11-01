@@ -1,6 +1,6 @@
 import pygame
 import random
-from classes.Items.HealItem import HealItem
+from classes.Items.DmgItem import DmgItem
 from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
 from classes.CollisionManager import CollisionManager
@@ -33,7 +33,7 @@ platforms = [
     pygame.Rect(350, SCREEN_HEIGHT - 300, platform_width, platform_height)
 ]
 
-item = HealItem(400, 550, 50, 50)
+item = DmgItem(400, 550, 50, 50)
 items = [item]
 
 # Initialize Collision Manager
@@ -61,7 +61,8 @@ while running:
             platform.x = SCREEN_WIDTH
             platform.y = random.randint(200, SCREEN_HEIGHT - 50)
 
-    item.update(screen, 1000)
+    for item in items:
+        item.update(screen, items)
 
     pygame.display.flip()
     clock.tick(60)

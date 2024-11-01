@@ -12,6 +12,7 @@ class Character(pygame.sprite.Sprite):
         self.base_hp = hp
         self.dmg = dmg
         self.base_dmg = dmg
+        self.bullet = constant.BULLET_LIMIT
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
         self.image.fill((0, 0, 255))  # Green color for placeholder
@@ -66,3 +67,6 @@ class Character(pygame.sprite.Sprite):
 
     def setSpeed(self, speed):
         self.speed = min(speed, self.base_speed * constant.SPEED_INCREASE_COEFF)
+
+    def setBullet(self, bullet):
+        self.bullet = min(bullet, constant.BULLET_LIMIT)

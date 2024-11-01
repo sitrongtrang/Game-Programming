@@ -28,7 +28,11 @@ class Player(Character):
         current_time = pygame.time.get_ticks()
         mouse_buttons = pygame.mouse.get_pressed()
 
-        if self.has_gun and mouse_buttons[0] and current_time - self.last_shot_time >= self.gun_speed:
+        # if self.bullet > 0:
+        #     self.bullet -= 1
+
+        if self.has_gun and mouse_buttons[0] and current_time - self.last_shot_time >= self.gun_speed and self.bullet > 0:
+            self.bullet -= 1
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
             # Update player direction based on mouse position

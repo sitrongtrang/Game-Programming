@@ -8,7 +8,7 @@ class Enemy(Character):
         super().__init__(all_sprites, x, y, width, height, constant.ENEMY_HP, constant.ENEMY_DMG, constant.ENEMY_SPEED)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
-        self.gun_speed = 500  # Cooldown in milliseconds for shooting
+        self.gun_speed = 1000  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time
         self.bullets = pygame.sprite.Group()
         self.sword_hitbox = None  # Placeholder for sword attack hitbox
@@ -16,12 +16,27 @@ class Enemy(Character):
         self.sword_timer = 0
         self.direction = "right"
 
+        self.patrol_start = x - constant.PATROL_RANGE
+        self.patrol_end = x + constant.PATROL_RANGE
+        self.patrol_direction = 1
+
     def sword_attack(self):
         # Create a temporary hitbox in front of the player
         if self.sword_timer == 0:  # Only create if there's no active sword hitbox
             sword_x = self.rect.right if self.direction == "right" else self.rect.left - 40
             self.sword_hitbox = pygame.Rect(sword_x, self.rect.y + 10, 40, 20)  # Adjusted size
             self.sword_timer = self.sword_duration
+
+    def patrol(self):
+        if self.patrol_direction == 1 and self.rect.x >= self.patrol_end:
+            self.patrol_direction = -1 
+            self.direction = "left" 
+        elif self.patrol_direction == -1 and self.rect.x <= self.patrol_start:
+            self.patrol_direction = 1  
+            self.direction = "right"  
+
+        self.rect.x += self.patrol_direction * self.speed
+
 
     def shoot(self):
         current_time = pygame.time.get_ticks()
@@ -33,6 +48,7 @@ class Enemy(Character):
     def update(self):
         super().update()  # Update movement and gravity from Character class
         self.bullets.update()  # Update bullets
+        self.patrol()
         self.shoot()
         # Update sword timer and deactivate hitbox when time runs out
         if self.sword_timer > 0:

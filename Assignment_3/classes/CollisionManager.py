@@ -47,7 +47,7 @@ class CollisionManager:
 
     def character_item_collisions(self, char):
         for item in self.items:
-            if char.rect.colliderect(item.rect):
+            if item.rect and char.rect.colliderect(item.rect):
                 item.pickedUp(char)
 
                 
@@ -58,4 +58,4 @@ class CollisionManager:
         self.character_item_collisions(self.player)
         for enemy in self.enemies:
             self.character_platform_collisions(enemy)
-            self.character_item_collisions(enemy)
+
