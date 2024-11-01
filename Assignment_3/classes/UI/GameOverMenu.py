@@ -1,7 +1,7 @@
 import pygame
 import sys
-from classes.PauseButton import PauseButton
-from classes.LevelButton import LevelButton
+from classes.UI.PauseButton import PauseButton
+from classes.UI.LevelButton import LevelButton
 import json
 
 with open("data/stat/character.json") as file:

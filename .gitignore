@@ -14,3 +14,5 @@
 *.exe
 
 *.pyc
+.vscode
+./Assignment_2

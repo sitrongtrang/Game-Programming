@@ -1,6 +1,6 @@
 import pygame
 import sys
-from classes.PauseButton import PauseButton
+from classes.UI.PauseButton import PauseButton
 import json
 
 with open("data/settings/settings.json") as file:

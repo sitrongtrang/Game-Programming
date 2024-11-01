@@ -1,7 +1,7 @@
 import pygame
 import sys
-from classes.MenuButton import MenuButton
-from classes.LevelButton import LevelButton
+from classes.UI.MenuButton import MenuButton
+from classes.UI.LevelButton import LevelButton
 import json
 
 with open("data/settings/settings.json") as setting_file:
@@ -50,8 +50,8 @@ class MainMenu:
             json.dump(character, file, indent=4)
 
     ##? change screen menu
-    def update(self, game_state):
-        self.checkInput(game_state)
+    def update(self, game_state, game_manager):
+        self.checkInput(game_state, game_manager)
         if self.is_choosing_level:
             self.screen.fill((0, 0, 0))
             self.drawBackground()
@@ -70,7 +70,7 @@ class MainMenu:
             self.drawMainMenu()
 
     ##? handle input from player
-    def checkInput(self, game_state):
+    def checkInput(self, game_state, game_manager):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -114,6 +114,7 @@ class MainMenu:
                         elif self.is_choosing_level:
                             game_state["menu"] = False
                             game_state["game"] = True
+                            game_manager.new_game()
                             self.updateCharacterFile("level", "1-1")
                         else:
                             self.playSoundEffect()

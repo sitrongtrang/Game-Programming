@@ -2,10 +2,10 @@ import pygame
 import math
 
 
-class MenuButton:
+class PauseButton:
     def __init__(self, x, y, ratio, color, font, text):
         self.text = text
-        self.width = 500 / ratio
+        self.width = 250 / ratio
         self.height = 50 / ratio
         self.x = x
         self.y = y
@@ -26,7 +26,10 @@ class MenuButton:
         button_font = pygame.font.Font("fonts/font.ttf", self.font)
         text_surf = button_font.render(self.text, True, (255, 255, 255))
         text_rect = text_surf.get_rect(
-            midleft=(self.rect.x + 25, self.rect.y + self.rect.height // 2)
+            center=(
+                self.rect.x + self.rect.width // 2,
+                self.rect.y + self.rect.height // 2,
+            )
         )
 
         screen.blit(text_surf, text_rect)
@@ -38,7 +41,10 @@ class MenuButton:
         button_font = pygame.font.Font("fonts/font.ttf", self.font)
         text_surf = button_font.render(self.text, True, (255, 255, 255))
         text_rect = text_surf.get_rect(
-            midleft=(self.rect.x + 25, self.rect.y + self.rect.height // 2)
+            center=(
+                self.rect.x + self.rect.width // 2,
+                self.rect.y + self.rect.height // 2,
+            )
         )
 
         screen.blit(text_surf, text_rect)

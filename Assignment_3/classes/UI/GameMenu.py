@@ -1,7 +1,7 @@
 import pygame
 import sys
-from classes.MenuButton import MenuButton
-from classes.LevelButton import LevelButton
+from classes.UI.MenuButton import MenuButton
+from classes.UI.LevelButton import LevelButton
 from classes.Spritesheet import Spritesheet
 import json
 
@@ -10,22 +10,22 @@ with open("data/stat/character.json") as file:
 
 
 class GameMenu:
-    def __init__(self, screen, background_music, start_time):
+    def __init__(self, screen, background_music, start_time, game_manager):
         self.screen = screen
         self.background_music = background_music
         self.start_time = start_time
         self.hp_bar = Spritesheet("images/hp_bar.png")
         self.coin_image = Spritesheet("images/font.png")
-        self.coin = settings["coin"]
         self.level = settings["level"]
         self.currrent_hp = settings["current_hp"]
         self.max_hp = settings["max_hp"]
+        self.game_manager = game_manager
 
     ##? change screen menu
     def update(self, pause_time):
         with open("data/stat/character.json") as file:
             settings = json.load(file)
-        self.coin = settings["coin"]
+        self.coin = self.game_manager.player_coins
         self.level = settings["level"]
         self.current_hp = settings["current_hp"]
         self.drawGameMenu(pause_time)

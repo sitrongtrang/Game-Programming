@@ -1,10 +1,16 @@
 import pygame
 import sys
 from random import randint
-from classes.MainMenu import MainMenu
-from classes.GameMenu import GameMenu
-from classes.PauseMenu import PauseMenu
-from classes.GameOverMenu import GameOverMenu
+from classes.UI.MainMenu import MainMenu
+from classes.UI.GameMenu import GameMenu
+from classes.UI.PauseMenu import PauseMenu
+from classes.UI.GameOverMenu import GameOverMenu
+from classes.Items.DmgItem import DmgItem
+from classes.Characters.Player import Player
+from classes.Characters.Enemy import Enemy
+from classes.CollisionManager import CollisionManager
+from classes.GameManager import GameManager
+from classes.Coin import Coin
 
 ##! delete after finalize game
 # running = True
@@ -44,26 +50,27 @@ def blur_surface(surface, amount):
         array[:, 1:] = (array[:, 1:] + array[:, :-1]) // 2
     return surface
 
-
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
 def main():
     clock = pygame.time.Clock()
     running = True
+    game_manager = GameManager(screen)
     main_menu = MainMenu(screen, "images/menu_background_image.png", "", "")
-    game_menu = GameMenu(screen, "", None)
+    game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0)
     game_over_menu = GameOverMenu(screen, None, False)
     temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
-            main_menu.update(game_state)
+            main_menu.update(game_state, game_manager)
         elif game_state["game"]:
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
             screen.blit(temp_gameplay_test, (0, 0))
             game_menu.update(pause_menu.pause_time)
+            game_manager.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
