@@ -2,11 +2,11 @@ import pygame
 import math
 from .Character import Character
 from .Bullet import *
-
+from data import constant
 
 class Player(Character):
     def __init__(self, all_sprites, x, y, width, height):
-        super().__init__(all_sprites, x, y, width, height)
+        super().__init__(all_sprites, x, y, width, height, constant.PLAYER_HP, constant.PLAYER_DMG, constant.PLAYER_SPEED)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 500  # Cooldown in milliseconds for shooting

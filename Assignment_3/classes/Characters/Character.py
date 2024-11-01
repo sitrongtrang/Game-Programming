@@ -2,13 +2,16 @@ import pygame
 from data import constant
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, width, height, gravity=1):
+    def __init__(self,all_sprites, x, y, width, height, hp, dmg, speed, gravity=1):
         super().__init__()
 
         all_sprites.add(self)
         self.all_sprites = all_sprites
 
-        self.hp = constant.PLAYER_HP
+        self.hp = hp
+        self.base_hp = hp
+        self.dmg = dmg
+        self.base_dmg = dmg
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
         self.image.fill((0, 0, 255))  # Green color for placeholder
@@ -18,7 +21,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
 
         # Movement attributes
-        self.speed = constant.PLAYER_SPEED
+        self.speed = speed
+        self.base_speed = speed
         self.jump_power = constant.JUMP_POWER
         self.gravity = gravity
         self.vel_y = 0
@@ -48,7 +52,17 @@ class Character(pygame.sprite.Sprite):
     def update(self):
         self.apply_gravity()
 
-    def take_damage(self,dame):
-        self.hp-=dame
+    def take_damage(self, dmg):
+        self.hp -= dmg
         if self.hp <= 0:
             self.kill()
+
+    def setDmg(self, dmg):
+        # limit maximum damage to base damage * increase coefficient from item
+        self.dmg = min(dmg, self.base_dmg * constant.DMG_INCREASE_COEFF) 
+
+    def setHP(self, hp):
+        self.hp = min(hp, self.base_hp)
+
+    def setSpeed(self, speed):
+        self.speed = min(speed, self.base_speed * constant.SPEED_INCREASE_COEFF)

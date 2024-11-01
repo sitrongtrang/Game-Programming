@@ -7,4 +7,4 @@ class DmgItem(BaseItem):
         self.dmg_increase_coeff = constant.DMG_INCREASE_COEFF
 
     def takeEffect(self, character):
-        character.setDmg(character.getDmg() * self.dmg_increase_coeff)
+        character.setDmg(character.dmg * self.dmg_increase_coeff)

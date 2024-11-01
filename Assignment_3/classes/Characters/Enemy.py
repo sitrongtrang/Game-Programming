@@ -1,11 +1,11 @@
 import pygame
 from .Character import Character
 from .Bullet import Bullet_Enemy
-
+from data import constant
 
 class Enemy(Character):
     def __init__(self, all_sprites, x, y, width, height):
-        super().__init__(all_sprites,x, y, width, height)
+        super().__init__(all_sprites, x, y, width, height, constant.ENEMY_HP, constant.ENEMY_DMG, constant.ENEMY_SPEED)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 500  # Cooldown in milliseconds for shooting

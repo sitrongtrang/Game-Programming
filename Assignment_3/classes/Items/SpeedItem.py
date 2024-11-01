@@ -7,4 +7,4 @@ class SpeedItem(BaseItem):
         self.speed_increase_coeff = constant.SPEED_INCREASE_COEFF
 
     def takeEffect(self, character):
-        character.setSpeed(character.getSpeed() * self.speed_increase_coeff)
+        character.setSpeed(character.speed * self.speed_increase_coeff)

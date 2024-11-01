@@ -7,4 +7,4 @@ class HealItem(BaseItem):
         self.heal_amount = constant.HEAL_AMOUNT
 
     def takeEffect(self, character):
-        character.setHealth(character.getHealth() + self.heal_amount)
+        character.setHP(character.hp + self.heal_amount)
