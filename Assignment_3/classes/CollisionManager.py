@@ -33,25 +33,21 @@ class CollisionManager:
             if enemy.sword_hitbox and enemy.sword_hitbox.colliderect(self.player.rect):
                 self.player.take_damage(1)
 
-    def player_platform_collisions(self):
+    def character_platform_collisions(self, char):
         for platform in self.platforms:
-            if self.player.rect.colliderect(platform):
-                if self.player.vel_y > 0 and self.player.rect.bottom <= platform.top + self.player.vel_y:
-                    self.player.rect.bottom = platform.top
-                    self.player.vel_y = 0
-                    self.player.is_jumping = False
+            if char.rect.colliderect(platform):
+                if char.vel_y > 0 and char.rect.bottom <= platform.top + char.vel_y:
+                    char.rect.bottom = platform.top
+                    char.vel_y = 0
+                    char.is_jumping = False
+                elif char.vel_y < 0 and char.rect.top >= platform.bottom + char.vel_y:
+                    char.rect.top = platform.bottom
+                    char.vel_y = 0
 
-    def enemy_platform_collisions(self):
-        for platform in self.platforms:
-            for enemy in self.enemies:
-                if enemy.rect.colliderect(platform):
-                    if enemy.vel_y > 0 and enemy.rect.bottom <= platform.top + enemy.vel_y:
-                        enemy.rect.bottom = platform.top
-                        enemy.vel_y = 0
-                        enemy.is_jumping = False
                 
     def update(self):
         self.check_bullet_collisions()
         self.check_sword_collisions()
-        self.player_platform_collisions()
-        self.enemy_platform_collisions()
+        self.character_platform_collisions(self.player)
+        for enemy in self.enemies:
+            self.character_platform_collisions(enemy)
