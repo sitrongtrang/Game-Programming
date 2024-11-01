@@ -7,6 +7,7 @@ class Enemy(Character):
     def __init__(self, all_sprites, x, y, width, height):
         super().__init__(all_sprites, x, y, width, height, constant.ENEMY_HP, constant.ENEMY_DMG, constant.ENEMY_SPEED)
         # Attributes for attacking
+        self.image.fill((255, 0, 0))
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 1000  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time

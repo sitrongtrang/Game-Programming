@@ -10,7 +10,6 @@ class DmgItem(BaseItem):
         self.char_dmg_before = character.dmg
         self.char_picked_up = character
         character.setDmg(character.dmg * self.dmg_increase_coeff)
-        print(character.dmg)
 
     def update(self, screen, deltaTime):
         super().update(screen, deltaTime)

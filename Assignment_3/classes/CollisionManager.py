@@ -1,11 +1,13 @@
 import pygame
 
 class CollisionManager:
-    def __init__(self, player, enemies, platforms, items):
+    def __init__(self, player, enemies, platforms, items, coins, game_manager):
         self.player = player
         self.enemies = enemies
         self.platforms = platforms
         self.items = items
+        self.coins = coins
+        self.game_manager = game_manager
 
     def check_bullet_collisions(self):
         # Check for collisions between player bullets and enemies
@@ -50,12 +52,20 @@ class CollisionManager:
             if item.rect and char.rect.colliderect(item.rect):
                 item.pickedUp(char)
 
+    def character_coin_collisions(self, char):
+        for coin in self.coins:
+            if char.rect.colliderect(coin.rect):
+                self.game_manager.player_coins += 1
+                self.game_manager.coins.remove(coin)
+
                 
     def update(self):
         self.check_bullet_collisions()
         self.check_sword_collisions()
         self.character_platform_collisions(self.player)
         self.character_item_collisions(self.player)
+        self.character_coin_collisions(self.player)
+
         for enemy in self.enemies:
             self.character_platform_collisions(enemy)
 

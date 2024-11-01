@@ -15,7 +15,7 @@ class Character(pygame.sprite.Sprite):
         self.bullet = constant.BULLET_LIMIT
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
-        self.image.fill((0, 0, 255))  # Green color for placeholder
+        self.image.fill((0, 0, 255))  # Blue color for placeholder
 
         # Rect attributes
         self.rect = self.image.get_rect()

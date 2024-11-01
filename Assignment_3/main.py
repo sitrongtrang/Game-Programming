@@ -4,6 +4,8 @@ from classes.Items.DmgItem import DmgItem
 from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
 from classes.CollisionManager import CollisionManager
+from classes.GameManager import GameManager
+from classes.Coin import Coin
 
 # Initialize Pygame
 pygame.init()
@@ -12,11 +14,6 @@ pygame.init()
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Simple Platformer")
-
-# Colors
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
 
 all_sprites = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
@@ -36,33 +33,38 @@ platforms = [
 item = DmgItem(400, 550, 50, 50)
 items = [item]
 
+coin = Coin(370, 270, 20, 20)
+coins = [coin]
+
 # Initialize Collision Manager
-collision_manager = CollisionManager(player, enemies, platforms, items)
+game_manager = GameManager(screen, player, enemies, platforms, items, coins)
 
 # Game loop
 running = True
 clock = pygame.time.Clock()
 
 while running:
-    screen.fill(WHITE)
+    screen.fill((255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    collision_manager.update()
+    game_manager.update()
 
     all_sprites.update()
     all_sprites.draw(screen)
 
 
     for platform in platforms:
-        pygame.draw.rect(screen, GREEN, platform)
+        pygame.draw.rect(screen, (150, 75, 0), platform)
         if platform.right < 0:
             platform.x = SCREEN_WIDTH
             platform.y = random.randint(200, SCREEN_HEIGHT - 50)
 
-    for item in items:
-        item.update(screen, items)
+    # for item in items:
+    #     item.update(screen, items)
+
+    # coin.update(screen)
 
     pygame.display.flip()
     clock.tick(60)

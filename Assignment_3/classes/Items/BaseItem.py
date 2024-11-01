@@ -14,7 +14,7 @@ class BaseItem:
         self.previous_ticks = pygame.time.get_ticks()
 
     def draw(self, screen):
-        pygame.draw.rect(screen, (0, 255, 100), self.rect)
+        pygame.draw.rect(screen, (0, 255, 0), self.rect)
     
     def takeEffect(self, character):
         raise NotImplementedError
