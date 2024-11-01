@@ -1,4 +1,15 @@
-heal_amount = 50
-dmg_increase_coeff = 2
-speed_increase_coeff = 1.5
-item_duration = 5000
+GROUND_LEVEL = 550
+
+# Item stats
+HEAL_AMOUNT = 1
+DMG_INCREASE_COEFF = 2
+SPEED_INCREASE_COEFF = 1.5
+ITEM_APPEAR_DUR = 5000
+ITEM_EFFECT_DUR = 5000
+
+# Character base stats
+PLAYER_HP = 3
+ENEMY_HP = 1
+PLAYER_SPEED = 5
+ENEMY_SPEED = 2
+JUMP_POWER = 20

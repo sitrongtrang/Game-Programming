@@ -1,13 +1,14 @@
 import pygame
-GROUND_LEVEL=300
+from data import constant
+
 class Character(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, width, height, hp=3, speed=5, jump_power=15, gravity=1):
+    def __init__(self,all_sprites, x, y, width, height, gravity=1):
         super().__init__()
 
         all_sprites.add(self)
         self.all_sprites = all_sprites
 
-        self.hp=hp
+        self.hp = constant.PLAYER_HP
         # Placeholder sprite
         self.image = pygame.Surface((width, height))
         self.image.fill((0, 0, 255))  # Green color for placeholder
@@ -17,8 +18,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
 
         # Movement attributes
-        self.speed = speed
-        self.jump_power = jump_power
+        self.speed = constant.PLAYER_SPEED
+        self.jump_power = constant.JUMP_POWER
         self.gravity = gravity
         self.vel_y = 0
         self.is_jumping = False
@@ -39,8 +40,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.y += self.vel_y
 
         # Ground collision
-        if self.rect.y >= GROUND_LEVEL:
-            self.rect.y = GROUND_LEVEL
+        if self.rect.y >= constant.GROUND_LEVEL:
+            self.rect.y = constant.GROUND_LEVEL
             self.is_jumping = False
             self.vel_y = 0
 

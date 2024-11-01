@@ -1,9 +1,10 @@
 import pygame
 
 class CollisionManager:
-    def __init__(self, player, enemies):
+    def __init__(self, player, enemies, platforms):
         self.player = player
         self.enemies = enemies
+        self.platforms = platforms
 
     def check_bullet_collisions(self):
         # Check for collisions between player bullets and enemies
@@ -31,6 +32,26 @@ class CollisionManager:
         for enemy in self.enemies:
             if enemy.sword_hitbox and enemy.sword_hitbox.colliderect(self.player.rect):
                 self.player.take_damage(1)
+
+    def player_platform_collisions(self):
+        for platform in self.platforms:
+            if self.player.rect.colliderect(platform):
+                if self.player.vel_y > 0 and self.player.rect.bottom <= platform.top + self.player.vel_y:
+                    self.player.rect.bottom = platform.top
+                    self.player.vel_y = 0
+                    self.player.is_jumping = False
+
+    def enemy_platform_collisions(self):
+        for platform in self.platforms:
+            for enemy in self.enemies:
+                if enemy.rect.colliderect(platform):
+                    if enemy.vel_y > 0 and enemy.rect.bottom <= platform.top + enemy.vel_y:
+                        enemy.rect.bottom = platform.top
+                        enemy.vel_y = 0
+                        enemy.is_jumping = False
+                
     def update(self):
         self.check_bullet_collisions()
         self.check_sword_collisions()
+        self.player_platform_collisions()
+        self.enemy_platform_collisions()

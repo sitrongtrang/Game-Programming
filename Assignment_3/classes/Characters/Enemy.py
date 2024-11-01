@@ -4,7 +4,7 @@ from .Bullet import Bullet_Enemy
 
 
 class Enemy(Character):
-    def __init__(self,all_sprites, x, y, width, height):
+    def __init__(self, all_sprites, x, y, width, height):
         super().__init__(all_sprites,x, y, width, height)
         # Attributes for attacking
         self.has_gun = True  # Indicates if the player has a gun

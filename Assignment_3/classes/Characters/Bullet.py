@@ -1,7 +1,9 @@
 import pygame
 import math
+
+
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, direction="right"):
+    def __init__(self, all_sprites, x, y, direction="right"):
         super().__init__()
         self.all_sprites = all_sprites
         all_sprites.add(self)
