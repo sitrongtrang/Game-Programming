@@ -2,7 +2,7 @@ import pygame
 from data import constant
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self,all_sprites, x, y, width, height, hp, dmg, speed, gravity=1):
+    def __init__(self, all_sprites, x, y, width, height, hp, dmg, speed, gravity=1):
         super().__init__()
 
         all_sprites.add(self)
@@ -26,14 +26,18 @@ class Character(pygame.sprite.Sprite):
         self.base_speed = speed
         self.jump_power = constant.JUMP_POWER
         self.gravity = gravity
-        self.vel_y = 0
+        self.vel_x = 0  # Horizontal velocity
+        self.vel_y = 0  # Vertical velocity
         self.is_jumping = False
 
     def move_left(self):
-        self.rect.x -= self.speed
+        self.vel_x = -self.speed
 
     def move_right(self):
-        self.rect.x += self.speed
+        self.vel_x = self.speed
+
+    def stop(self):
+        self.vel_x = 0  # Stop horizontal movement
 
     def jump(self):
         if not self.is_jumping:
@@ -42,16 +46,20 @@ class Character(pygame.sprite.Sprite):
 
     def apply_gravity(self):
         self.vel_y += self.gravity
+
+    def update(self):
+        # Apply horizontal and vertical velocities to the character's position
+        self.rect.x += self.vel_x
         self.rect.y += self.vel_y
+
+        # Apply gravity effect
+        self.apply_gravity()
 
         # Ground collision
         if self.rect.y >= constant.GROUND_LEVEL:
             self.rect.y = constant.GROUND_LEVEL
             self.is_jumping = False
             self.vel_y = 0
-
-    def update(self):
-        self.apply_gravity()
 
     def take_damage(self, dmg):
         self.hp -= dmg
@@ -60,7 +68,7 @@ class Character(pygame.sprite.Sprite):
 
     def setDmg(self, dmg):
         # limit maximum damage to base damage * increase coefficient from item
-        self.dmg = min(dmg, self.base_dmg * constant.DMG_INCREASE_COEFF) 
+        self.dmg = min(dmg, self.base_dmg * constant.DMG_INCREASE_COEFF)
 
     def setHP(self, hp):
         self.hp = min(hp, self.base_hp)

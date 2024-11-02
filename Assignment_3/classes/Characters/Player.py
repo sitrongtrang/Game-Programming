@@ -48,14 +48,22 @@ class Player(Character):
 
     def handle_keys(self):
         keys = pygame.key.get_pressed()
+
+        # Check for horizontal movement
         if keys[pygame.K_a]:
             self.move_left()
             self.direction = "left"  # Set player direction
-        if keys[pygame.K_d]:
+        elif keys[pygame.K_d]:
             self.move_right()
             self.direction = "right"  # Set player direction
+        else:
+            self.stop()  # Stop horizontal movement if neither left nor right is pressed
+
+        # Check for jumping
         if keys[pygame.K_w]:
             self.jump()
+
+        # Sword attack
         if keys[pygame.K_m]:  # Sword attack key
             self.sword_attack()
 
