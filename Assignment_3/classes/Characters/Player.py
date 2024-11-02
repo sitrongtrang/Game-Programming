@@ -64,7 +64,7 @@ class Player(Character):
             self.jump()
 
         # Sword attack
-        if keys[pygame.K_m]:  # Sword attack key
+        if pygame.mouse.get_pressed()[2]:  # Index 2 represents the right mouse button
             self.sword_attack()
 
     def update(self):
