@@ -61,7 +61,7 @@ class GameManager:
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
         for platform in self.platforms:
-            pygame.draw.rect(self.screen, (150, 75, 0), platform)
+            pygame.draw.rect(self.screen, (150, 75, 0), (platform.x - self.camera_x, platform.y, platform.width, platform.height))
         for item in self.items:
             item.update(self.screen, self.items, self.camera_x)
         for coin in self.coins:

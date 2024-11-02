@@ -64,8 +64,8 @@ def main():
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
             screen.blit(temp_gameplay_test, (0, 0))
-            game_menu.update(pause_menu.pause_time)
             game_manager.update()
+            game_menu.update(pause_menu.pause_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False

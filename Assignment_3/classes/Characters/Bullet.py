@@ -16,11 +16,6 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.x > 800 or self.rect.x < 0:
             self.kill()
 
-    # def draw(self, camera_x):
-    #     self.rect.x -= camera_x
-    #     super().draw()
-    #     self.rect.x += camera_x
-
 
 class Bullet_Enemy(Bullet):
     def __init__(self,all_sprites, x, y, direction="right"):
