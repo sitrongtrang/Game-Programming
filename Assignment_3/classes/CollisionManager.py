@@ -24,6 +24,20 @@ class CollisionManager:
                     self.player.take_damage(enemy.dmg)
                     bullet.kill()  # Destroy bullet upon collision
 
+    def check_bullet_platform_collisions(self):
+        # Check for collisions between player bullets and platforms
+        for bullet in self.player.bullets:
+            for platform in self.platforms:
+                if bullet.rect.colliderect(platform):  # Remove '.rect' from platform
+                    bullet.kill()  # Destroy bullet upon collision with platform
+
+        # Check for collisions between enemy bullets and platforms
+        for enemy in self.enemies:
+            for bullet in enemy.bullets:
+                for platform in self.platforms:
+                    if bullet.rect.colliderect(platform):  # Remove '.rect' from platform
+                        bullet.kill()  # Destroy bullet upon collision with platform
+
     def check_sword_collisions(self):
         # Check for collisions between player's sword and enemies
         if self.player.sword_hitbox:
@@ -71,10 +85,29 @@ class CollisionManager:
                 self.game_manager.player_coins += 1
                 self.game_manager.coins.remove(coin)
 
-                
+    def check_player_enemy_collisions(self):
+        # Check for collisions between player and enemies
+        for enemy in self.enemies:
+            if self.player.rect.colliderect(enemy.rect):
+                # Check if the player is landing on top of the enemy
+                if self.player.vel_y > 0 and self.player.rect.bottom <= enemy.rect.top + abs(self.player.vel_y):
+                    # Player is stomping on the enemy
+                    # enemy.take_damage(self.player.dmg)  # Enemy takes damage
+                    self.player.vel_y = -10  # Bounce player up after stomp
+                else:
+                    # Handle side or head collisions (player takes damage)
+                    # self.player.take_damage(enemy.dmg)
+                    # Optional: knock back the player or enemy
+                    if self.player.rect.centerx < enemy.rect.centerx:
+                        self.player.rect.x -= 10  # Knock player back to the left
+                    else:
+                        self.player.rect.x += 10  # Knock player back to the right
+
     def update(self):
         self.check_bullet_collisions()
         self.check_sword_collisions()
         self.check_platform_collisions()
         self.character_item_collisions(self.player)
         self.character_coin_collisions(self.player)
+        self.check_player_enemy_collisions()
+        self.check_bullet_platform_collisions()
