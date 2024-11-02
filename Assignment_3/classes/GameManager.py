@@ -5,7 +5,7 @@ from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
 from classes.CollisionManager import CollisionManager
 from classes.Coin import Coin
-
+from classes.Characters.Boss import Boss
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
     def __init__(self, screen):
@@ -17,7 +17,7 @@ class GameManager:
 
         # Initialize player and add to all_sprites
         player = Player(self.all_sprites, 100, 550, 50, 50)
-        enemy = Enemy(self.all_sprites, 500, 550, 50, 50)
+        enemy = Boss(self.all_sprites, 500, 550, 50, 50)
         self.enemies.add(enemy)
 
         # Platform settings
