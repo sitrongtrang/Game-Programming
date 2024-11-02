@@ -8,8 +8,8 @@ class Coin():
         self.y = y
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (255, 255, 0), self.rect)
+    def draw(self, screen, camera_x=0):
+        pygame.draw.rect(screen, (255, 255, 0), (self.rect.x - camera_x, self.rect.y, self.width, self.height))
 
-    def update(self, screen):
-        self.draw(screen)
+    def update(self, screen, camera_x=0):
+        self.draw(screen, camera_x)

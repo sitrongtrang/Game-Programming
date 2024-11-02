@@ -13,17 +13,17 @@ class BaseItem:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.previous_ticks = pygame.time.get_ticks()
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (0, 255, 0), self.rect)
+    def draw(self, screen, camera_x=0):
+        pygame.draw.rect(screen, (0, 255, 0), (self.rect.x - camera_x, self.rect.y, self.width, self.height))
     
     def takeEffect(self, character):
         raise NotImplementedError
     
-    def update(self, screen, items):
+    def update(self, screen, items, camera_x=0):
         deltaTime = pygame.time.get_ticks() - self.previous_ticks
         self.previous_ticks = pygame.time.get_ticks()
         if not self.picked_up:
-            self.draw(screen)
+            self.draw(screen, camera_x)
             self.appear_duration -= deltaTime
             if self.appear_duration <= 0:
                 items.remove(self)
