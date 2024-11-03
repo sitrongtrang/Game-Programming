@@ -5,7 +5,7 @@ from data import constant
 
 class Boss(Enemy):
     def __init__(self, all_sprites, x, y, width, height):
-        super().__init__(all_sprites, x, y, width, height)
+        super().__init__(all_sprites, x, y, width, height, constant.BOSS_RANGE)
         # Customize boss-specific attributes
         self.hp = constant.BOSS_HP  # Higher HP for the boss
         self.damage = constant.BOSS_DMG  # Higher damage for the boss

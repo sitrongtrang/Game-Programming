@@ -49,22 +49,23 @@ class CollisionManager:
         for platform in self.platforms:
             if char.rect.colliderect(platform):
                 # Vertical collision: Check if character is falling onto the platform
-                if char.vel_y > 0 and char.rect.bottom <= platform.top + char.vel_y:
-                    char.rect.bottom = platform.top
+                if char.vel_y > 0 and char.rect.bottom <= platform.rect.top + char.vel_y:
+                    char.rect.bottom = platform.rect.top
                     char.vel_y = 0
                     char.is_jumping = False
                 # Vertical collision: Check if character hits the bottom of a platform while moving up
-                elif char.vel_y < 0 and char.rect.top >= platform.bottom + char.vel_y:
-                    char.rect.top = platform.bottom
+                elif char.vel_y < 0 and char.rect.top >= platform.rect.bottom + char.vel_y:
+                    char.rect.top = platform.rect.bottom
                     char.vel_y = 0
                 # Horizontal collision: Check if character hits the left side of the platform
-                elif char.vel_x > 0 and char.rect.right <= platform.left + char.vel_x:
-                    char.rect.right = platform.left
+                elif char.vel_x > 0 and char.rect.right <= platform.rect.left + char.vel_x:
+                    char.rect.right = platform.rect.left
                     char.vel_x = 0
                 # Horizontal collision: Check if character hits the right side of the platform
-                elif char.vel_x < 0 and char.rect.left >= platform.right + char.vel_x:
-                    char.rect.left = platform.right
+                elif char.vel_x < 0 and char.rect.left >= platform.rect.right + char.vel_x:
+                    char.rect.left = platform.rect.right
                     char.vel_x = 0
+                    
     def check_platform_collisions(self):
         for enemy in self.enemies:
             self.character_platform_collisions(enemy)

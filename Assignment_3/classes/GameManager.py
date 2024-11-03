@@ -5,6 +5,7 @@ from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
 from classes.CollisionManager import CollisionManager
 from classes.Coin import Coin
+from classes.Platform import Platform
 import random
 from classes.Characters.Boss import Boss
 class GameManager:
@@ -30,10 +31,11 @@ class GameManager:
         # Platform settings
         platform_width, platform_height = 100, 20
         self.platforms = []
-        for i in range(5):
+        for _ in range(5):
             platform_x = random.randint(0, self.total_bg_width - platform_width)
             platform_y = random.randint(600 // 2, 600 - platform_height)
-            self.platforms.append(pygame.Rect(platform_x, platform_y, platform_width, platform_height))
+            platform = Platform(platform_x, platform_y, platform_width, platform_height)
+            self.platforms.append(platform)
         
         self.camera_x = 0
 
@@ -61,7 +63,7 @@ class GameManager:
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
         for platform in self.platforms:
-            pygame.draw.rect(self.screen, (150, 75, 0), (platform.x - self.camera_x, platform.y, platform.width, platform.height))
+            platform.update(self.screen, self.camera_x)
         for item in self.items:
             item.update(self.screen, self.items, self.camera_x)
         for coin in self.coins:

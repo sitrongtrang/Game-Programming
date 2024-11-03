@@ -4,7 +4,7 @@ from .Bullet import Bullet_Enemy
 from data import constant
 
 class Enemy(Character):
-    def __init__(self, all_sprites, x, y, width, height):
+    def __init__(self, all_sprites, x, y, width, height, patrol_range=constant.PATROL_RANGE):
         super().__init__(all_sprites, x, y, width, height, constant.ENEMY_HP, constant.ENEMY_DMG, constant.ENEMY_SPEED)
         # Attributes for attacking
         self.image.fill((255, 0, 0))
@@ -17,8 +17,9 @@ class Enemy(Character):
         self.sword_timer = 0
         self.direction = "right"
 
-        self.patrol_start = x - constant.PATROL_RANGE
-        self.patrol_end = x + constant.PATROL_RANGE
+        self.patrol_range = patrol_range
+        self.patrol_start = x - self.patrol_range
+        self.patrol_end = x + self.patrol_range
         self.patrol_direction = 1
 
     def sword_attack(self):
@@ -29,6 +30,8 @@ class Enemy(Character):
             self.sword_timer = self.sword_duration
 
     def patrol(self):
+        if self.patrol_start == self.patrol_end:
+            return
         if self.patrol_direction == 1 and self.rect.x >= self.patrol_end:
             self.patrol_direction = -1 
             self.direction = "left" 

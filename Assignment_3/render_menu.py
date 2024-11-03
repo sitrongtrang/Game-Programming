@@ -52,9 +52,9 @@ def main():
     game_manager = GameManager(screen)
     main_menu = MainMenu(screen, "images/menu_background_image.png", "", "")
     game_menu = GameMenu(screen, "", None, game_manager)
-    pause_menu = PauseMenu(screen, None, None, 0)
+    pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False)
-    temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
+    # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
@@ -63,7 +63,7 @@ def main():
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
-            screen.blit(temp_gameplay_test, (0, 0))
+            # screen.blit(temp_gameplay_test, (0, 0))
             game_manager.update()
             game_menu.update(pause_menu.pause_time)
             for event in pygame.event.get():
