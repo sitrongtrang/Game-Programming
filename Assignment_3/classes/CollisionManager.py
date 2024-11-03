@@ -1,12 +1,7 @@
 import pygame
 
 class CollisionManager:
-    def __init__(self, player, enemies, platforms, items, coins, game_manager):
-        self.player = player
-        self.enemies = enemies
-        self.platforms = platforms
-        self.items = items
-        self.coins = coins
+    def __init__(self, game_manager):
         self.game_manager = game_manager
 
     def check_bullet_collisions(self):
@@ -104,6 +99,11 @@ class CollisionManager:
                         self.player.rect.x += 10  # Knock player back to the right
 
     def update(self):
+        self.player = self.game_manager.player
+        self.enemies = self.game_manager.enemies
+        self.platforms = self.game_manager.platforms
+        self.items = self.game_manager.items
+        self.coins = self.game_manager.coins
         self.check_bullet_collisions()
         self.check_sword_collisions()
         self.check_platform_collisions()

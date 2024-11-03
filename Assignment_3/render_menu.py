@@ -5,12 +5,7 @@ from classes.UI.MainMenu import MainMenu
 from classes.UI.GameMenu import GameMenu
 from classes.UI.PauseMenu import PauseMenu
 from classes.UI.GameOverMenu import GameOverMenu
-from classes.Items.DmgItem import DmgItem
-from classes.Characters.Player import Player
-from classes.Characters.Enemy import Enemy
-from classes.CollisionManager import CollisionManager
 from classes.GameManager import GameManager
-from classes.Coin import Coin
 
 ##! delete after finalize game
 # running = True
@@ -69,8 +64,8 @@ def main():
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
             screen.blit(temp_gameplay_test, (0, 0))
-            game_menu.update(pause_menu.pause_time)
             game_manager.update()
+            game_menu.update(pause_menu.pause_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
