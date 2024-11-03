@@ -48,19 +48,25 @@ class CollisionManager:
     def character_platform_collisions(self, char):
         for platform in self.platforms:
             if char.rect.colliderect(platform):
+                # Buffer to reduce overlapping issues
+                buffer = 1
+
                 # Vertical collision: Check if character is falling onto the platform
                 if char.vel_y > 0 and char.rect.bottom <= platform.rect.top + char.vel_y:
                     char.rect.bottom = platform.rect.top
                     char.vel_y = 0
                     char.is_jumping = False
+
                 # Vertical collision: Check if character hits the bottom of a platform while moving up
-                elif char.vel_y < 0 and char.rect.top >= platform.rect.bottom + char.vel_y:
+                elif char.vel_y < 0 and char.rect.top >= platform.rect.bottom + char.vel_y - buffer:
                     char.rect.top = platform.rect.bottom
                     char.vel_y = 0
+
                 # Horizontal collision: Check if character hits the left side of the platform
                 elif char.vel_x > 0 and char.rect.right <= platform.rect.left + char.vel_x:
                     char.rect.right = platform.rect.left
                     char.vel_x = 0
+
                 # Horizontal collision: Check if character hits the right side of the platform
                 elif char.vel_x < 0 and char.rect.left >= platform.rect.right + char.vel_x:
                     char.rect.left = platform.rect.right
