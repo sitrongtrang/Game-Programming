@@ -17,7 +17,6 @@ class Tilemap:
             self.rect = self.image.get_rect()
 
 
-
     def renderMap(self):
         m, n = self.map.shape
         for i in range(m):

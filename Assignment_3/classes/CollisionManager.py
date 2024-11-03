@@ -65,21 +65,22 @@ class CollisionManager:
                 elif char.vel_x < 0 and char.rect.left >= platform.rect.right + char.vel_x:
                     char.rect.left = platform.rect.right
                     char.vel_x = 0
-                    
+
     def check_platform_collisions(self):
         for enemy in self.enemies:
             self.character_platform_collisions(enemy)
         self.character_platform_collisions(self.player)
+
     def character_item_collisions(self, char):
         for item in self.items:
-            if item.rect and char.rect.colliderect(item.rect):
+            if item.image and char.rect.colliderect(item.rect):
                 item.pickedUp(char)
 
     def character_coin_collisions(self, char):
         for coin in self.coins:
             if char.rect.colliderect(coin.rect):
                 self.game_manager.player_coins += 1
-                self.game_manager.coins.remove(coin)
+                coin.kill()
 
     def check_player_enemy_collisions(self):
         # Check for collisions between player and enemies

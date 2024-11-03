@@ -20,6 +20,9 @@ class GameManager:
     
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.coins = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
+        self.platforms = pygame.sprite.Group()
 
         self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
         self.bg_images = [pygame.image.load(bg).convert() for bg in self.backgrounds]
@@ -34,25 +37,21 @@ class GameManager:
 
         # Platform settings
         platform_width, platform_height = 100, 20
-        self.platforms = []
         for _ in range(5):
             platform_x = random.randint(0, self.total_bg_width - platform_width)
             platform_y = random.randint(600 // 2, 600 - platform_height)
-            platform = Platform(platform_x, platform_y, platform_width, platform_height)
-            self.platforms.append(platform)
+            platform = Platform(self.all_sprites, platform_x, platform_y, platform_width, platform_height)
+            self.platforms.add(platform)
         
         self.camera_x = 0
 
-        item = DmgItem(400, 550, 50, 50)
-        items = [item]
+        item = DmgItem(self.all_sprites, 400, 550, 50, 50)
+        self.items.add(item)
 
-        coin = Coin(370, 270, 20, 20)
-        coins = [coin]
+        coin = Coin(self.all_sprites, 370, 270, 20, 20)
+        self.coins.add(coin)
 
         self.player = player
-        # self.platforms = platforms
-        self.items = items
-        self.coins = coins
         self.collision_manager = CollisionManager(self)
         self.player_coins = 0
     
@@ -63,13 +62,7 @@ class GameManager:
             bg_x = i * 800
             self.screen.blit(bg_image, (bg_x - self.camera_x, 0))
         self.all_sprites.update()
-        # self.all_sprites.draw(self.screen)
         for sprite in self.all_sprites:
-            self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
-        for platform in self.platforms:
-            platform.update(self.screen, self.camera_x)
-        for item in self.items:
-            item.update(self.screen, self.items, self.camera_x)
-        for coin in self.coins:
-            coin.update(self.screen, self.camera_x)
+            if sprite.image:
+                self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
         self.collision_manager.update()
