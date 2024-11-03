@@ -50,7 +50,7 @@ def main():
     clock = pygame.time.Clock()
     running = True
     game_manager = GameManager(screen)
-    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "")
+    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "", game_manager)
     game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False)
@@ -58,7 +58,7 @@ def main():
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
-            main_menu.update(game_state, game_manager)
+            main_menu.update(game_state)
         elif game_state["game"]:
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()

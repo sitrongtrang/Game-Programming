@@ -13,7 +13,11 @@ class GameManager:
     def __init__(self, screen):
         self.screen = screen
 
-    def new_game(self):
+    def new_game(self, level=""):
+        if level != "":
+            self.level = level
+        # load self.level, implement later with tilemap
+    
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
 

@@ -134,6 +134,7 @@ class PauseMenu:
                         else:
                             game_state["pause"] = False
                             game_state["game"] = True
+                            self.game_manager.new_game()
                             self.start_time = pygame.time.get_ticks()
                             self.pause_time = 0
                             self.updateCharacterFile("coin", 0)
@@ -158,6 +159,7 @@ class PauseMenu:
                 elif self.restart_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True
+                    self.game_manager.new_game()
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
                     self.updateCharacterFile("coin", 0)
