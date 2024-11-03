@@ -12,7 +12,7 @@ class DmgItem(BaseItem):
         self.char_picked_up = character
         character.setDmg(character.dmg * self.dmg_increase_coeff)
 
-    def update(self):
+    def update(self, camera_x=0):
         deltaTime = pygame.time.get_ticks() - self.previous_ticks
         self.previous_ticks = pygame.time.get_ticks()
         if not self.picked_up:

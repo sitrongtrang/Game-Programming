@@ -24,6 +24,5 @@ class Coin(pygame.sprite.Sprite):
     # def draw(self, screen, camera_x=0):
     #     pygame.draw.rect(screen, (255, 255, 0), (self.rect.x - camera_x, self.rect.y, self.width, self.height))
 
-    def update(self):
-    #     self.draw(screen, camera_x)
+    def update(self, camera_x=0):
         pass

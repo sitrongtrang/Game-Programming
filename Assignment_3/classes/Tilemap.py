@@ -11,6 +11,7 @@ class Tilemap:
             self.tileset = Tileset(tileSetFile, size)
         self.map = np.array(self.read_csv(mapFile))
         self.player_position = None
+        self.boss_position = None
         self.enemy_positions = []
         self.platform_positions = []
         self.item_positions = []
@@ -33,7 +34,6 @@ class Tilemap:
                     continue  # Empty space, no tile rendered
                 elif tile_value == 1:
                     # Platform tile
-                    # tile = self.tileset.tiles[tile_value]
                     self.platform_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
                 elif tile_value == 2:
                     # Player starting position
@@ -47,6 +47,9 @@ class Tilemap:
                 elif tile_value == 5:
                     # Coin spawn point
                     self.coin_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
+                elif tile_value == 6:
+                    # Boss spawn point
+                    self.boss_position = (j * constant.TILE_SIZE, i * constant.TILE_SIZE)
 
                 # tile = self.tileset.tiles[self.map[i, j]]
                 # self.image.blit(tile, (j*constant.TILE_SIZE, i*constant.TILE_SIZE))

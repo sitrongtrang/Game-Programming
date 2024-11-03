@@ -41,8 +41,8 @@ class Boss(Enemy):
             self.special_attack_timer = current_time
             self.last_special_attack_time = current_time  # Update last special attack time
 
-    def update(self):
-        super().update()  # Use the update logic from Enemy
+    def update(self, camera_x=0):
+        super().update(camera_x)  # Use the update logic from Enemy
         self.special_attack()  # Call the special attack function
 
         # Trigger enrage mode if HP is below a threshold

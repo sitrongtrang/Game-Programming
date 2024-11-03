@@ -49,9 +49,9 @@ class Enemy(Character):
             self.bullets.add(bullet)  # Add to bullet group
             self.last_shot_time = current_time
 
-    def update(self):
-        super().update()  # Update movement and gravity from Character class
-        self.bullets.update()  # Update bullets
+    def update(self, camera_x=0):
+        super().update(camera_x)  # Update movement and gravity from Character class
+        self.bullets.update(camera_x)  # Update bullets
         self.patrol()
         self.shoot()
         # Update sword timer and deactivate hitbox when time runs out

@@ -28,7 +28,7 @@ class BaseItem(pygame.sprite.Sprite):
     def takeEffect(self, character):
         raise NotImplementedError
     
-    def update(self):
+    def update(self, camera_x=0):
         deltaTime = pygame.time.get_ticks() - self.previous_ticks
         self.previous_ticks = pygame.time.get_ticks()
         if not self.picked_up:

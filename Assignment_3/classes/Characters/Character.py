@@ -47,7 +47,7 @@ class Character(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.vel_y += self.gravity
 
-    def update(self):
+    def update(self, camera_x=0):
         # Apply horizontal and vertical velocities to the character's position
         self.rect.x += self.vel_x
         self.rect.y += self.vel_y
@@ -60,6 +60,7 @@ class Character(pygame.sprite.Sprite):
             self.rect.y = constant.GROUND_LEVEL
             self.is_jumping = False
             self.vel_y = 0
+        
 
     def take_damage(self, dmg):
         self.hp -= dmg
