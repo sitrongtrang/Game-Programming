@@ -1,7 +1,8 @@
 import pygame
+from data import constant
 
 class Tileset:
-    def __init__(self, file, size = (32, 32), margin = 0, spacing = 0):
+    def __init__(self, file, size = (constant.TILE_SIZE, constant.TILE_SIZE), margin = 0, spacing = 0):
         self.file = file
         self.size = size
         self.margin = margin

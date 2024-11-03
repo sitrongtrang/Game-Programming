@@ -6,13 +6,14 @@ from classes.UI.GameMenu import GameMenu
 from classes.UI.PauseMenu import PauseMenu
 from classes.UI.GameOverMenu import GameOverMenu
 from classes.GameManager import GameManager
+from data import constant
 
 ##! delete after finalize game
 # running = True
 pygame.init()
 
-screen_width = 800
-screen_height = 600
+screen_width = constant.SCREEN_WIDTH
+screen_height = constant.SCREEN_HEIGHT
 
 BLUR_OVERLAY = (0, 0, 0, 130)
 PRESET_COLOURS = {
