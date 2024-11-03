@@ -28,7 +28,7 @@ class Player(Character):
         current_time = pygame.time.get_ticks()
         mouse_buttons = pygame.mouse.get_pressed()
 
-        if self.has_gun and mouse_buttons[0] and current_time - self.last_shot_time >= self.gun_speed and self.bullet > 0:
+        if self.has_gun and mouse_buttons[2] and current_time - self.last_shot_time >= self.gun_speed and self.bullet > 0:
             self.bullet -= 1
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -48,15 +48,23 @@ class Player(Character):
 
     def handle_keys(self):
         keys = pygame.key.get_pressed()
+
+        # Check for horizontal movement
         if keys[pygame.K_a]:
             self.move_left()
             self.direction = "left"  # Set player direction
-        if keys[pygame.K_d]:
+        elif keys[pygame.K_d]:
             self.move_right()
             self.direction = "right"  # Set player direction
+        else:
+            self.stop()  # Stop horizontal movement if neither left nor right is pressed
+
+        # Check for jumping
         if keys[pygame.K_w]:
             self.jump()
-        if keys[pygame.K_m]:  # Sword attack key
+
+        # Sword attack
+        if pygame.mouse.get_pressed()[0]:  # Index 2 represents the right mouse button
             self.sword_attack()
 
     def update(self):

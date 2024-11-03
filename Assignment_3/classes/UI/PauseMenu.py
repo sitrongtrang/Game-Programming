@@ -8,7 +8,7 @@ with open("data/settings/settings.json") as file:
 
 
 class PauseMenu:
-    def __init__(self, screen, start_time, pause_time_start, pause_time):
+    def __init__(self, screen, start_time, pause_time_start, pause_time, game_manager):
         self.screen = screen
         self.start_time = start_time
         self.pause_time = pause_time
@@ -48,6 +48,7 @@ class PauseMenu:
             screen.get_width() // 2 - 125, 400, 1, (0, 0, 0), 24, "BACK"
         )
         self.state = 0
+        self.game_manager = game_manager
 
     def updateSettingFile(self, value_to_update, new_value):
         with open("data/settings/settings.json") as file:
@@ -133,6 +134,7 @@ class PauseMenu:
                         else:
                             game_state["pause"] = False
                             game_state["game"] = True
+                            self.game_manager.new_game()
                             self.start_time = pygame.time.get_ticks()
                             self.pause_time = 0
                             self.updateCharacterFile("coin", 0)
@@ -157,6 +159,7 @@ class PauseMenu:
                 elif self.restart_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True
+                    self.game_manager.new_game()
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
                     self.updateCharacterFile("coin", 0)

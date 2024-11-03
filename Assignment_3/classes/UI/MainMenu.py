@@ -11,7 +11,7 @@ with open("data/stat/character.json") as character_file:
 
 
 class MainMenu:
-    def __init__(self, screen, background_image, background_music, sound_effect):
+    def __init__(self, screen, background_image, background_music, sound_effect, game_manager):
         self.screen = screen
         self.background_image = pygame.image.load(background_image)
         self.background_music = background_music
@@ -34,6 +34,7 @@ class MainMenu:
         self.level_two_button = LevelButton(325, 150, 1, (0, 0, 0), 24, "1 - 2")
         self.return_button = LevelButton(550, 150, 1, (0, 0, 0), 24, "BACK")
         self.state = 0
+        self.game_manager = game_manager
 
     def updateSettingFile(self, value_to_update, new_value):
         with open("data/settings/settings.json") as setting_file:
@@ -50,8 +51,8 @@ class MainMenu:
             json.dump(character, file, indent=4)
 
     ##? change screen menu
-    def update(self, game_state, game_manager):
-        self.checkInput(game_state, game_manager)
+    def update(self, game_state):
+        self.checkInput(game_state)
         if self.is_choosing_level:
             self.screen.fill((0, 0, 0))
             self.drawBackground()
@@ -70,7 +71,7 @@ class MainMenu:
             self.drawMainMenu()
 
     ##? handle input from player
-    def checkInput(self, game_state, game_manager):
+    def checkInput(self, game_state):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -114,7 +115,7 @@ class MainMenu:
                         elif self.is_choosing_level:
                             game_state["menu"] = False
                             game_state["game"] = True
-                            game_manager.new_game()
+                            self.game_manager.new_game("1-1")
                             self.updateCharacterFile("level", "1-1")
                         else:
                             self.playSoundEffect()
@@ -128,6 +129,7 @@ class MainMenu:
                         elif self.is_choosing_level:
                             game_state["menu"] = False
                             game_state["game"] = True
+                            self.game_manager.new_game("1-2")
                             self.updateCharacterFile("level", "1-2")
                         else:
                             self.playSoundEffect()
@@ -170,10 +172,12 @@ class MainMenu:
                 elif self.level_one_button.is_clicked(event.pos):
                     game_state["menu"] = False
                     game_state["game"] = True
+                    self.game_manager.new_game("1-1")
                     self.updateCharacterFile("level", "1-1")
                 elif self.level_two_button.is_clicked(event.pos):
                     game_state["menu"] = False
                     game_state["game"] = True
+                    self.game_manager.new_game("1-2")
                     self.updateCharacterFile("level", "1-2")
                 elif self.return_button.is_clicked(event.pos):
                     self.is_choosing_level = False

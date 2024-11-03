@@ -1,18 +1,14 @@
 import pygame
 import random
-from classes.Items.DmgItem import DmgItem
-from classes.Characters.Player import Player
-from classes.Characters.Enemy import Enemy
-from classes.CollisionManager import CollisionManager
 from classes.GameManager import GameManager
-from classes.Coin import Coin
+from data import constant
 
 # Initialize Pygame
 pygame.init()
 
 # Screen settings
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+screen = pygame.display.set_mode((constant.SCREEN_WIDTH, constant.SCREEN_HEIGHT))
 pygame.display.set_caption("Simple Platformer")
 
 # Initialize Game Manager

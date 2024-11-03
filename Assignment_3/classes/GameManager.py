@@ -1,52 +1,77 @@
 import pygame
-from .CollisionManager import CollisionManager
+from classes.Characters.Boss import Boss
 from classes.Items.DmgItem import DmgItem
 from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
-from classes.CollisionManager import CollisionManager
-from classes.Coin import Coin
+from .Coin import Coin
+from .Platform import Platform
+from .CollisionManager import CollisionManager
+from .Tilemap import Tilemap
+from data import constant
 
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
     def __init__(self, screen):
         self.screen = screen
 
-    def new_game(self):
+    def new_game(self, level=""):
+        if level != "":
+            self.level = level
+        # load self.level, implement later with tilemap
+        self.tile_map = Tilemap("", "data/levels/" + self.level + ".csv")
+        self.tile_map.renderMap()
+    
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.coins = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
+        self.platforms = pygame.sprite.Group()
 
-        # Initialize player and add to all_sprites
-        player = Player(self.all_sprites, 100, 550, 50, 50)
-        enemy = Enemy(self.all_sprites, 500, 550, 50, 50)
-        self.enemies.add(enemy)
+        if self.tile_map.player_position:
+            player_x, player_y = self.tile_map.player_position
+            self.player = Player(self.all_sprites, player_x, player_y, 32, 32)
 
-        # Platform settings
-        platform_width, platform_height = 100, 20
-        platforms = [
-            pygame.Rect(200, 450, platform_width, platform_height),
-            pygame.Rect(350, 300, platform_width, platform_height)
-        ]
+        # Initialize Enemies
+        for enemy_pos in self.tile_map.enemy_positions:
+            enemy_x, enemy_y = enemy_pos
+            enemy = Enemy(self.all_sprites, enemy_x, enemy_y, 32, 32)
+            self.enemies.add(enemy)
 
-        item = DmgItem(400, 550, 50, 50)
-        items = [item]
+        # Initialize Platforms
+        for platform_pos in self.tile_map.platform_positions:
+            platform_x, platform_y = platform_pos
+            platform = Platform(self.all_sprites, platform_x, platform_y, 32, 32)
+            self.platforms.add(platform)
 
-        coin = Coin(370, 270, 20, 20)
-        coins = [coin]
+        # Initialize Items
+        for item_pos in self.tile_map.item_positions:
+            item_x, item_y = item_pos
+            item = DmgItem(self.all_sprites, item_x, item_y, 32, 32)
+            self.items.add(item)
 
-        self.player = player
-        self.platforms = platforms
-        self.items = items
-        self.coins = coins
-        self.collision_manager = CollisionManager(player, self.enemies, platforms, items, coins, self)
+        # Initialize Coins
+        for coin_pos in self.tile_map.coin_positions:
+            coin_x, coin_y = coin_pos
+            coin = Coin(self.all_sprites, coin_x, coin_y, 32, 32)
+            self.coins.add(coin)
+
+        self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
+        self.bg_images = [pygame.image.load(bg).convert() for bg in self.backgrounds]
+
+        # Calculate the total width of all background images combined
+        self.total_bg_width = len(self.bg_images) * constant.SCREEN_WIDTH
+
+        self.collision_manager = CollisionManager(self)
         self.player_coins = 0
     
     def update(self):
+        self.player.rect.x = max(0, min(self.player.rect.x, self.total_bg_width - 50))
+        self.camera_x = max(0, min(self.player.rect.x - constant.SCREEN_WIDTH // 2, self.total_bg_width - constant.SCREEN_WIDTH))
+        for i, bg_image in enumerate(self.bg_images):
+            bg_x = i * constant.SCREEN_WIDTH
+            self.screen.blit(bg_image, (bg_x - self.camera_x, 0))
         self.all_sprites.update()
-        self.all_sprites.draw(self.screen)
-        for platform in self.platforms:
-            pygame.draw.rect(self.screen, (150, 75, 0), platform)
-        for item in self.items:
-            item.update(self.screen, self.items)
-        for coin in self.coins:
-            coin.update(self.screen)
+        for sprite in self.all_sprites:
+            if sprite.image:
+                self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
         self.collision_manager.update()

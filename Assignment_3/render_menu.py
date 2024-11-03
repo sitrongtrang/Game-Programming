@@ -5,19 +5,15 @@ from classes.UI.MainMenu import MainMenu
 from classes.UI.GameMenu import GameMenu
 from classes.UI.PauseMenu import PauseMenu
 from classes.UI.GameOverMenu import GameOverMenu
-from classes.Items.DmgItem import DmgItem
-from classes.Characters.Player import Player
-from classes.Characters.Enemy import Enemy
-from classes.CollisionManager import CollisionManager
 from classes.GameManager import GameManager
-from classes.Coin import Coin
+from data import constant
 
 ##! delete after finalize game
 # running = True
 pygame.init()
 
-screen_width = 800
-screen_height = 600
+screen_width = constant.SCREEN_WIDTH
+screen_height = constant.SCREEN_HEIGHT
 
 BLUR_OVERLAY = (0, 0, 0, 130)
 PRESET_COLOURS = {
@@ -55,22 +51,22 @@ def main():
     clock = pygame.time.Clock()
     running = True
     game_manager = GameManager(screen)
-    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "")
+    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "", game_manager)
     game_menu = GameMenu(screen, "", None, game_manager)
-    pause_menu = PauseMenu(screen, None, None, 0)
+    pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False)
-    temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
+    # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
-            main_menu.update(game_state, game_manager)
+            main_menu.update(game_state)
         elif game_state["game"]:
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
-            screen.blit(temp_gameplay_test, (0, 0))
-            game_menu.update(pause_menu.pause_time)
+            # screen.blit(temp_gameplay_test, (0, 0))
             game_manager.update()
+            game_menu.update(pause_menu.pause_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False

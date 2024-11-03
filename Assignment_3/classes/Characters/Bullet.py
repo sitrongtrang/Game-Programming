@@ -1,6 +1,6 @@
 import pygame
 import math
-
+from data import constant
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, all_sprites, x, y, direction="right"):
@@ -13,7 +13,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = 8 if direction == "right" else -8  # Set speed based on direction
 
     def update(self):
-        if self.rect.x > 800 or self.rect.x < 0:
+        if self.rect.x > constant.SCREEN_WIDTH or self.rect.x < 0:
             self.kill()
 
 
