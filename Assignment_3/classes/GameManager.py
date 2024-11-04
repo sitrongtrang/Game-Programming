@@ -9,7 +9,7 @@ from .Platform import Platform
 from .CollisionManager import CollisionManager
 from .Tilemap import Tilemap
 from data import constant
-
+from .Shop import Shop
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
     def __init__(self, screen):
@@ -65,7 +65,9 @@ class GameManager:
             self.coins.add(coin)
 
         # TODO: Initialize Shop
-        
+        if self.tile_map.shop_positions: 
+            shop_x, shop_y = self.tile_map.shop_positions
+            self.shop = Shop(self.all_sprites, shop_x, shop_y, constant.TILE_SIZE, constant.TILE_SIZE)
         
         self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
         self.bg_images = [pygame.image.load(bg).convert() for bg in self.backgrounds]
