@@ -79,3 +79,7 @@ class Character(pygame.sprite.Sprite):
 
     def setBullet(self, bullet):
         self.bullet = min(bullet, constant.BULLET_LIMIT)
+
+    def draw(self, screen, camera_x=0):
+        screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
+        

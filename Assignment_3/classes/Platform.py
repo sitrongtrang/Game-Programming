@@ -19,6 +19,6 @@ class Platform(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
-    def update(self, camera_x=0):
-        pass
+    def draw(self, screen, camera_x=0):
+        screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
 

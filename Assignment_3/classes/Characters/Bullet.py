@@ -12,11 +12,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = 8 if direction == "right" else -8  # Set speed based on direction
 
-    def update(self, camera_x=0):
-        # if self.rect.x > constant.SCREEN_WIDTH or self.rect.x < 0:
-        #     self.kill()
-        # screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
-        pass
+    def draw(self, screen, camera_x=0):
+        screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
 
 
 class Bullet_Enemy(Bullet):

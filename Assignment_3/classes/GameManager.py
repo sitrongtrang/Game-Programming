@@ -19,9 +19,7 @@ class GameManager:
     def new_game(self, level=""):
         if level != "":
             self.level = level
-        # load self.level, implement later with tilemap
-        # self.tile_map = Tilemap("", "data/levels/" + self.level + ".csv")
-        # self.tile_map.renderMap()
+
         self.mapSpawner = MapSpawner(self.screen, 1)
         self.mapSpawner.spawnMap(0)
 
@@ -72,10 +70,6 @@ class GameManager:
         self.boss = Boss(self.all_sprites, 1000, 300, 50, 50)
         self.enemies.add(self.boss)
 
-        # self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
-        # self.bg_images = [pygame.image.load(bg).convert() for bg in self.backgrounds]
-
-        # # Calculate the total width of all background images combined
         self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
 
         self.collision_manager = CollisionManager(self)
@@ -84,13 +78,9 @@ class GameManager:
     def update(self):
         self.player.rect.x = max(0, min(self.player.rect.x, self.total_bg_width - self.player.rect.width))
         self.camera_x = max(0, min(self.player.rect.x - constant.SCREEN_WIDTH // 2, self.total_bg_width - constant.SCREEN_WIDTH))
-        # for i, bg_image in enumerate(self.bg_images):
-        #     bg_x = i * constant.SCREEN_WIDTH
-        #     self.screen.blit(bg_image, (bg_x - self.camera_x, 0))
         self.mapSpawner.renderMap(self.camera_x)
         for sprite in self.all_sprites:
-            if sprite.image:
-                self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
+            sprite.draw(self.screen, self.camera_x)
         self.all_sprites.update(self.camera_x)
         self.collision_manager.update()
         self.player_is_dead = self.player not in self.all_sprites

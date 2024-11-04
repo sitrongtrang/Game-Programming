@@ -60,13 +60,13 @@ class Enemy(Character):
         else:
             self.sword_hitbox = None  # Remove sword hitbox after duration
 
-    def draw(self, surface):
+    def draw(self, surface, camera_x=0):
         # Draw the player character
-        super().draw(surface)  # Call the draw method from the Character class
+        super().draw(surface, camera_x)  # Call the draw method from the Character class
 
         # Draw sword hitbox if it's active
         if self.sword_hitbox:
-            pygame.draw.rect(surface, (0, 0, 255), self.sword_hitbox)  # Draw the sword hitbox in blue
+            pygame.draw.rect(surface, (0, 0, 255), (self.sword_hitbox.x - camera_x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height))  # Draw the sword hitbox in blue
 
 
 
