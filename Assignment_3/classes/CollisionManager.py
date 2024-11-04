@@ -38,12 +38,12 @@ class CollisionManager:
         if self.player.sword_hitbox:
             for enemy in self.enemies:
                 if self.player.sword_hitbox.colliderect(enemy.rect):
-                    enemy.take_damage(1)
+                    enemy.take_damage(self.player.dmg)
 
         # Check for collisions between enemy swords and player
         for enemy in self.enemies:
             if enemy.sword_hitbox and enemy.sword_hitbox.colliderect(self.player.rect):
-                self.player.take_damage(1)
+                self.player.take_damage(self.player.dmg)
 
     def character_platform_collisions(self, char):
         for platform in self.platforms:
