@@ -6,6 +6,7 @@ from classes.UI.GameMenu import GameMenu
 from classes.UI.PauseMenu import PauseMenu
 from classes.UI.GameOverMenu import GameOverMenu
 from classes.GameManager import GameManager
+from classes.SoundPlayer import SoundPlayer
 from data import constant
 
 ##! delete after finalize game
@@ -26,6 +27,8 @@ PRESET_COLOURS = {
     "heavy_green": (24, 175, 24),
 }
 
+menu_music_played = False
+bg_music_played = False
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Mario")
@@ -46,21 +49,52 @@ def blur_surface(surface, amount):
         array[:, 1:] = (array[:, 1:] + array[:, :-1]) // 2
     return surface
 
+
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
+
+def setup_sound():
+    SoundPlayer.get_instance().load_sound("click", "assets/musics/click.wav")
+    pass
+
+def play_menu_music():
+    global menu_music_played 
+    if not menu_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music.mp3")
+        SoundPlayer.get_instance().set_music_volume(1.0)
+        menu_music_played = True
+    
+def play_bg_music():
+    global bg_music_played
+    if not bg_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music2.mp3")
+        SoundPlayer.get_instance().set_music_volume(1.0)
+        bg_music_played = True
+
 def main():
     clock = pygame.time.Clock()
     running = True
+    setup_sound()
     game_manager = GameManager(screen)
-    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "", game_manager)
+    main_menu = MainMenu(
+        screen, "images/menu_background_image.png", "", "", game_manager
+    )
     game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False, game_manager)
     # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
+
+    # Init soundplayer
+
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
+            play_menu_music()
+            # SoundPlayer.get_instance().play_sound("menu", -1)
             main_menu.update(game_state)
         elif game_state["game"]:
+            play_bg_music()
+            # SoundPlayer.get_instance().stop_sound("menu")
+            # SoundPlayer.get_instance().play_sound("bg", -1)
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
@@ -69,17 +103,13 @@ def main():
             if game_manager.boss_is_dead:
                 game_over_menu.player_win = True
                 end_screen = screen.copy()  ##! xóa sau khi finalize
-                end_screen = blur_surface(
-                    end_screen, 5
-                )  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
                 game_state["game"] = False  ##! xóa sau khi finalize
                 game_state["game_over"] = True  ##! xóa sau khi finalize
             if game_manager.player_is_dead:
                 game_over_menu.player_win = False
                 end_screen = screen.copy()  ##! xóa sau khi finalize
-                end_screen = blur_surface(
-                    end_screen, 5
-                )  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
                 game_state["game"] = False  ##! xóa sau khi finalize
                 game_state["game_over"] = True  ##! xóa sau khi finalize
             game_menu.update(pause_menu.pause_time)

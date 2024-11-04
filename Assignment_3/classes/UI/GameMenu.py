@@ -16,6 +16,9 @@ class GameMenu:
         self.start_time = start_time
         self.hp_bar = Spritesheet("images/hp_bar.png")
         self.coin_image = Spritesheet("images/font.png")
+        self.bullet_image = Spritesheet(
+            "images/font.png"
+        )  ##! cập nhật sprite bullet chỗ này
         self.level = settings["level"]
         self.currrent_hp = settings["current_hp"]
         self.max_hp = settings["max_hp"]
@@ -42,8 +45,9 @@ class GameMenu:
     ##? draw main menu
     def drawGameMenu(self, pause_time):
 
-        self.drawHpBar()
-        self.drawHpFrame()
+        # self.drawHpBar()
+        # self.drawHpFrame()
+        self.drawBullet()
         self.drawCoin()
         self.drawLevel()
         self.drawTime(pause_time)
@@ -77,6 +81,20 @@ class GameMenu:
 
         hp_frame_image.set_alpha(128)
         self.screen.blit(hp_frame_image, (40, 5))
+
+    def drawBullet(self):
+        bullet_image = self.coin_image.image_at(0, 2, 3, xTileSize=8, yTileSize=8)
+        multiply_image = self.coin_image.image_at(8, 5, 2, xTileSize=8, yTileSize=8)
+        self.screen.blit(bullet_image, (60, 30))
+        self.screen.blit(multiply_image, (80, 39))
+        if self.game_manager.player.bullet < 10:
+            self.drawText(
+                "0" + str(self.game_manager.player.bullet), 100, 44, (255, 255, 255)
+            )
+        else:
+            self.drawText(
+                str(self.game_manager.player.bullet), 100, 44, (255, 255, 255)
+            )
 
     def drawCoin(self):
         coin_image = self.coin_image.image_at(0, 2, 3, xTileSize=8, yTileSize=8)
