@@ -111,45 +111,6 @@ class CollisionManager:
                     else:
                         self.player.rect.x += 10  # Knock player back to the right
 
-<<<<<<< HEAD
-    def check_player_shop_collisions(self, char):
-        # Check for collisions between player and shop
-        if not self.player.rect.colliderect(self.shop.rect):
-            return
-        keys = pygame.key.get_pressed()
-        with self.shop as shop:
-            if keys[pygame.K_1]:
-                player_coin = self.game_manager.player_coins
-                item_no = 0
-                if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(item_no)
-                    self.game_manager.player_coins -= price
-                    item.pickedUp(char)
-            elif keys[pygame.K_2]:
-                player_coin = self.game_manager.player_coins
-                item_no = 1
-                if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(item_no)
-                    self.game_manager.player_coins -= price
-                    item.pickedUp(char)
-            elif keys[pygame.K_3]:
-                player_coin = self.game_manager.player_coins
-                item_no = 2
-                if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(item_no)
-                    self.game_manager.player_coins -= price
-                    item.pickedUp(char)
-            elif keys[pygame.K_r]:
-                player_coin = self.game_manager.player_coins
-                cost = shop.refresh_shop(player_coin)
-                self.game_manager.player_coins -= cost
-
-    def check_bullet_barrel_collision(self):
-        ...
-
-
-=======
->>>>>>> ass3/feature/scrolling
     def update(self):
         self.player = self.game_manager.player
         self.enemies = self.game_manager.enemies
