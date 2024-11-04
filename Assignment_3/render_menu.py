@@ -27,6 +27,8 @@ PRESET_COLOURS = {
     "heavy_green": (24, 175, 24),
 }
 
+menu_music_played = False
+bg_music_played = False
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Mario")
@@ -50,8 +52,22 @@ def blur_surface(surface, amount):
 
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
 
-def setup_soundPlayer(soundPlayer: SoundPlayer):
+def setup_sound():
     pass
+
+def play_menu_music():
+    global menu_music_played 
+    if not menu_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music.mp3")
+        SoundPlayer.get_instance().set_music_volume(0.3)
+        menu_music_played = True
+    
+def play_bg_music():
+    global bg_music_played
+    if not bg_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music2.mp3")
+        SoundPlayer.get_instance().set_music_volume(0.3)
+        bg_music_played = True
 
 def main():
     clock = pygame.time.Clock()
@@ -65,12 +81,16 @@ def main():
     game_over_menu = GameOverMenu(screen, None, False, game_manager)
     # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
 
+    # Init soundplayer
+    
 
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
+            play_menu_music()
             main_menu.update(game_state)
         elif game_state["game"]:
+            play_bg_music()
             if game_menu.start_time is None:
                 game_menu.start_time = pygame.time.get_ticks()
             ##! gameplay here
