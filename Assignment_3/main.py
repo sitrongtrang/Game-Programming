@@ -2,6 +2,8 @@ import pygame
 import random
 from classes.MapSpawner import MapSpawner
 import os
+from data import constant
+from classes.GameManager import GameManager
 # Initialize Pygame
 pygame.init()
 

@@ -1,43 +1,47 @@
 import pygame
-from classes.Tilemap import Tilemap
 import os
+from classes.Tilemap import Tilemap
 
 class MapSpawner:
     def __init__(self, surface, mapNumber):
         self.surface = surface
         self.mapNumber = mapNumber
-
+        
         self.mapFolders = [
             os.path.join("data", "maps", "TestMap.csv")
         ]
-
+        
         self.tileSetFolder = os.path.join("assets", "maps", "tileset.png")
-        self.backgroundFolder = os.path.join("assets", "maps", "Background.png")
+        self.backgroundFolders = [
+            os.path.join("assets", "maps", "Background1.png"),
+            os.path.join("assets", "maps", "Background2.png"),
+            # Add more background layers as needed
+        ]
+        
+        self.backgrounds = []
         self.tilemap = None
-
-        # Tải ảnh nền
-        self.background = self.loadBackground()
-
-    def loadBackground(self):
-        try:
-            return pygame.image.load(self.backgroundFolder).convert()
-        except pygame.error as e:
-            print(f"Could not load background image: {e}")
-            return None
-
-   
-
+        self.loadBackgrounds()
+    
+    def loadBackgrounds(self):
+        self.backgrounds = []
+        for bg_folder in self.backgroundFolders:
+            try:
+                bg_image = pygame.image.load(bg_folder).convert()
+                self.backgrounds.append(bg_image)
+            except pygame.error as e:
+                print(f"Could not load background image {bg_folder}: {e}")
+    
     def spawnMap(self, mapId):
         if mapId < 0 or mapId >= len(self.mapFolders):
             raise IndexError(f"Map ID {mapId} is out of range.")
-
+        
         mapFile = self.mapFolders[mapId]
-        size = (10, 20)
-
+        size = (10, 20)  # Adjust based on your map size
+        
         self.tilemap = Tilemap(self.tileSetFolder, mapFile, size)
-        self.tilemap.renderMap(self.background)
-
-    def renderMap(self, camera = None):
-        # Vẽ background trước khi render tilemap
+        # Initialize the map with all background layers
+        self.tilemap.renderMap(self.backgrounds)
+    
+    def renderMap(self, camera_x=0):
         if self.tilemap:
-            self.tilemap.render(self.surface)
+            self.tilemap.render(self.surface, camera_x)
