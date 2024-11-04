@@ -18,13 +18,22 @@ class Boss(Enemy):
         )
         self.last_special_attack_time = 0  # Track the last special attack time
         self.is_enraged = False  # Boss enrages at low HP
-        self.image.fill((255, 255, 0))  # Color the boss yellow
+       # self.image.fill((255, 255, 0))  # Color the boss yellow
         # Sword attack attributes
         self.sword_hitbox = None
         self.sword_duration = 50  # Duration in frames for sword hitbox visibility
         self.sword_timer = 0
         self.sword_delay = 300  # Delay in milliseconds after special attack
         self.direction = "left"  # Initial direction of boss
+        self.lastDirection = self.direction
+
+        self.setup_animations()
+
+    def setup_animations(self):
+        self.animator.add_animation("idle_left", 'assets\\animations\\boss\\idle_left.png', (64, 57), 4, 0.2)
+        self.animator.add_animation("idle_right", 'assets\\animations\\boss\\idle_right.png', (64, 57), 4, 0.2)
+
+        self.setAnim("idle")
 
     def sword_attack(self):
         # Create a temporary hitbox in front of the boss

@@ -34,15 +34,23 @@ class Animation:
         pass
 
     def draw(self):
-        area = pygame.Rect(self.frame * self.frameSize[0]  + self.frame * self.spacing, 0, self.frameSize[0], self.frameSize[1])
-        self.surface.fill((0, 0, 0, 0))
-        self.surface.set_alpha(255)
-        self.surface.blit(self.sheet, (0, 0), area)
-    #print(area)
+        # Define the area to extract the current frame from the spritesheet
+        area = pygame.Rect(
+            self.frame * self.frameSize[0] + self.frame * self.spacing, 0,
+            self.frameSize[0], self.frameSize[1]
+        )
+        
+        if area.right > self.sheet.get_width() or area.bottom > self.sheet.get_height():
+            print("Warning: Frame area is out of bounds of the spritesheet")
+            return  # Skip drawing if the area is invalid
+
+        scaled_frame = pygame.transform.scale(self.sheet.subsurface(area), self.surface.get_size())
+        
+        self.surface.fill((0, 0, 0, 0))  # Clear with transparent fill if surface has per-pixel alpha
+        self.surface.blit(scaled_frame, (0, 0))
+
 
     def update(self, deltaTime):
-        
-
         if self.frameTimer > 0:
             self.frameTimer -= deltaTime
         else:

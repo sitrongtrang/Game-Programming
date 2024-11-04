@@ -86,6 +86,9 @@ class GameManager:
         self.player = Player(self.all_sprites, 100, 300, 32, 32)
         self.boss = Boss(self.all_sprites, 1000, 300, 50, 50)
         barrels = [(10, 30), (600, 300), (700, 300), (800, 300), (900, 300)]
+        enemy = Enemy(self.all_sprites, 300, 300, 48, 48) 
+
+        self.enemies.add(enemy) 
         self.enemies.add(self.boss)
         for barrels in barrels:
             self.barrels.add(Barrel(self.all_sprites, *barrels))

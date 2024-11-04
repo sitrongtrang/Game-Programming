@@ -19,7 +19,7 @@ class Enemy(Character):
             constant.ENEMY_SPEED,
         )
         # Attributes for attacking
-        self.image.fill((255, 0, 0))
+        #self.image.fill((255, 0, 0))
         self.has_gun = True  # Indicates if the player has a gun
         self.gun_speed = 1000  # Cooldown in milliseconds for shooting
         self.last_shot_time = 0  # Track last shot time
@@ -33,6 +33,22 @@ class Enemy(Character):
         self.patrol_start = x - self.patrol_range
         self.patrol_end = x + self.patrol_range
         self.patrol_direction = 1
+
+        self.lastDirection = self.direction
+        self.setup_animations()
+
+    def setup_animations(self):
+        print("Go add enemy")
+        self.animator.add_animation("idle_left", 'assets\\animations\\enemy\\idle_left.png', (32, 48), 4, 0.2, 16)
+        self.animator.add_animation("idle_right", 'assets\\animations\\enemy\\idle_right.png', (32, 48), 4, 0.2, 16)
+
+        self.animator.add_animation("walk_left", 'assets\\animations\\enemy\\walk_left.png', (32, 48), 6, 0.2, 16)
+        self.animator.add_animation("walk_right", 'assets\\animations\\enemy\\walk_right.png', (32, 48), 6, 0.2, 16)
+
+        self.animator.add_animation("shoot_right", 'assets\\animations\\enemy\\shoot_right.png', (16*3, 48), 5, 0.02, 0, False)
+        self.animator.add_animation("shoot_left", 'assets\\animations\\enemy\\shoot_left.png', (16*3, 48), 5, 0.02, 0, False)
+        #
+        self.setAnim("idle")
 
     def sword_attack(self):
         # Create a temporary hitbox in front of the player
@@ -57,6 +73,9 @@ class Enemy(Character):
 
         self.rect.x += self.patrol_direction * self.speed
 
+        self.lastDirection = self.direction
+        self.setAnim("walk")
+
     def shoot(self):
         current_time = pygame.time.get_ticks()
         if self.has_gun and current_time - self.last_shot_time >= self.gun_speed:
@@ -65,6 +84,8 @@ class Enemy(Character):
             )
             self.bullets.add(bullet)  # Add to bullet group
             self.last_shot_time = current_time
+
+            self.setAnim("shoot")
 
     def update(self, camera_x=0):
         super().update(camera_x)  # Update movement and gravity from Character class

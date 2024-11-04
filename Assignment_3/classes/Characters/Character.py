@@ -43,8 +43,9 @@ class Character(pygame.sprite.Sprite):
     def setAnim(self, anim):
         if not self.check_animInteval(): 
             return
-        
+       
         new_anim  = anim + '_' + self.lastDirection
+       
         self.animator.change_anim(new_anim)
 
 

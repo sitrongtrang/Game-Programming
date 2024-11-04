@@ -12,13 +12,16 @@ class Animator:
     
     def add_animation(self, name, spriteFile, frameSize, frameNum, frameInterval, spacing = 0, loop = True):
         new_anim = Animation(self.surface, name, spriteFile, frameSize,  frameNum, frameInterval, spacing, loop)
-        self.animations[name] = new_anim
+        self.animations[name] = new_anim   
     
     def change_anim(self, anim):
         if self.current_anim != "none" and self.animations[self.current_anim].is_runing():
             return
 
-        if anim == "shoot_left": print("Flag")
+        if  anim not in self.animations:
+            print(f"Warning: Animation '{anim}' not found.")
+            return
+        
         # Change anim
         if self.current_anim != "none" and self.current_anim != anim:
             self.animations[self.current_anim].resetStat()
