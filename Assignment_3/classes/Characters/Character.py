@@ -1,5 +1,6 @@
 import pygame
 from data import constant
+from classes.Animator import Animator
 
 class Character(pygame.sprite.Sprite):
     def __init__(self, all_sprites, x, y, width, height, hp, dmg, speed, gravity=1):
@@ -14,8 +15,8 @@ class Character(pygame.sprite.Sprite):
         self.base_dmg = dmg
         self.bullet = constant.BULLET_LIMIT
         # Placeholder sprite
-        self.image = pygame.Surface((width, height))
-        self.image.fill((0, 0, 255))  # Blue color for placeholder
+        self.image = pygame.Surface((width, height),pygame.SRCALPHA, 32)
+       # self.image.fill((0, 0, 255))  # Blue color for placeholder
 
         # Rect attributes
         self.rect = self.image.get_rect()
@@ -30,11 +31,24 @@ class Character(pygame.sprite.Sprite):
         self.vel_y = 0  # Vertical velocity
         self.is_jumping = False
 
+        # Setup Animator
+        self.animator = Animator(self.image)
+        self.lastDirection = "left"     
+   
+    def setAnim(self, anim):
+        new_anim  = anim + '_' + self.lastDirection
+        self.animator.change_anim(new_anim)
+
+
     def move_left(self):
         self.vel_x = -self.speed
+        self.lastDirection = "left"
+        
 
     def move_right(self):
         self.vel_x = self.speed
+        self.lastDirection = "right"
+        
 
     def stop(self):
         self.vel_x = 0  # Stop horizontal movement
@@ -43,6 +57,7 @@ class Character(pygame.sprite.Sprite):
         if not self.is_jumping:
             self.vel_y = -self.jump_power
             self.is_jumping = True
+            self.setAnim("jump")
 
     def apply_gravity(self):
         self.vel_y += self.gravity
@@ -61,6 +76,8 @@ class Character(pygame.sprite.Sprite):
             self.is_jumping = False
             self.vel_y = 0
         
+        # Anim
+        self.animator.update()
 
     def take_damage(self, dmg):
         self.hp -= dmg
@@ -78,4 +95,4 @@ class Character(pygame.sprite.Sprite):
         self.speed = min(speed, self.base_speed * constant.SPEED_INCREASE_COEFF)
 
     def setBullet(self, bullet):
-        self.bullet = min(bullet, constant.BULLET_LIMIT)
+        self.bullet = min(bullet, constant.BULLET_LIMIT)()

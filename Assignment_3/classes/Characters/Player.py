@@ -17,6 +17,19 @@ class Player(Character):
         self.sword_timer = 0
         self.direction = "right"
 
+        # Init Animations
+        self.setup_animations()
+
+    def setup_animations(self):
+        self.animator.add_animation("idle_left", 'assets\\animations\\character\\idle_left.png', (32, 36), 4, 0.2)
+        self.animator.add_animation("idle_right", 'assets\\animations\\character\\idle_right.png', (32, 36), 4, 0.2)
+        self.animator.add_animation("run_left", 'assets\\animations\\character\\run_left.png', (32, 32), 5, 0.2, 16)
+        self.animator.add_animation("run_right", 'assets\\animations\\character\\run_right.png', (32, 32), 5, 0.2, 16)
+        self.animator.add_animation("jump_right", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.2, 16)
+        self.animator.add_animation("jump_left", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.2, 16)
+        #
+        self.setAnim("idle")
+
     def sword_attack(self):
         # Create a temporary hitbox in front of the player
         if self.sword_timer == 0:  # Only create if there's no active sword hitbox
@@ -52,11 +65,14 @@ class Player(Character):
         if keys[pygame.K_a]:
             self.move_left()
             self.direction = "left"  # Set player direction
+            self.setAnim("run")
         elif keys[pygame.K_d]:
             self.move_right()
             self.direction = "right"  # Set player direction
+            self.setAnim("run")
         else:
             self.stop()  # Stop horizontal movement if neither left nor right is pressed
+            self.setAnim("idle")
 
         # Check for jumping
         if keys[pygame.K_w]:
