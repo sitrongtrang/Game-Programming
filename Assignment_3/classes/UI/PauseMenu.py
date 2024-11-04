@@ -70,19 +70,17 @@ class PauseMenu:
 
     def update(self, game_state):
         self.checkInput(game_state)
-
+        with open("data/settings/settings.json") as file:
+            settings = json.load(file)
+        self.background_music_is_on = settings.get(
+            "background_music", self.background_music_is_on
+        )
+        self.sound_effect_is_on = settings.get("sound_effect", self.sound_effect_is_on)
         if self.isSetting:
-            with open("data/settings/settings.json") as file:
-                settings = json.load(file)
-            self.background_music_is_on = settings.get(
-                "background_music", self.background_music_is_on
-            )
-            self.sound_effect_is_on = settings.get(
-                "sound_effect", self.sound_effect_is_on
-            )
             self.drawOptionMenu()
         else:
             self.drawPauseMenu()
+        self.playBackgroundMusic()
 
     def checkInput(self, game_state):
         for event in pygame.event.get():
@@ -90,7 +88,7 @@ class PauseMenu:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                SoundPlayer.get_instance().play_sound("click")
+                self.playSoundEffect()
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if self.isSetting:
                         if self.state > 0:
@@ -153,7 +151,7 @@ class PauseMenu:
                         self.pause_time = 0
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                SoundPlayer.get_instance().play_sound("click")
+                self.playSoundEffect()
                 if self.resume_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True
@@ -240,3 +238,16 @@ class PauseMenu:
             self.background_music_button.drawButton(self.screen)
             self.sound_effect_button.drawButton(self.screen)
             self.back_button.drawHoverButton(self.screen)
+
+    def playBackgroundMusic(self):
+        if self.background_music_is_on:
+            SoundPlayer.get_instance().set_music_volume(1.0)
+        else:
+            SoundPlayer.get_instance().set_music_volume(0.0)
+
+    def playSoundEffect(self):
+        if self.sound_effect_is_on:
+            SoundPlayer.get_instance().set_sound_volume(1.0)
+        else:
+            SoundPlayer.get_instance().set_sound_volume(0.0)
+        SoundPlayer.get_instance().play_sound("click")

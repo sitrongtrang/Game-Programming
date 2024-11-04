@@ -8,6 +8,7 @@ from classes.UI.GameOverMenu import GameOverMenu
 from classes.GameManager import GameManager
 from classes.SoundPlayer import SoundPlayer
 from data import constant
+import json
 
 ##! delete after finalize game
 # running = True
@@ -52,23 +53,27 @@ def blur_surface(surface, amount):
 
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
 
+
 def setup_sound():
     SoundPlayer.get_instance().load_sound("click", "assets/musics/click.wav")
     pass
 
+
 def play_menu_music():
-    global menu_music_played 
+    global menu_music_played
     if not menu_music_played:
         SoundPlayer.get_instance().play_music("assets/musics/bg_music.mp3")
-        SoundPlayer.get_instance().set_music_volume(1.0)
+        # SoundPlayer.get_instance().set_music_volume(1.0)
         menu_music_played = True
-    
+
+
 def play_bg_music():
     global bg_music_played
     if not bg_music_played:
         SoundPlayer.get_instance().play_music("assets/musics/bg_music2.mp3")
-        SoundPlayer.get_instance().set_music_volume(1.0)
+        # SoundPlayer.get_instance().set_music_volume(1.0)
         bg_music_played = True
+
 
 def main():
     clock = pygame.time.Clock()
@@ -76,7 +81,7 @@ def main():
     setup_sound()
     game_manager = GameManager(screen)
     main_menu = MainMenu(
-        screen, "images/menu_background_image.png", "", "", game_manager
+        screen, "images/menu_background_image.jpeg", "", "", game_manager
     )
     game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
@@ -92,7 +97,7 @@ def main():
             # SoundPlayer.get_instance().play_sound("menu", -1)
             main_menu.update(game_state)
         elif game_state["game"]:
-            play_bg_music()
+            # play_bg_music()
             # SoundPlayer.get_instance().stop_sound("menu")
             # SoundPlayer.get_instance().play_sound("bg", -1)
             if game_menu.start_time is None:
