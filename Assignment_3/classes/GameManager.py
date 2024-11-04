@@ -10,6 +10,7 @@ from .CollisionManager import CollisionManager
 from .Tilemap import Tilemap
 from .MapSpawner import MapSpawner
 from data import constant
+from .PlatformManager import PlatformManager
 
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
@@ -20,18 +21,22 @@ class GameManager:
         if level != "":
             self.level = level
 
+        self.all_sprites = pygame.sprite.Group()
+
         self.mapSpawner = MapSpawner(self.screen, 1)
         self.mapSpawner.spawnMap(0)
+
+        self.platform_manager = PlatformManager(self.all_sprites, self.screen)
+        self.platform_manager.create_platforms_from_map(self.mapSpawner.tilemap.map)
 
         self.player = None
         self.boss = None
         self.player_is_dead = False
         self.boss_is_dead = False
-        self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
-        self.platforms = pygame.sprite.Group()
+        self.platforms = self.platform_manager.platforms
 
         # if self.tile_map.player_position:
         #     player_x, player_y = self.tile_map.player_position
@@ -81,6 +86,8 @@ class GameManager:
         self.mapSpawner.renderMap(self.camera_x)
         for sprite in self.all_sprites:
             sprite.draw(self.screen, self.camera_x)
+        if self.platform_manager:
+            self.platform_manager.update(self.camera_x)
         self.all_sprites.update(self.camera_x)
         self.collision_manager.update()
         self.player_is_dead = self.player not in self.all_sprites
