@@ -33,7 +33,6 @@ class Character(pygame.sprite.Sprite):
         self.vel_y = 0  # Vertical velocity
         self.is_jumping = False
         self.hp_bar = Spritesheet("images/hp_bar.png")
-
         # Setup Animator
         self.animator = Animator(self.image)
         self.lastDirection = "left"     

@@ -23,7 +23,9 @@ class Player(Character):
         self.last_shot_time = 0  # Track last shot time
         self.bullets = pygame.sprite.Group()
         self.sword_hitbox = None  # Placeholder for sword attack hitbox
+        self.sword_cooldown = 1000 # Cooldown in milliseconds for sword attack
         self.sword_duration = 50  # Duration in frames for sword hitbox visibility
+        self.sword_last = -self.sword_cooldown
         self.sword_timer = 0
         self.direction = "right"
 
@@ -57,14 +59,19 @@ class Player(Character):
         return True
 
     def sword_attack(self):
+        # Add a cooldown to the sword attack
+        current_time = pygame.time.get_ticks()
+        if current_time - self.sword_last < self.sword_cooldown:
+            return
+        self.sword_last = current_time
         # Create a temporary hitbox in front of the player
         if self.sword_timer == 0:  # Only create if there's no active sword hitbox
             sword_x = (
                 self.rect.right if self.direction == "right" else self.rect.left - 40
             )
-            self.sword_hitbox = pygame.Rect(
-                sword_x, self.rect.y + 10, 40, 20
-            )  # Adjusted size
+            self.sword_hitbox = [pygame.Rect(
+                sword_x, self.rect.y + 10, 50, 15
+            ), True]  # Adjusted size, instance of dmg have not been cal
             self.setAnim("melee")
             self.sword_timer = self.sword_duration
             
@@ -153,9 +160,9 @@ class Player(Character):
                 surface,
                 (0, 0, 255),
                 (
-                    self.sword_hitbox.x - camera_x,
-                    self.sword_hitbox.y,
-                    self.sword_hitbox.width,
-                    self.sword_hitbox.height,
+                    self.sword_hitbox[0].x - camera_x,
+                    self.sword_hitbox[0].y,
+                    self.sword_hitbox[0].width,
+                    self.sword_hitbox[0].height,
                 ),
             )  # Draw the sword hitbox in blue

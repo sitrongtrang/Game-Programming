@@ -40,9 +40,9 @@ class Enemy(Character):
             sword_x = (
                 self.rect.right if self.direction == "right" else self.rect.left - 40
             )
-            self.sword_hitbox = pygame.Rect(
+            self.sword_hitbox = [pygame.Rect(
                 sword_x, self.rect.y + 10, 40, 20
-            )  # Adjusted size
+            ),True]  # Adjusted size
             self.sword_timer = self.sword_duration
 
     def patrol(self):
@@ -87,9 +87,9 @@ class Enemy(Character):
                 surface,
                 (0, 0, 255),
                 (
-                    self.sword_hitbox.x - camera_x,
-                    self.sword_hitbox.y,
-                    self.sword_hitbox.width,
-                    self.sword_hitbox.height,
+                    self.sword_hitbox[0].x - camera_x,
+                    self.sword_hitbox[0].y,
+                    self.sword_hitbox[0].width,
+                    self.sword_hitbox[0].height,
                 ),
             )  # Draw the sword hitbox in blue

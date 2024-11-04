@@ -32,11 +32,11 @@ class Boss(Enemy):
             sword_x = (
                 self.rect.right if self.direction == "right" else self.rect.left - 40
             )
-            self.sword_hitbox = pygame.Rect(
+            self.sword_hitbox = [pygame.Rect(
                 sword_x, self.rect.y + 10, 40, 20
-            )  # Adjusted size
+            ),True]  # Adjusted size
             self.sword_timer = self.sword_duration
-            print("boss sword attack")
+            # print("boss sword attack")
 
     def special_attack(self):
         # Boss-specific powerful attack logic
