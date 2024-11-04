@@ -46,16 +46,14 @@ class SoundPlayer:
             print(f"Sound '{sound_name}' not loaded.")
 
     def play_music(self, file_path, loops=-1):
-
+  
         if os.path.exists(file_path):
             pygame.mixer.music.load(file_path)
             pygame.mixer.music.set_volume(self.music_volume)
-            pygame.mixer.music.play(loops=loops)
+            pygame.mixer.music.play(loops=loops)  # Play music indefinitely if loops=-1
         else:
             raise FileNotFoundError(f"Music file not found: {file_path}")
 
-
-        pygame.mixer.music.stop()
 
     def set_music_volume(self, volume):
    
