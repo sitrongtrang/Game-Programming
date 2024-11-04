@@ -116,27 +116,31 @@ class CollisionManager:
                 player_coin = self.game_manager.player_coins
                 item_no = 0
                 if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(player_coin, item_no)
+                    item, price = shop.sell_item(item_no)
                     self.game_manager.player_coins -= price
                     item.pickedUp(char)
             elif keys[pygame.K_2]:
                 player_coin = self.game_manager.player_coins
                 item_no = 1
                 if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(player_coin, item_no)
+                    item, price = shop.sell_item(item_no)
                     self.game_manager.player_coins -= price
                     item.pickedUp(char)
             elif keys[pygame.K_3]:
                 player_coin = self.game_manager.player_coins
                 item_no = 2
                 if shop.can_buy(player_coin, item_no):
-                    item, price = shop.sell_item(player_coin, item_no)
+                    item, price = shop.sell_item(item_no)
                     self.game_manager.player_coins -= price
                     item.pickedUp(char)
             elif keys[pygame.K_r]:
                 player_coin = self.game_manager.player_coins
                 cost = shop.refresh_shop(player_coin)
                 self.game_manager.player_coins -= cost
+
+    def check_bullet_barrel_collision(self):
+        ...
+
 
     def update(self):
         self.player = self.game_manager.player
