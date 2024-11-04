@@ -24,7 +24,7 @@ class Player(Character):
             self.sword_hitbox = pygame.Rect(sword_x, self.rect.y + 10, 40, 20)  # Adjusted size
             self.sword_timer = self.sword_duration
 
-    def shoot(self):
+    def shoot(self, camera_x=0):
         current_time = pygame.time.get_ticks()
         mouse_buttons = pygame.mouse.get_pressed()
 
@@ -36,14 +36,13 @@ class Player(Character):
             self.direction = "right" if mouse_x > self.rect.centerx else "left"
 
             # Calculate angle toward the mouse position
-            direction_x = mouse_x - self.rect.centerx
+            direction_x = mouse_x - self.rect.centerx + camera_x
             direction_y = mouse_y - self.rect.centery
             angle = math.atan2(direction_y, direction_x)
 
             # Create bullet heading toward the mouse position with updated direction
             bullet = Bullet_Player(self.all_sprites, self.rect.centerx, self.rect.centery, angle, self.direction)
             self.bullets.add(bullet)
-
             self.last_shot_time = current_time
 
     def handle_keys(self):
@@ -67,14 +66,14 @@ class Player(Character):
         if pygame.mouse.get_pressed()[0]:  # Index 2 represents the right mouse button
             self.sword_attack()
 
-    def update(self):
-        super().update()  # Update movement and gravity from Character class
+    def update(self, camera_x=0):
+        super().update(camera_x)  # Update movement and gravity from Character class
         self.handle_keys()
 
         # Check for mouse button press to shoot
-        self.shoot()  # Call shoot method on update
+        self.shoot(camera_x)  # Call shoot method on update
 
-        self.bullets.update()  # Update bullets
+        self.bullets.update(camera_x)  # Update bullets
 
         # Update sword timer and deactivate hitbox when time runs out
         if self.sword_timer > 0:

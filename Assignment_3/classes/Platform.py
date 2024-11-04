@@ -19,3 +19,6 @@ class Platform(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
+    def update(self, camera_x=0):
+        pass
+

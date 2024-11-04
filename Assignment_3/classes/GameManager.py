@@ -3,6 +3,7 @@ from classes.Characters.Boss import Boss
 from classes.Items.DmgItem import DmgItem
 from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
+from classes.Characters.Bullet import *
 from .Coin import Coin
 from .Platform import Platform
 from .CollisionManager import CollisionManager
@@ -20,7 +21,9 @@ class GameManager:
         # load self.level, implement later with tilemap
         self.tile_map = Tilemap("", "data/levels/" + self.level + ".csv")
         self.tile_map.renderMap()
-    
+
+        self.player = None
+        self.boss = None
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
@@ -29,30 +32,35 @@ class GameManager:
 
         if self.tile_map.player_position:
             player_x, player_y = self.tile_map.player_position
-            self.player = Player(self.all_sprites, player_x, player_y, 32, 32)
+            self.player = Player(self.all_sprites, player_x, player_y, constant.TILE_SIZE, constant.TILE_SIZE)
+        
+        if self.tile_map.boss_position:
+            boss_x, boss_y = self.tile_map.boss_position
+            self.boss = Boss(self.all_sprites, boss_x, boss_y, constant.TILE_SIZE, constant.TILE_SIZE)
+            self.enemies.add(self.boss)
 
         # Initialize Enemies
         for enemy_pos in self.tile_map.enemy_positions:
             enemy_x, enemy_y = enemy_pos
-            enemy = Enemy(self.all_sprites, enemy_x, enemy_y, 32, 32)
+            enemy = Enemy(self.all_sprites, enemy_x, enemy_y, constant.TILE_SIZE, constant.TILE_SIZE)
             self.enemies.add(enemy)
 
         # Initialize Platforms
         for platform_pos in self.tile_map.platform_positions:
             platform_x, platform_y = platform_pos
-            platform = Platform(self.all_sprites, platform_x, platform_y, 32, 32)
+            platform = Platform(self.all_sprites, platform_x, platform_y, constant.TILE_SIZE, constant.TILE_SIZE)
             self.platforms.add(platform)
 
         # Initialize Items
         for item_pos in self.tile_map.item_positions:
             item_x, item_y = item_pos
-            item = DmgItem(self.all_sprites, item_x, item_y, 32, 32)
+            item = DmgItem(self.all_sprites, item_x, item_y, constant.TILE_SIZE, constant.TILE_SIZE)
             self.items.add(item)
 
         # Initialize Coins
         for coin_pos in self.tile_map.coin_positions:
             coin_x, coin_y = coin_pos
-            coin = Coin(self.all_sprites, coin_x, coin_y, 32, 32)
+            coin = Coin(self.all_sprites, coin_x, coin_y, constant.TILE_SIZE, constant.TILE_SIZE)
             self.coins.add(coin)
 
         self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
@@ -65,12 +73,12 @@ class GameManager:
         self.player_coins = 0
     
     def update(self):
-        self.player.rect.x = max(0, min(self.player.rect.x, self.total_bg_width - 50))
+        self.player.rect.x = max(0, min(self.player.rect.x, self.total_bg_width - self.player.rect.width))
         self.camera_x = max(0, min(self.player.rect.x - constant.SCREEN_WIDTH // 2, self.total_bg_width - constant.SCREEN_WIDTH))
         for i, bg_image in enumerate(self.bg_images):
             bg_x = i * constant.SCREEN_WIDTH
             self.screen.blit(bg_image, (bg_x - self.camera_x, 0))
-        self.all_sprites.update()
+        self.all_sprites.update(self.camera_x)
         for sprite in self.all_sprites:
             if sprite.image:
                 self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))

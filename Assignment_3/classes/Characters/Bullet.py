@@ -12,18 +12,20 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = 8 if direction == "right" else -8  # Set speed based on direction
 
-    def update(self):
-        if self.rect.x > constant.SCREEN_WIDTH or self.rect.x < 0:
-            self.kill()
+    def update(self, camera_x=0):
+        # if self.rect.x > constant.SCREEN_WIDTH or self.rect.x < 0:
+        #     self.kill()
+        # screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
+        pass
 
 
 class Bullet_Enemy(Bullet):
     def __init__(self,all_sprites, x, y, direction="right"):
         super().__init__(all_sprites, x, y, direction)
 
-    def update(self):
+    def update(self, camera_x=0):
         self.rect.x += self.speed
-        super().update()
+        super().update(camera_x)
 
 
 class Bullet_Player(Bullet):
@@ -39,10 +41,10 @@ class Bullet_Player(Bullet):
         self.velocity_x = speed * math.cos(angle)
         self.velocity_y = speed * math.sin(angle)
 
-    def update(self):
+    def update(self, camera_x=0):
         # Move the bullet in the direction of the angle
         self.rect.x += self.velocity_x
         self.rect.y += self.velocity_y
 
         # Remove the bullet if it goes off-screen
-        super().update()
+        super().update(camera_x)
