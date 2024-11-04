@@ -1,5 +1,6 @@
 import pygame
 from data import constant
+from classes.Animator import Animator
 from classes.Spritesheet import Spritesheet
 
 
@@ -16,8 +17,8 @@ class Character(pygame.sprite.Sprite):
         self.base_dmg = dmg
         self.bullet = constant.BULLET_LIMIT
         # Placeholder sprite
-        self.image = pygame.Surface((width, height))
-        self.image.fill((0, 0, 255))  # Blue color for placeholder
+        self.image = pygame.Surface((width, height),pygame.SRCALPHA, 32)
+       # self.image.fill((0, 0, 255))  # Blue color for placeholder
 
         # Rect attributes
         self.rect = self.image.get_rect()
@@ -33,11 +34,30 @@ class Character(pygame.sprite.Sprite):
         self.is_jumping = False
         self.hp_bar = Spritesheet("images/hp_bar.png")
 
+        # Setup Animator
+        self.animator = Animator(self.image)
+        self.lastDirection = "left"     
+   
+    def check_animInteval(self):
+        return True
+
+    def setAnim(self, anim):
+        if not self.check_animInteval(): 
+            return
+        
+        new_anim  = anim + '_' + self.lastDirection
+        self.animator.change_anim(new_anim)
+
+
     def move_left(self):
         self.vel_x = -self.speed
+        self.lastDirection = "left"
+        
 
     def move_right(self):
         self.vel_x = self.speed
+        self.lastDirection = "right"
+        
 
     def stop(self):
         self.vel_x = 0  # Stop horizontal movement
@@ -46,6 +66,7 @@ class Character(pygame.sprite.Sprite):
         if not self.is_jumping:
             self.vel_y = -self.jump_power
             self.is_jumping = True
+            
 
     def apply_gravity(self):
         self.vel_y += self.gravity
@@ -63,6 +84,9 @@ class Character(pygame.sprite.Sprite):
             self.rect.y = constant.GROUND_LEVEL
             self.is_jumping = False
             self.vel_y = 0
+        
+        # Anim
+        self.animator.update()
 
     def take_damage(self, dmg):
         self.hp -= dmg
