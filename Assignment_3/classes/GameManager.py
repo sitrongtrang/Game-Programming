@@ -17,13 +17,24 @@ class GameManager:
     def __init__(self, screen):
         self.screen = screen
 
+    def level_string_to_level_id(self, level_string):
+        chapter, level = level_string.split('-')
+    
+        chapter = int(chapter)
+        level = int(level)
+        
+        level_id = chapter * 10 + level - 1
+        
+        return level_id
+
     def new_game(self, level=""):
         if level != "":
             self.level = level
 
         self.all_sprites = pygame.sprite.Group()
 
-        self.mapSpawner = MapSpawner(self.screen, 1)
+        level_id = self.level_string_to_level_id(self.level)
+        self.mapSpawner = MapSpawner(self.screen, level_id)
         self.mapSpawner.spawnMap(0)
 
         self.platform_manager = PlatformManager(self.all_sprites, self.screen)
