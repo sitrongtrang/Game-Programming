@@ -12,7 +12,9 @@ with open("data/stat/character.json") as character_file:
 
 
 class MainMenu:
-    def __init__(self, screen, background_image, background_music, sound_effect, game_manager):
+    def __init__(
+        self, screen, background_image, background_music, sound_effect, game_manager
+    ):
         self.screen = screen
         self.background_image = pygame.image.load(background_image)
         self.background_music = background_music
@@ -22,15 +24,15 @@ class MainMenu:
         self.is_setting = False
         self.is_choosing_level = False
         self.choose_level_button = MenuButton(
-            150, 350, 1, (0, 0, 0), 24, "CHOOSE LEVEL"
+            150, 200, 1, (0, 0, 0), 24, "CHOOSE LEVEL"
         )
-        self.setting_button = MenuButton(150, 400, 1, (0, 0, 0), 24, "SETTINGS")
-        self.quit_button = MenuButton(150, 450, 1, (0, 0, 0), 24, "QUIT")
+        self.setting_button = MenuButton(150, 250, 1, (0, 0, 0), 24, "SETTINGS")
+        self.quit_button = MenuButton(150, 300, 1, (0, 0, 0), 24, "QUIT")
         self.background_music_button = MenuButton(
-            150, 350, 1, (0, 0, 0), 24, "MUSIC: OFF"
+            150, 200, 1, (0, 0, 0), 24, "MUSIC: OFF"
         )
-        self.sfx_button = MenuButton(150, 400, 1, (0, 0, 0), 24, "SFX: OFF")
-        self.back_button = MenuButton(150, 450, 1, (0, 0, 0), 24, "BACK")
+        self.sfx_button = MenuButton(150, 250, 1, (0, 0, 0), 24, "SFX: OFF")
+        self.back_button = MenuButton(150, 300, 1, (0, 0, 0), 24, "BACK")
         self.level_one_button = LevelButton(100, 150, 1, (0, 0, 0), 24, "1 - 1")
         self.level_two_button = LevelButton(325, 150, 1, (0, 0, 0), 24, "1 - 2")
         self.return_button = LevelButton(550, 150, 1, (0, 0, 0), 24, "BACK")
@@ -54,15 +56,15 @@ class MainMenu:
     ##? change screen menu
     def update(self, game_state):
         self.checkInput(game_state)
+        with open("data/settings/settings.json") as setting_file:
+            settings = json.load(setting_file)
+        self.background_music_is_on = settings["background_music"]
+        self.sound_effect_is_on = settings["sound_effect"]
         if self.is_choosing_level:
             self.screen.fill((0, 0, 0))
             self.drawBackground()
             self.drawChooseLevelMenu()
         elif self.is_setting:
-            with open("data/settings/settings.json") as setting_file:
-                settings = json.load(setting_file)
-            self.background_music_is_on = settings["background_music"]
-            self.sound_effect_is_on = settings["sound_effect"]
             self.screen.fill((0, 0, 0))
             self.drawBackground()
             self.drawSettingMenu()
@@ -78,7 +80,7 @@ class MainMenu:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                SoundPlayer.get_instance().play_sound("click")
+                self.playSoundEffect()
                 if event.key == pygame.K_ESCAPE:
                     if self.is_setting or self.is_choosing_level:
                         self.is_setting = False
@@ -188,8 +190,7 @@ class MainMenu:
 
     ##? draw background elements for all menus
     def drawBackground(self):
-        # if self.background_music_is_on:
-        # self.background_music.play() ##! cập nhật lại sau
+        self.playBackgroundMusic()
         self.screen.blit(
             pygame.transform.scale(self.background_image, self.screen.get_size()),
             (0, 0),
@@ -197,15 +198,29 @@ class MainMenu:
 
     ##? play sound effect when clicking
     def playSoundEffect(self):
-        # if self.sound_effect_is_on:
-        #     self.sound_effect.play()
-        pass
+        if self.sound_effect_is_on:
+            SoundPlayer.get_instance().set_sound_volume(1.0)
+        else:
+            SoundPlayer.get_instance().set_sound_volume(0.0)
+        SoundPlayer.get_instance().play_sound("click")
+
+    def playBackgroundMusic(self):
+        if self.background_music_is_on:
+            SoundPlayer.get_instance().set_music_volume(1.0)
+        else:
+            SoundPlayer.get_instance().set_music_volume(0.0)
 
     ##? draw main menu
     def drawMainMenu(self):
-        image = pygame.image.load("images/title_screen.png")
-        image = pygame.transform.scale(image, (500, 200))
-        self.screen.blit(image, (150, 100))
+        # draw word "NIGHT CITY"
+        font = pygame.font.Font("fonts/font.ttf", 40)
+        text = font.render("NIGHT CITY", True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (300, 100)
+        self.screen.blit(text, textRect)
+        # image = pygame.image.load("images/title_screen.png")
+        # image = pygame.transform.scale(image, (500, 200))
+        # self.screen.blit(image, (150, 100))
         if self.state == 0:
             self.choose_level_button.drawHoverButton(self.screen)
             self.setting_button.drawButton(self.screen)
