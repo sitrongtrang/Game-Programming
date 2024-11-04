@@ -40,8 +40,8 @@ class Player(Character):
         self.animator.add_animation("jump_right", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.7,16, False)
         self.animator.add_animation("jump_left", 'assets\\animations\\character\\jump_left.png', (32, 48), 4, 0.7, 16, False)
 
-        self.animator.add_animation("melee_left", 'assets\\animations\\character\\melee_left.png', (32, 48), 6, 0.08, 16, False)
-        self.animator.add_animation("melee_right", 'assets\\animations\\character\\melee_right.png', (32, 48), 6, 0.08, 16, False)
+        self.animator.add_animation("melee_left", 'assets\\animations\\character\\melee_left.png', (32, 36), 6, 0.08, 16, False)
+        self.animator.add_animation("melee_right", 'assets\\animations\\character\\melee_right.png', (32, 36), 6, 0.08, 16, False)
 
         self.animator.add_animation("shoot_right", 'assets\\animations\\character\\shoot_right.png', (16*3, 36), 7, 0.02, 0, False)
         self.animator.add_animation("shoot_left", 'assets\\animations\\character\\shoot_left.png', (16*3, 36), 7, 0.02, 0, False)
