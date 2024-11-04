@@ -51,8 +51,6 @@ class Animation:
 
 
     def update(self, deltaTime):
-        
-
         if self.frameTimer > 0:
             self.frameTimer -= deltaTime
         else:

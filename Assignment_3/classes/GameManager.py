@@ -84,6 +84,9 @@ class GameManager:
 
         self.player = Player(self.all_sprites, 100, 300, 48, 48)
         self.boss = Boss(self.all_sprites, 1000, 300, 48, 48)
+        enemy = Enemy(self.all_sprites, 300, 300, 48, 48) 
+
+        self.enemies.add(enemy) 
         self.enemies.add(self.boss)
 
         self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
