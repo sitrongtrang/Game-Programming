@@ -24,6 +24,7 @@ class GameManager:
 
         self.player = None
         self.boss = None
+        self.shop = None
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
@@ -63,6 +64,9 @@ class GameManager:
             coin = Coin(self.all_sprites, coin_x, coin_y, constant.TILE_SIZE, constant.TILE_SIZE)
             self.coins.add(coin)
 
+        # TODO: Initialize Shop
+        
+        
         self.backgrounds = ["images/menu_background_image.png", "images/menu_background_image.png"]  # Replace with actual file paths
         self.bg_images = [pygame.image.load(bg).convert() for bg in self.backgrounds]
 

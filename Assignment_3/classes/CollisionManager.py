@@ -106,12 +106,45 @@ class CollisionManager:
                     else:
                         self.player.rect.x += 10  # Knock player back to the right
 
+    def check_player_shop_collisions(self, char):
+        # Check for collisions between player and shop
+        if not self.player.rect.colliderect(self.shop.rect):
+            return
+        keys = pygame.key.get_pressed()
+        with self.shop as shop:
+            if keys[pygame.K_1]:
+                player_coin = self.game_manager.player_coins
+                item_no = 0
+                if shop.can_buy(player_coin, item_no):
+                    item, price = shop.sell_item(player_coin, item_no)
+                    self.game_manager.player_coins -= price
+                    item.pickedUp(char)
+            elif keys[pygame.K_2]:
+                player_coin = self.game_manager.player_coins
+                item_no = 1
+                if shop.can_buy(player_coin, item_no):
+                    item, price = shop.sell_item(player_coin, item_no)
+                    self.game_manager.player_coins -= price
+                    item.pickedUp(char)
+            elif keys[pygame.K_3]:
+                player_coin = self.game_manager.player_coins
+                item_no = 2
+                if shop.can_buy(player_coin, item_no):
+                    item, price = shop.sell_item(player_coin, item_no)
+                    self.game_manager.player_coins -= price
+                    item.pickedUp(char)
+            elif keys[pygame.K_r]:
+                player_coin = self.game_manager.player_coins
+                cost = shop.refresh_shop(player_coin)
+                self.game_manager.player_coins -= cost
+
     def update(self):
         self.player = self.game_manager.player
         self.enemies = self.game_manager.enemies
         self.platforms = self.game_manager.platforms
         self.items = self.game_manager.items
         self.coins = self.game_manager.coins
+        self.shop = self.game_manager.shop
         self.check_bullet_collisions()
         self.check_sword_collisions()
         self.check_platform_collisions()
@@ -119,3 +152,4 @@ class CollisionManager:
         self.character_coin_collisions(self.player)
         self.check_player_enemy_collisions()
         self.check_bullet_platform_collisions()
+        self.check_player_shop_collisions(self.player)

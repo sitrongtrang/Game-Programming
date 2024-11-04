@@ -2,7 +2,7 @@ import pygame, csv, os
 import numpy as np
 from classes.Tileset import Tileset
 from data import constant
-
+from .Shop import Shop
 class Tilemap:
     def __init__(self, tileSetFile, mapFile, size=(10, 20), rect=None):
         self.size = size
@@ -16,7 +16,7 @@ class Tilemap:
         self.platform_positions = []
         self.item_positions = []
         self.coin_positions = []
-
+        self.shop_positions = None # one shop per level
         h, w = self.size
         self.image = pygame.Surface((constant.TILE_SIZE * w, constant.TILE_SIZE * h))
         if rect:
@@ -50,7 +50,9 @@ class Tilemap:
                 elif tile_value == 6:
                     # Boss spawn point
                     self.boss_position = (j * constant.TILE_SIZE, i * constant.TILE_SIZE)
-
+                elif tile_value == 7: 
+                    # Shop spawn point
+                    self.shop_positions = (j * constant.TILE_SIZE, i * constant.TILE_SIZE)
                 # tile = self.tileset.tiles[self.map[i, j]]
                 # self.image.blit(tile, (j*constant.TILE_SIZE, i*constant.TILE_SIZE))
 
