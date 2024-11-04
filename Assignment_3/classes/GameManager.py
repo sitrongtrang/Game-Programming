@@ -11,7 +11,7 @@ from .Tilemap import Tilemap
 from .MapSpawner import MapSpawner
 from data import constant
 from .PlatformManager import PlatformManager
-
+from classes.Characters.Barrel import Barrel
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
     def __init__(self, screen):
@@ -47,6 +47,7 @@ class GameManager:
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
+        self.barrels = pygame.sprite.Group()
         self.platforms = self.platform_manager.platforms
 
         # if self.tile_map.player_position:
@@ -84,8 +85,10 @@ class GameManager:
 
         self.player = Player(self.all_sprites, 100, 300, 32, 32)
         self.boss = Boss(self.all_sprites, 1000, 300, 50, 50)
+        barrels = [(10, 30), (600, 300), (700, 300), (800, 300), (900, 300)]
         self.enemies.add(self.boss)
-
+        for barrels in barrels:
+            self.barrels.add(Barrel(self.all_sprites, *barrels))
         self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
 
         self.collision_manager = CollisionManager(self)

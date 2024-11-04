@@ -3,7 +3,7 @@ from data import constant
 from .BaseItem import BaseItem
 
 class SpeedItem(BaseItem):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__(x, y, width, height)
         self.speed_increase_coeff = constant.SPEED_INCREASE_COEFF
 

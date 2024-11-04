@@ -1,8 +1,7 @@
 import pygame
 from data import constant
-
 class BaseItem(pygame.sprite.Sprite):
-    def __init__(self, all_sprites, x, y, width, height):
+    def __init__(self, all_sprites, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__()
 
         all_sprites.add(self)
@@ -17,7 +16,7 @@ class BaseItem(pygame.sprite.Sprite):
         self.picked_up = False
 
         self.image = pygame.Surface((width, height))
-        self.image.fill((0, 255, 0))  # Green color for placeholder
+        self.image.fill((255, 255, 0))  # Green color for placeholder
 
         # Rect attributes
         self.rect = self.image.get_rect()

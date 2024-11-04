@@ -35,3 +35,7 @@ class Barrel(pygame.sprite.Sprite):
 
     def void(self):
         return
+    
+    def draw(self, screen, camera_x=0):
+        if self.image:
+            screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))

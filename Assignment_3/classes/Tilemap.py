@@ -11,8 +11,8 @@ class Tilemap:
         self.tileset = Tileset(tileSetFile)
         
         # Calculate the total map width in pixels
-        self.map_width = self.map.shape[1] * 32  # 32 is tile size
-        self.map_height = self.map.shape[0] * 32
+        self.map_width = self.map.shape[1] * constant.TILE_SIZE 
+        self.map_height = self.map.shape[0] * constant.TILE_SIZE
         
         # Create a surface large enough for the entire map with alpha channel
         self.image = pygame.Surface((self.map_width, self.map_height), pygame.SRCALPHA)

@@ -17,5 +17,5 @@ ItemMap = {
 }
 
 def random_item(flag: bool = False):
-    if not flag: return ItemMap.get(_random(ItemMap.keys()))
+    if not flag: return ItemMap.get(_random(list(ItemMap.keys())))
     else: return ItemMap.get(_random(['heal', 'speed', 'dmg', 'jump']))

@@ -1,9 +1,9 @@
 import pygame
 from .BaseItem import BaseItem
-
+from data import constant
 class JumpItem(BaseItem):
     JUMP_COEFF  = 2
-    def __init__(self, all_sprites, x, y, width, height):
+    def __init__(self, all_sprites, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__(all_sprites, x, y, width, height)
 
     def takeEffect(self, character):

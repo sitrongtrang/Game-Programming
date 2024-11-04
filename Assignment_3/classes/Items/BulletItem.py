@@ -2,7 +2,7 @@ from data import constant
 from .BaseItem import BaseItem
 
 class BulletItem(BaseItem):
-    def __init__(self, all_sprites, x, y, width, height):
+    def __init__(self, all_sprites, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__(all_sprites, x, y, width, height)
         self.bullet_resupply = constant.BULLET_RESUPPLY
 
