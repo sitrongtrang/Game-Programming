@@ -9,7 +9,7 @@ with open("data/stat/character.json") as file:
 
 
 class GameOverMenu:
-    def __init__(self, screen, start_time, player_win):
+    def __init__(self, screen, start_time, player_win, game_manager):
         self.screen = screen
         self.start_time = start_time
         self.player_win = player_win
@@ -21,6 +21,7 @@ class GameOverMenu:
         self.back_button = LevelButton(550, 150, 1, (0, 0, 0), 24, "BACK")
         self.is_choosing_level = False
         self.state = 0
+        self.game_manager = game_manager
 
     def updateSettingFile(self, value_to_update, new_value):
         character[value_to_update] = new_value
@@ -70,6 +71,7 @@ class GameOverMenu:
                             game_state["game"] = True
                             self.start_time = None
                             self.pause_time = 0
+                            self.game_manager.new_game("1-1")
                             self.updateCharacterFile("coin", 0)
                             self.updateCharacterFile("current_hp")
                             self.updateCharacterFile("level", "1-1")
@@ -79,6 +81,7 @@ class GameOverMenu:
                             game_state["game"] = True
                             self.start_time = pygame.time.get_ticks()
                             self.pause_time = 0
+                            self.game_manager.new_game()
                             self.updateCharacterFile("coin", 0)
                             self.updateCharacterFile("current_hp")
                     if self.state == 1:
@@ -87,6 +90,7 @@ class GameOverMenu:
                             game_state["game"] = True
                             self.start_time = pygame.time.get_ticks()
                             self.pause_time = 0
+                            self.game_manager.new_game("1-2")
                             self.updateCharacterFile("coin", 0)
                             self.updateCharacterFile("current_hp")
                             self.updateCharacterFile("level", "1-2")
@@ -112,6 +116,7 @@ class GameOverMenu:
                     game_state["game"] = True
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
+                    self.game_manager.new_game()
                     self.updateCharacterFile("coin", 0)
                     self.updateCharacterFile("current_hp")
 
@@ -136,8 +141,7 @@ class GameOverMenu:
                     game_state["game"] = True
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
-                    self.updateCharacterFile("coin", 0)
-                    self.updateCharacterFile("current_hp")
+                    self.game_manager.new_game("1-1")
                     self.updateCharacterFile("level", "1-1")
                     self.is_choosing_level = False
                 if self.level_two_button.is_clicked(event.pos):
@@ -145,8 +149,7 @@ class GameOverMenu:
                     game_state["game"] = True
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
-                    self.updateCharacterFile("coin", 0)
-                    self.updateCharacterFile("current_hp")
+                    self.game_manager.new_game("1-2")
                     self.updateCharacterFile("level", "1-2")
                     self.is_choosing_level = False
 

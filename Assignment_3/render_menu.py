@@ -54,7 +54,7 @@ def main():
     main_menu = MainMenu(screen, "images/menu_background_image.png", "", "", game_manager)
     game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
-    game_over_menu = GameOverMenu(screen, None, False)
+    game_over_menu = GameOverMenu(screen, None, False, game_manager)
     # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
     while running:
         screen.fill((0, 0, 0))
@@ -66,6 +66,22 @@ def main():
             ##! gameplay here
             # screen.blit(temp_gameplay_test, (0, 0))
             game_manager.update()
+            if game_manager.boss_is_dead:
+                game_over_menu.player_win = True
+                end_screen = screen.copy()  ##! xóa sau khi finalize
+                end_screen = blur_surface(
+                    end_screen, 5
+                )  ##! xóa sau khi finalize
+                game_state["game"] = False  ##! xóa sau khi finalize
+                game_state["game_over"] = True  ##! xóa sau khi finalize
+            if game_manager.player_is_dead:
+                game_over_menu.player_win = False
+                end_screen = screen.copy()  ##! xóa sau khi finalize
+                end_screen = blur_surface(
+                    end_screen, 5
+                )  ##! xóa sau khi finalize
+                game_state["game"] = False  ##! xóa sau khi finalize
+                game_state["game_over"] = True  ##! xóa sau khi finalize
             game_menu.update(pause_menu.pause_time)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -77,13 +93,13 @@ def main():
                         paused_screen = screen.copy()
                         paused_screen = blur_surface(paused_screen, 5)
                         pause_menu.pause_time_start = pygame.time.get_ticks()
-                    if event.key == pygame.K_SPACE:  ##! xóa sau khi finalize
-                        end_screen = screen.copy()  ##! xóa sau khi finalize
-                        end_screen = blur_surface(
-                            end_screen, 5
-                        )  ##! xóa sau khi finalize
-                        game_state["game"] = False  ##! xóa sau khi finalize
-                        game_state["game_over"] = True  ##! xóa sau khi finalize
+                    # if event.key == pygame.K_SPACE:  ##! xóa sau khi finalize
+                    #     end_screen = screen.copy()  ##! xóa sau khi finalize
+                    #     end_screen = blur_surface(
+                    #         end_screen, 5
+                    #     )  ##! xóa sau khi finalize
+                    #     game_state["game"] = False  ##! xóa sau khi finalize
+                    #     game_state["game_over"] = True  ##! xóa sau khi finalize
 
         elif game_state["pause"]:
             screen.blit(paused_screen, (0, 0))
