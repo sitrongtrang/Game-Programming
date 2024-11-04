@@ -47,6 +47,7 @@ def blur_surface(surface, amount):
         array[:, 1:] = (array[:, 1:] + array[:, :-1]) // 2
     return surface
 
+
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
 
 def setup_soundPlayer(soundPlayer: SoundPlayer):
@@ -56,7 +57,9 @@ def main():
     clock = pygame.time.Clock()
     running = True
     game_manager = GameManager(screen)
-    main_menu = MainMenu(screen, "images/menu_background_image.png", "", "", game_manager)
+    main_menu = MainMenu(
+        screen, "images/menu_background_image.png", "", "", game_manager
+    )
     game_menu = GameMenu(screen, "", None, game_manager)
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False, game_manager)
@@ -76,17 +79,13 @@ def main():
             if game_manager.boss_is_dead:
                 game_over_menu.player_win = True
                 end_screen = screen.copy()  ##! xóa sau khi finalize
-                end_screen = blur_surface(
-                    end_screen, 5
-                )  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
                 game_state["game"] = False  ##! xóa sau khi finalize
                 game_state["game_over"] = True  ##! xóa sau khi finalize
             if game_manager.player_is_dead:
                 game_over_menu.player_win = False
                 end_screen = screen.copy()  ##! xóa sau khi finalize
-                end_screen = blur_surface(
-                    end_screen, 5
-                )  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
                 game_state["game"] = False  ##! xóa sau khi finalize
                 game_state["game_over"] = True  ##! xóa sau khi finalize
             game_menu.update(pause_menu.pause_time)

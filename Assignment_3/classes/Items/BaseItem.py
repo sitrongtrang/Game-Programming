@@ -45,3 +45,7 @@ class BaseItem(pygame.sprite.Sprite):
         self.picked_up = True
         self.takeEffect(character)
 
+    def draw(self, screen, camera_x=0):
+        if self.image:
+            screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
+
