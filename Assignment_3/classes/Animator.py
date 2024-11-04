@@ -18,11 +18,14 @@ class Animator:
         if self.current_anim != "none" and self.animations[self.current_anim].is_runing():
             return
 
+        if anim == "shoot_left": print("Flag")
         # Change anim
         if self.current_anim != "none" and self.current_anim != anim:
             self.animations[self.current_anim].resetStat()
+     
         self.current_anim = anim
         self.animations[self.current_anim].draw()
+        
 
     def update(self):
         # get deltatime

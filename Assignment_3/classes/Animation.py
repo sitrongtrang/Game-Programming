@@ -41,16 +41,20 @@ class Animation:
     #print(area)
 
     def update(self, deltaTime):
+        
+
         if self.frameTimer > 0:
             self.frameTimer -= deltaTime
         else:
-            if not (self.loop and (self.frame+1 == self.frameNum)):
+            if not (not self.loop and (self.frame+1 == self.frameNum)):
                 self.frame = (self.frame +1) % self.frameNum
             else:
                 self.looped = True
-
+     
             self.frameTimer = self.frameInterval
             self.draw()
     
     def is_runing(self):
-        return (self.loop == False) and (self.looped == True)
+        isRuning = ((self.loop == False) and (self.looped == False))
+       
+        return isRuning

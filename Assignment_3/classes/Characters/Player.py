@@ -23,19 +23,24 @@ class Player(Character):
     def setup_animations(self):
         self.animator.add_animation("idle_left", 'assets\\animations\\character\\idle_left.png', (32, 36), 4, 0.2)
         self.animator.add_animation("idle_right", 'assets\\animations\\character\\idle_right.png', (32, 36), 4, 0.2)
+
         self.animator.add_animation("run_left", 'assets\\animations\\character\\run_left.png', (32, 32), 5, 0.2, 16)
         self.animator.add_animation("run_right", 'assets\\animations\\character\\run_right.png', (32, 32), 5, 0.2, 16)
+
         self.animator.add_animation("jump_right", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.7,16, False)
         self.animator.add_animation("jump_left", 'assets\\animations\\character\\jump_left.png', (32, 48), 4, 0.7, 16, False)
-        self.animator.add_animation("melee_left", 'assets\\animations\\character\\melee_left.png', (32, 48), 6, 0.1, 16, False)
-        self.animator.add_animation("melee_right", 'assets\\animations\\character\\melee_right.png', (32, 48), 6, 0.1, 16, False)
+
+        self.animator.add_animation("melee_left", 'assets\\animations\\character\\melee_left.png', (32, 48), 6, 0.08, 16, False)
+        self.animator.add_animation("melee_right", 'assets\\animations\\character\\melee_right.png', (32, 48), 6, 0.08, 16, False)
+
+        self.animator.add_animation("shoot_right", 'assets\\animations\\character\\shoot_right.png', (16*3, 36), 7, 0.02, 0, False)
+        self.animator.add_animation("shoot_left", 'assets\\animations\\character\\shoot_left.png', (16*3, 36), 7, 0.02, 0, False)
         #
         self.setAnim("idle")
 
     def check_animInteval(self):
       
         if self.sword_timer > 0:
-
             return False
         if self.is_jumping:
             return False
@@ -70,6 +75,9 @@ class Player(Character):
             bullet = Bullet_Player(self.all_sprites, self.rect.centerx, self.rect.centery, angle, self.direction)
             self.bullets.add(bullet)
             self.last_shot_time = current_time
+
+            print("Shopot")
+            self.setAnim("shoot")
 
     def handle_keys(self):
         keys = pygame.key.get_pressed()
