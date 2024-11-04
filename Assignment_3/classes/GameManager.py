@@ -24,6 +24,8 @@ class GameManager:
 
         self.player = None
         self.boss = None
+        self.player_is_dead = False
+        self.boss_is_dead = False
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
@@ -78,8 +80,10 @@ class GameManager:
         for i, bg_image in enumerate(self.bg_images):
             bg_x = i * constant.SCREEN_WIDTH
             self.screen.blit(bg_image, (bg_x - self.camera_x, 0))
-        self.all_sprites.update(self.camera_x)
         for sprite in self.all_sprites:
             if sprite.image:
                 self.screen.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y, sprite.rect.width, sprite.rect.height))
+        self.all_sprites.update(self.camera_x)
         self.collision_manager.update()
+        self.player_is_dead = self.player not in self.all_sprites
+        self.boss_is_dead = self.boss not in self.all_sprites
