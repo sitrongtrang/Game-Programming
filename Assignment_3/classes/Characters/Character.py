@@ -35,7 +35,13 @@ class Character(pygame.sprite.Sprite):
         self.animator = Animator(self.image)
         self.lastDirection = "left"     
    
+    def check_animInteval(self):
+        return True
+
     def setAnim(self, anim):
+        if not self.check_animInteval(): 
+            return
+        
         new_anim  = anim + '_' + self.lastDirection
         self.animator.change_anim(new_anim)
 
@@ -57,7 +63,7 @@ class Character(pygame.sprite.Sprite):
         if not self.is_jumping:
             self.vel_y = -self.jump_power
             self.is_jumping = True
-            self.setAnim("jump")
+            
 
     def apply_gravity(self):
         self.vel_y += self.gravity

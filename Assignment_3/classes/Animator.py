@@ -7,12 +7,18 @@ class Animator:
         self.current_anim = "none"
         self.lastTick = 0
         self.surface = surface
+
+
     
-    def add_animation(self, name, spriteFile, frameSize, frameNum, frameInterval, spacing = 0):
-        new_anim = Animation(self.surface, name, spriteFile, frameSize,  frameNum, frameInterval, spacing)
+    def add_animation(self, name, spriteFile, frameSize, frameNum, frameInterval, spacing = 0, loop = True):
+        new_anim = Animation(self.surface, name, spriteFile, frameSize,  frameNum, frameInterval, spacing, loop)
         self.animations[name] = new_anim
     
     def change_anim(self, anim):
+        if self.current_anim != "none" and self.animations[self.current_anim].is_runing():
+            return
+
+        # Change anim
         if self.current_anim != "none" and self.current_anim != anim:
             self.animations[self.current_anim].resetStat()
         self.current_anim = anim
@@ -27,3 +33,5 @@ class Animator:
         #
         if self.current_anim != "none":
             self.animations[self.current_anim].update(deltaTime)
+
+    

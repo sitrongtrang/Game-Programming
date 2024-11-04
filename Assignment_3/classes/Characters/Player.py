@@ -25,17 +25,30 @@ class Player(Character):
         self.animator.add_animation("idle_right", 'assets\\animations\\character\\idle_right.png', (32, 36), 4, 0.2)
         self.animator.add_animation("run_left", 'assets\\animations\\character\\run_left.png', (32, 32), 5, 0.2, 16)
         self.animator.add_animation("run_right", 'assets\\animations\\character\\run_right.png', (32, 32), 5, 0.2, 16)
-        self.animator.add_animation("jump_right", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.2, 16)
-        self.animator.add_animation("jump_left", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.2, 16)
+        self.animator.add_animation("jump_right", 'assets\\animations\\character\\jump_right.png', (32, 48), 4, 0.7,16, False)
+        self.animator.add_animation("jump_left", 'assets\\animations\\character\\jump_left.png', (32, 48), 4, 0.7, 16, False)
+        self.animator.add_animation("melee_left", 'assets\\animations\\character\\melee_left.png', (32, 48), 6, 0.1, 16, False)
+        self.animator.add_animation("melee_right", 'assets\\animations\\character\\melee_right.png', (32, 48), 6, 0.1, 16, False)
         #
         self.setAnim("idle")
+
+    def check_animInteval(self):
+      
+        if self.sword_timer > 0:
+
+            return False
+        if self.is_jumping:
+            return False
+        return True
 
     def sword_attack(self):
         # Create a temporary hitbox in front of the player
         if self.sword_timer == 0:  # Only create if there's no active sword hitbox
             sword_x = self.rect.right if self.direction == "right" else self.rect.left - 40
             self.sword_hitbox = pygame.Rect(sword_x, self.rect.y + 10, 40, 20)  # Adjusted size
+            self.setAnim("melee")
             self.sword_timer = self.sword_duration
+            
 
     def shoot(self, camera_x=0):
         current_time = pygame.time.get_ticks()
@@ -77,6 +90,7 @@ class Player(Character):
         # Check for jumping
         if keys[pygame.K_w]:
             self.jump()
+            self.setAnim("jump")
 
         # Sword attack
         if pygame.mouse.get_pressed()[0]:  # Index 2 represents the right mouse button

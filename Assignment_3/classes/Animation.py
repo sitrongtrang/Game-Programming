@@ -2,7 +2,7 @@
 import pygame
 
 class Animation:
-    def __init__(self, surface, name, spriteFile, frameSize,  frameNum, frameInterval, spacing = 0):
+    def __init__(self, surface, name, spriteFile, frameSize,  frameNum, frameInterval, spacing = 0, loop = True):
         self.name = name
         self.surface = surface
         self.spriteFile = spriteFile
@@ -10,6 +10,8 @@ class Animation:
         self.frameNum = frameNum
         self.frameInterval = frameInterval
         self.spacing = spacing
+        self.loop = loop
+    
 
         self.sheet = None
         self.load_spritesheet()
@@ -18,6 +20,7 @@ class Animation:
     def resetStat(self):
         self.frame = 0
         self.frameTimer = self.frameInterval
+        self.looped = False
 
     def load_spritesheet(self):
         try:
@@ -41,6 +44,13 @@ class Animation:
         if self.frameTimer > 0:
             self.frameTimer -= deltaTime
         else:
-            self.frame = (self.frame +1) % self.frameNum
+            if not (self.loop and (self.frame+1 == self.frameNum)):
+                self.frame = (self.frame +1) % self.frameNum
+            else:
+                self.looped = True
+
             self.frameTimer = self.frameInterval
             self.draw()
+    
+    def is_runing(self):
+        return (self.loop == False) and (self.looped == True)
