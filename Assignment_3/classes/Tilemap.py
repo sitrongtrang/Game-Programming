@@ -4,55 +4,31 @@ from classes.Tileset import Tileset
 from data import constant
 
 class Tilemap:
-    def __init__(self, tileSetFile, mapFile, size=(10, 20), rect=None):
+    def __init__(self, tileSetFile, mapFile, size=(30, 20), screenSize = (800, 600), rect=None):
         self.size = size
-        if tileSetFile != "":
-            self.tileSetFile = tileSetFile
-            self.tileset = Tileset(tileSetFile, size)
-        self.map = np.array(self.read_csv(mapFile))
-        self.player_position = None
-        self.boss_position = None
-        self.enemy_positions = []
-        self.platform_positions = []
-        self.item_positions = []
-        self.coin_positions = []
-
+        self.tileSetFile = tileSetFile
+        self.map = self.read_csv(mapFile)
+        self.tileset = Tileset(tileSetFile)
+        
+        #
         h, w = self.size
-        self.image = pygame.Surface((constant.TILE_SIZE * w, constant.TILE_SIZE * h))
+        self.image = pygame.Surface(screenSize)
         if rect:
             self.rect = pygame.Rect(rect)
-        else:
+        else:   
             self.rect = self.image.get_rect()
 
 
-    def renderMap(self):
+
+    def renderMap(self, background):
+        self.drawBackground(background)
         m, n = self.map.shape
         for i in range(m):
             for j in range(n):
-                tile_value = self.map[i, j]
-                if tile_value == 0:
-                    continue  # Empty space, no tile rendered
-                elif tile_value == 1:
-                    # Platform tile
-                    self.platform_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
-                elif tile_value == 2:
-                    # Player starting position
-                    self.player_position = (j * constant.TILE_SIZE, i * constant.TILE_SIZE)
-                elif tile_value == 3:
-                    # Enemy spawn point
-                    self.enemy_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
-                elif tile_value == 4:
-                    # Item spawn point
-                    self.item_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
-                elif tile_value == 5:
-                    # Coin spawn point
-                    self.coin_positions.append((j * constant.TILE_SIZE, i * constant.TILE_SIZE))
-                elif tile_value == 6:
-                    # Boss spawn point
-                    self.boss_position = (j * constant.TILE_SIZE, i * constant.TILE_SIZE)
+                if self.map[i][j] != -1:
+                    tile = self.tileset.tiles[self.map[i][j]]
+                    self.image.blit(tile, (j*32, i*32))
 
-                # tile = self.tileset.tiles[self.map[i, j]]
-                # self.image.blit(tile, (j*constant.TILE_SIZE, i*constant.TILE_SIZE))
 
     def read_csv(self, fileName):
         map_data = []
@@ -60,9 +36,16 @@ class Tilemap:
             data = csv.reader(data, delimiter=',')
             for row in data:
                 map_data.append(list(map(int, row)))
-        return map_data
+        return np.array(map_data)
 
+    def drawBackground(self, background):
+        if background:
+            self.image.blit(background, (0, 0))
 
+    def render(self, surface: pygame.Surface):
+        dest = (0, 0)
+        #area = pygame.Rect(0, 0, 400, 600)
+        surface.blit(self.image, dest)
 
 
     def __str__(self):
