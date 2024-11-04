@@ -6,6 +6,7 @@ from classes.UI.GameMenu import GameMenu
 from classes.UI.PauseMenu import PauseMenu
 from classes.UI.GameOverMenu import GameOverMenu
 from classes.GameManager import GameManager
+from classes.SoundPlayer import SoundPlayer
 from data import constant
 
 ##! delete after finalize game
@@ -47,6 +48,10 @@ def blur_surface(surface, amount):
     return surface
 
 # background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
+
+def setup_soundPlayer(soundPlayer: SoundPlayer):
+    pass
+
 def main():
     clock = pygame.time.Clock()
     running = True
@@ -56,6 +61,8 @@ def main():
     pause_menu = PauseMenu(screen, None, None, 0, game_manager)
     game_over_menu = GameOverMenu(screen, None, False, game_manager)
     # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
+
+
     while running:
         screen.fill((0, 0, 0))
         if game_state["menu"]:
