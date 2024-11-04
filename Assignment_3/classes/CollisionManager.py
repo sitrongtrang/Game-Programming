@@ -35,15 +35,20 @@ class CollisionManager:
 
     def check_sword_collisions(self):
         # Check for collisions between player's sword and enemies
-        if self.player.sword_hitbox:
+        if self.player.sword_hitbox and self.player.sword_hitbox[1]:
             for enemy in self.enemies:
-                if self.player.sword_hitbox.colliderect(enemy.rect):
+
+                if self.player.sword_hitbox[0].colliderect(enemy.rect):
                     enemy.take_damage(self.player.dmg)
+            self.player.sword_hitbox[1] = False  # Deactivate sword hitbox
 
         # Check for collisions between enemy swords and player
         for enemy in self.enemies:
-            if enemy.sword_hitbox and enemy.sword_hitbox.colliderect(self.player.rect):
+            # with enemy.sword_hitbox as hitbox:
+            if enemy.sword_hitbox and enemy.sword_hitbox[1] \
+                and enemy.sword_hitbox[0].colliderect(self.player.rect):
                 self.player.take_damage(self.player.dmg)
+                enemy.sword_hitbox[1] = False  # Deactivate enemy sword hitbox
 
     def character_platform_collisions(self, char):
         for platform in self.platforms:
@@ -106,6 +111,7 @@ class CollisionManager:
                     else:
                         self.player.rect.x += 10  # Knock player back to the right
 
+<<<<<<< HEAD
     def check_player_shop_collisions(self, char):
         # Check for collisions between player and shop
         if not self.player.rect.colliderect(self.shop.rect):
@@ -142,13 +148,14 @@ class CollisionManager:
         ...
 
 
+=======
+>>>>>>> ass3/feature/scrolling
     def update(self):
         self.player = self.game_manager.player
         self.enemies = self.game_manager.enemies
         self.platforms = self.game_manager.platforms
         self.items = self.game_manager.items
         self.coins = self.game_manager.coins
-        self.shop = self.game_manager.shop
         self.check_bullet_collisions()
         self.check_sword_collisions()
         self.check_platform_collisions()
@@ -156,4 +163,3 @@ class CollisionManager:
         self.character_coin_collisions(self.player)
         self.check_player_enemy_collisions()
         self.check_bullet_platform_collisions()
-        self.check_player_shop_collisions(self.player)

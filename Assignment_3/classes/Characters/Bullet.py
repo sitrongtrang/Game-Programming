@@ -10,13 +10,16 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((10, 5))
         self.image.fill((255, 0, 0))  # Red color for bullets
         self.rect = self.image.get_rect(center=(x, y))
-        self.speed = 8 if direction == "right" else -8  # Set speed based on direction
+        self.origin_x = x
+        self.origin_y = y
+        self.speed = constant.BOSS_SPEED if direction == "right" else -constant.BOSS_SPEED  # Set speed based on direction
+
+    def draw(self, screen, camera_x=0):
+        screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
 
     def update(self, camera_x=0):
-        # if self.rect.x > constant.SCREEN_WIDTH or self.rect.x < 0:
-        #     self.kill()
-        # screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
-        pass
+        if (self.rect.x - self.origin_x) ** 2 + (self.rect.y - self.origin_y) ** 2 > constant.BULLET_RANGE ** 2:
+            self.kill()
 
 
 class Bullet_Enemy(Bullet):
@@ -37,9 +40,9 @@ class Bullet_Player(Bullet):
         #     angle += math.pi  # Flip angle for leftward shooting
 
         # Calculate velocity based on the angle
-        speed = 8  # Adjust as needed
-        self.velocity_x = speed * math.cos(angle)
-        self.velocity_y = speed * math.sin(angle)
+          # Adjust as needed
+        self.velocity_x = constant.BULLET_SPEED * math.cos(angle)
+        self.velocity_y = constant.BULLET_SPEED * math.sin(angle)
 
     def update(self, camera_x=0):
         # Move the bullet in the direction of the angle

@@ -1,8 +1,9 @@
 import pygame
 import random
-from classes.GameManager import GameManager
+from classes.MapSpawner import MapSpawner
+import os
 from data import constant
-
+from classes.GameManager import GameManager
 # Initialize Pygame
 pygame.init()
 
@@ -18,14 +19,22 @@ game_manager.new_game()
 # Game loop
 running = True
 clock = pygame.time.Clock()
+mapSpawner = MapSpawner(screen, 1)
+mapSpawner.spawnMap(0)
 
 while running:
     screen.fill((255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not is_jumping:
+                character_speed_y = jump_speed
+                is_jumping = True
 
-    game_manager.update()
+    mapSpawner.renderMap()
+
+
 
     pygame.display.flip()
     clock.tick(60)
