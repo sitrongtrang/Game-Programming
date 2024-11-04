@@ -1,6 +1,7 @@
 import pygame
 import sys
 from classes.UI.PauseButton import PauseButton
+from classes.SoundPlayer import SoundPlayer
 import json
 
 with open("data/settings/settings.json") as file:
@@ -89,6 +90,7 @@ class PauseMenu:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if self.isSetting:
                         if self.state > 0:
@@ -151,6 +153,7 @@ class PauseMenu:
                         self.pause_time = 0
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if self.resume_button.is_clicked(event.pos):
                     game_state["pause"] = False
                     game_state["game"] = True

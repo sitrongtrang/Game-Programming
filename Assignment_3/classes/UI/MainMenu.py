@@ -2,6 +2,7 @@ import pygame
 import sys
 from classes.UI.MenuButton import MenuButton
 from classes.UI.LevelButton import LevelButton
+from classes.SoundPlayer import SoundPlayer
 import json
 
 with open("data/settings/settings.json") as setting_file:
@@ -77,6 +78,7 @@ class MainMenu:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if event.key == pygame.K_ESCAPE:
                     if self.is_setting or self.is_choosing_level:
                         self.is_setting = False
@@ -147,6 +149,7 @@ class MainMenu:
                             pygame.quit()
                             sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if self.quit_button.is_clicked(event.pos):
                     self.playSoundEffect()
                     self.state = 2

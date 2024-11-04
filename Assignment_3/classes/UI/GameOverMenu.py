@@ -2,6 +2,7 @@ import pygame
 import sys
 from classes.UI.PauseButton import PauseButton
 from classes.UI.LevelButton import LevelButton
+from classes.SoundPlayer import SoundPlayer
 import json
 
 with open("data/stat/character.json") as file:
@@ -51,6 +52,7 @@ class GameOverMenu:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     if self.state < 2:
                         self.state += 1
@@ -111,6 +113,7 @@ class GameOverMenu:
                             self.updateCharacterFile("current_hp")
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                SoundPlayer.get_instance().play_sound("click")
                 if self.restart_button.is_clicked(event.pos):
                     game_state["game_over"] = False
                     game_state["game"] = True
