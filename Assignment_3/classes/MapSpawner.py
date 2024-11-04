@@ -1,6 +1,7 @@
 import pygame
 import os
 from classes.Tilemap import Tilemap
+from data import constant
 
 class MapSpawner:
     def __init__(self, surface, mapNumber):
@@ -27,7 +28,8 @@ class MapSpawner:
         for bg_folder in self.backgroundFolders:
             try:
                 bg_image = pygame.image.load(bg_folder).convert()
-                self.backgrounds.append(bg_image)
+                scale_bg = pygame.transform.scale(bg_image, (constant.SCREEN_WIDTH, constant.SCREEN_HEIGHT))
+                self.backgrounds.append(scale_bg)
             except pygame.error as e:
                 print(f"Could not load background image {bg_folder}: {e}")
     
