@@ -10,10 +10,16 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((10, 5))
         self.image.fill((255, 0, 0))  # Red color for bullets
         self.rect = self.image.get_rect(center=(x, y))
+        self.origin_x = x
+        self.origin_y = y
         self.speed = 8 if direction == "right" else -8  # Set speed based on direction
 
     def draw(self, screen, camera_x=0):
         screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
+
+    def update(self, camera_x=0):
+        if (self.rect.x - self.origin_x) ** 2 + (self.rect.y - self.origin_y) ** 2 > constant.BULLET_RANGE ** 2:
+            self.kill()
 
 
 class Bullet_Enemy(Bullet):

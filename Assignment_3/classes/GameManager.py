@@ -82,7 +82,7 @@ class GameManager:
         #     coin = Coin(self.all_sprites, coin_x, coin_y, constant.TILE_SIZE, constant.TILE_SIZE)
         #     self.coins.add(coin)
 
-        self.player = Player(self.all_sprites, 100, 300, 50, 50)
+        self.player = Player(self.all_sprites, 100, 300, 32, 32)
         self.boss = Boss(self.all_sprites, 1000, 300, 50, 50)
         self.enemies.add(self.boss)
 
