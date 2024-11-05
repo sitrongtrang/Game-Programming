@@ -9,7 +9,7 @@ class MapSpawner:
         self.mapNumber = mapNumber
         
         self.mapFolders = [
-            os.path.join("data", "maps", "TestMap.csv")
+            os.path.join("data", "maps", "1-1.csv")
         ]
         
         self.tileSetFolder = os.path.join("assets", "maps", "tileset.png")
