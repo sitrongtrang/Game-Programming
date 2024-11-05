@@ -11,6 +11,7 @@ from data import constant
 from .PlatformManager import PlatformManager
 from classes.Characters.Barrel import Barrel
 from classes.Items.BulletItem import BulletItem
+from .Shop import Shop
 import json
 
 class GameManager:
@@ -65,28 +66,28 @@ class GameManager:
         if player_data:
             self.player = Player(self.all_sprites, player_data['x'], player_data['y'], 32, 32)
 
-        for coin_data in coins_data:
-            coin = Coin(self.all_sprites, coin_data['x'], coin_data['y'], 32, 32)
-            self.coins.add(coin)
+        # for coin_data in coins_data:
+        #     coin = Coin(self.all_sprites, coin_data['x'], coin_data['y'], 32, 32)
+        #     self.coins.add(coin)
 
-        for enemy_data in enemies_data:
-            enemy = Enemy(self.all_sprites, enemy_data['x'], enemy_data['y'], 32, 32)
-            self.enemies.add(enemy)
+        # for enemy_data in enemies_data:
+        #     enemy = Enemy(self.all_sprites, enemy_data['x'], enemy_data['y'], 32, 32)
+        #     self.enemies.add(enemy)
 
         if boss_data:
             self.boss = Boss(self.all_sprites, boss_data['x'], boss_data['y'], 32, 32)
             self.enemies.add(self.boss)
 
-        for barrel_data in barrels_data:
-            barrel = Barrel(self.all_sprites, barrel_data['x'], barrel_data['y'])
-            self.barrels.add(barrel)
+        # for barrel_data in barrels_data:
+        #     barrel = Barrel(self.all_sprites, barrel_data['x'], barrel_data['y'])
+        #     self.barrels.add(barrel)
 
-        for bullet_data in bullets_data:
-            bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
-            self.items.add(bullet)
+        # for bullet_data in bullets_data:
+        #     bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
+        #     self.items.add(bullet)
 
-        # if shop_data:
-        #     self.shop = Shop()
+        if shop_data:
+            self.shop = Shop(self.all_sprites, shop_data['x'], shop_data['y'], 64, 64)
         
 
         self.boss = Boss(self.all_sprites, 1000, 300, 1000, 1000)
