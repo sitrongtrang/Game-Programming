@@ -107,8 +107,7 @@ class Player(Character):
             )
             self.bullets.add(bullet)
             self.last_shot_time = current_time
-
-            print("Shopot")
+            
             self.setAnim("shoot")
 
     def handle_keys(self):

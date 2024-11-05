@@ -11,7 +11,6 @@ class Tileset:
 
         self.image = pygame.image.load(file)
         self.rect = self.image.get_rect()
-        print(self.rect)
         self.load()
         
     def load(self):
