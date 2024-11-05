@@ -11,6 +11,7 @@ from data import constant
 from .PlatformManager import PlatformManager
 from classes.Characters.Barrel import Barrel
 from classes.Items.BulletItem import BulletItem
+from classes.Items.HealItem import HealItem
 from .Shop import Shop
 import json
 
@@ -62,6 +63,7 @@ class GameManager:
         boss_data = self.entities['Boss']
         barrels_data = self.entities['Barrels']
         bullets_data = self.entities['BulletItems']
+        heal_data = self.entities["HealItems"]
         shop_data = self.entities['Shop']
 
         if player_data:
@@ -86,6 +88,10 @@ class GameManager:
         for bullet_data in bullets_data:
             bullet = BulletItem(self.all_sprites, bullet_data['x']* 32, bullet_data['y']* 32, 32, 32)
             self.items.add(bullet)
+
+        for data in heal_data:
+            heal = HealItem(self.all_sprites, data['x']* 32, data['y']* 32, 32, 32)
+            self.items.add(heal)
 
         if shop_data:
             self.shop = Shop(self.all_sprites, shop_data['x']* 32, shop_data['y']* 32 - 32, 64, 64)
