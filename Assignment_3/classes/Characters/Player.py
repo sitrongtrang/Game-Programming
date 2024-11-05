@@ -156,13 +156,14 @@ class Player(Character):
         self.drawHpBar(surface, self.rect.x - camera_x - 15, self.rect.y - 25)
         # Draw sword hitbox if it's active
         if self.sword_hitbox:
-            pygame.draw.rect(
-                surface,
-                (0, 0, 255),
-                (
-                    self.sword_hitbox[0].x - camera_x,
-                    self.sword_hitbox[0].y,
-                    self.sword_hitbox[0].width,
-                    self.sword_hitbox[0].height,
-                ),
-            )  # Draw the sword hitbox in blue
+            pass
+            # pygame.draw.rect(
+            #     surface,
+            #     (0, 0, 255),
+            #     (
+            #         self.sword_hitbox[0].x - camera_x,
+            #         self.sword_hitbox[0].y,
+            #         self.sword_hitbox[0].width,
+            #         self.sword_hitbox[0].height,
+            #     ),
+            # )  # Draw the sword hitbox in blue

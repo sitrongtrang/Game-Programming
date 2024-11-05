@@ -26,7 +26,7 @@ class Coin(pygame.sprite.Sprite):
             # Load the bullet image
             self.image = pygame.image.load(filePath).convert_alpha()
             # Scale the image to fit the dimensions of self.img
-            self.image = pygame.transform.scale(self.image, self.img.get_size())
+            self.image = pygame.transform.scale(self.image, self.image.get_size())
         except pygame.error:
             print("Unable to load bullet image.")
             raise SystemExit

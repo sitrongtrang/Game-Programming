@@ -16,9 +16,7 @@ class GameMenu:
         self.start_time = start_time
         self.hp_bar = Spritesheet("images/hp_bar.png")
         self.coin_image = Spritesheet("images/font.png")
-        self.bullet_image = Spritesheet(
-            "images/font.png"
-        )  ##! cập nhật sprite bullet chỗ này
+        self.bullet_image = pygame.image.load("assets/sprites/items/ammo.png")  ##! cập nhật sprite bullet chỗ này
         self.level = settings["level"]
         self.currrent_hp = settings["current_hp"]
         self.max_hp = settings["max_hp"]
@@ -45,15 +43,12 @@ class GameMenu:
     ##? draw main menu
     def drawGameMenu(self, pause_time):
 
-        # self.drawHpBar()
-        # self.drawHpFrame()
         self.drawBullet()
         self.drawCoin()
         self.drawLevel()
         self.drawTime(pause_time)
 
     def drawHpBar(self):
-        # Calculate HP bar width based on current HP
         if self.current_hp / self.max_hp == 1:
             hp_bar_image = self.hp_bar.image_at(1, 0, 3.5)
             self.screen.blit(hp_bar_image, (40, 5))
@@ -83,9 +78,9 @@ class GameMenu:
         self.screen.blit(hp_frame_image, (40, 5))
 
     def drawBullet(self):
-        bullet_image = self.coin_image.image_at(0, 2, 3, xTileSize=8, yTileSize=8)
+        
         multiply_image = self.coin_image.image_at(8, 5, 2, xTileSize=8, yTileSize=8)
-        self.screen.blit(bullet_image, (60, 30))
+        self.screen.blit(self.bullet_image, (40, 25))
         self.screen.blit(multiply_image, (80, 39))
         if self.game_manager.player.bullet < 10:
             self.drawText(

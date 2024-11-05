@@ -44,6 +44,7 @@ class GameManager:
 
         self.player = None
         self.boss = None
+        self.shop = None
         self.player_is_dead = False
         self.boss_is_dead = False
         self.enemies = pygame.sprite.Group()
@@ -82,23 +83,13 @@ class GameManager:
         #     barrel = Barrel(self.all_sprites, barrel_data['x'], barrel_data['y'])
         #     self.barrels.add(barrel)
 
-        # for bullet_data in bullets_data:
-        #     bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
-        #     self.items.add(bullet)
+        for bullet_data in bullets_data:
+            bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
+            self.items.add(bullet)
 
         if shop_data:
             self.shop = Shop(self.all_sprites, shop_data['x'], shop_data['y'], 64, 64)
         
-
-        self.boss = Boss(self.all_sprites, 1000, 300, 1000, 1000)
-        barrels = [(10, 30), (600, 300), (700, 300), (800, 300), (900, 300)]
-        enemy = Enemy(self.all_sprites, 300, 300, 48, 48) 
-
-        self.enemies.add(enemy) 
-        self.enemies.add(self.boss)
-        for barrels in barrels:
-            self.barrels.add(Barrel(self.all_sprites, *barrels))
-        # self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
         self.total_bg_width = self.mapSpawner.tilemap.map_width
 
         self.collision_manager = CollisionManager(self)
