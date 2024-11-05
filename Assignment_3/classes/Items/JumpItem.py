@@ -10,7 +10,7 @@ class JumpItem(BaseItem):
     def takeEffect(self, character):
         self.char_jump_before = character.jump
         self.char_picked_up = character
-        character.setJump(character.jump * JumpItem.JUMP_COEFF)
+        character.setJump(character.jump_power * JumpItem.JUMP_COEFF)
 
     def update(self, camera_x=0):
         deltaTime = pygame.time.get_ticks() - self.previous_ticks

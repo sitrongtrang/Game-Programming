@@ -92,7 +92,7 @@ class GameOverMenu:
                             game_state["game"] = True
                             self.start_time = pygame.time.get_ticks()
                             self.pause_time = 0
-                            self.game_manager.new_game("1-2")
+                            self.game_manager.new_game("1-1")
                             self.updateCharacterFile("coin", 0)
                             self.updateCharacterFile("current_hp")
                             self.updateCharacterFile("level", "1-2")
@@ -152,7 +152,7 @@ class GameOverMenu:
                     game_state["game"] = True
                     self.start_time = pygame.time.get_ticks()
                     self.pause_time = 0
-                    self.game_manager.new_game("1-2")
+                    self.game_manager.new_game("1-1")
                     self.updateCharacterFile("level", "1-2")
                     self.is_choosing_level = False
 

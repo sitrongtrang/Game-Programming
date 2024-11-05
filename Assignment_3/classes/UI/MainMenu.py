@@ -133,7 +133,7 @@ class MainMenu:
                         elif self.is_choosing_level:
                             game_state["menu"] = False
                             game_state["game"] = True
-                            self.game_manager.new_game("1-2")
+                            self.game_manager.new_game("1-1")
                             self.updateCharacterFile("level", "1-2")
                         else:
                             self.playSoundEffect()
@@ -182,7 +182,7 @@ class MainMenu:
                 elif self.level_two_button.is_clicked(event.pos):
                     game_state["menu"] = False
                     game_state["game"] = True
-                    self.game_manager.new_game("1-2")
+                    self.game_manager.new_game("1-1")
                     self.updateCharacterFile("level", "1-2")
                 elif self.return_button.is_clicked(event.pos):
                     self.is_choosing_level = False
