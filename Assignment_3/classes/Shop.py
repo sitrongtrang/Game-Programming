@@ -63,7 +63,7 @@ class Shop(pygame.sprite.Sprite):
 
         self.image = pygame.Surface((width, height))
         self.image.fill((0, 255, 0)) # Green color for placeholder
-
+        self.load_img("assets\\sprites\\shop.png", width, height)
         # Rect attributes
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
@@ -91,3 +91,13 @@ class Shop(pygame.sprite.Sprite):
         if self.shopkeeper.can_refresh(player_coin):
             return self.shopkeeper.refresh_shelf()
         return 0
+    
+    def load_img(self, filePath, w, h):
+        try:
+            # Load the  image
+            self.image = pygame.image.load(filePath).convert_alpha()
+            # Scale the image to fit the dimensions of self.img
+            self.image = pygame.transform.scale(self.image, (w, h))
+        except pygame.error:
+            print("Unable to load shop image.")
+            raise SystemExit

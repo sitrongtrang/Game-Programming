@@ -6,7 +6,7 @@ class SpeedItem(BaseItem):
     def __init__(self, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__(x, y, width, height)
         self.speed_increase_coeff = constant.SPEED_INCREASE_COEFF
-        self.load_img("assets\\sprites\\items\\speed.png")
+        self.load_img("assets\\sprites\\items\\speed.png",  width, height)
 
     def takeEffect(self, character):
         self.char_speed_before = character.speed

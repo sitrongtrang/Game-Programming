@@ -48,12 +48,12 @@ class BaseItem(pygame.sprite.Sprite):
         if self.image:
             screen.blit(self.image, (self.rect.x - camera_x, self.rect.y, self.rect.width, self.rect.height))
 
-    def load_img(self, filePath):
+    def load_img(self, filePath, w, h):
         try:
             # Load the  image
             self.image = pygame.image.load(filePath).convert_alpha()
             # Scale the image to fit the dimensions of self.img
-            self.image = pygame.transform.scale(self.image, self.image.get_size())
+            self.image = pygame.transform.scale(self.image, (w, h))
         except pygame.error:
             print("Unable to load item image.")
             raise SystemExit
