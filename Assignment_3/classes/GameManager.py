@@ -65,30 +65,30 @@ class GameManager:
         shop_data = self.entities['Shop']
 
         if player_data:
-            self.player = Player(self.all_sprites, player_data['x'], player_data['y'], 32, 32)
+            self.player = Player(self.all_sprites, player_data['x'] * 32, player_data['y']* 32, 32, 32)
 
-        # for coin_data in coins_data:
-        #     coin = Coin(self.all_sprites, coin_data['x'], coin_data['y'], 32, 32)
-        #     self.coins.add(coin)
+        for coin_data in coins_data:
+            coin = Coin(self.all_sprites, coin_data['x'] * 32, coin_data['y']* 32, 32, 32)
+            self.coins.add(coin)
 
-        # for enemy_data in enemies_data:
-        #     enemy = Enemy(self.all_sprites, enemy_data['x'], enemy_data['y'], 32, 32)
-        #     self.enemies.add(enemy)
+        for enemy_data in enemies_data:
+            enemy = Enemy(self.all_sprites, enemy_data['x'] * 32, enemy_data['y'] * 32, 32, 32)
+            self.enemies.add(enemy)
 
         if boss_data:
-            self.boss = Boss(self.all_sprites, boss_data['x'], boss_data['y'], 32, 32)
+            self.boss = Boss(self.all_sprites, boss_data['x'] * 32, boss_data['y'] * 32, 32, 32)
             self.enemies.add(self.boss)
 
-        # for barrel_data in barrels_data:
-        #     barrel = Barrel(self.all_sprites, barrel_data['x'], barrel_data['y'])
-        #     self.barrels.add(barrel)
+        for barrel_data in barrels_data:
+            barrel = Barrel(self.all_sprites, barrel_data['x'] * 32, barrel_data['y'] * 32)
+            self.barrels.add(barrel)
 
         for bullet_data in bullets_data:
-            bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
+            bullet = BulletItem(self.all_sprites, bullet_data['x']* 32, bullet_data['y']* 32, 32, 32)
             self.items.add(bullet)
 
         if shop_data:
-            self.shop = Shop(self.all_sprites, shop_data['x'], shop_data['y'], 64, 64)
+            self.shop = Shop(self.all_sprites, shop_data['x']* 32, shop_data['y']* 32, 64, 64)
         
         self.total_bg_width = self.mapSpawner.tilemap.map_width
 

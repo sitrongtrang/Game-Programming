@@ -1,42 +1,158 @@
 import pygame
-import random
-from classes.MapSpawner import MapSpawner
-import os
-from data import constant
+import sys
+from random import randint
+from classes.UI.MainMenu import MainMenu
+from classes.UI.GameMenu import GameMenu
+from classes.UI.PauseMenu import PauseMenu
+from classes.UI.GameOverMenu import GameOverMenu
 from classes.GameManager import GameManager
-# Initialize Pygame
+from classes.SoundPlayer import SoundPlayer
+from data import constant
+import json
+
+##! delete after finalize game
+# running = True
 pygame.init()
 
-# Screen settings
+screen_width = constant.SCREEN_WIDTH
+screen_height = constant.SCREEN_HEIGHT
 
-screen = pygame.display.set_mode((constant.SCREEN_WIDTH, constant.SCREEN_HEIGHT))
-pygame.display.set_caption("Simple Platformer")
+BLUR_OVERLAY = (0, 0, 0, 130)
+PRESET_COLOURS = {
+    "red": (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue": (0, 0, 255),
+    "black": (0, 0, 0),
+    "white": (255, 255, 255),
+    "yellow": (255, 255, 0),
+    "heavy_green": (24, 175, 24),
+}
 
-# Initialize Game Manager
-game_manager = GameManager(screen)
-game_manager.new_game()
+menu_music_played = False
+bg_music_played = False
 
-# Game loop
-running = True
-clock = pygame.time.Clock()
-mapSpawner = MapSpawner(screen, 1)
-mapSpawner.spawnMap(0)
-
-while running:
-    screen.fill((255, 255, 255))
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and not is_jumping:
-                character_speed_y = jump_speed
-                is_jumping = True
-
-    mapSpawner.renderMap()
-
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Night City")
+game_state = {
+    "menu": True,
+    "game": False,
+    "pause": False,
+    "game_over": False,
+}
 
 
-    pygame.display.flip()
-    clock.tick(60)
+def blur_surface(surface, amount):
+    array = pygame.surfarray.pixels3d(surface)
+    for _ in range(amount):
+        array[1:, :] = (array[1:, :] + array[:-1, :]) // 2
+        array[:, 1:] = (array[:, 1:] + array[:, :-1]) // 2
+        array[1:, :] = (array[1:, :] + array[:-1, :]) // 2
+        array[:, 1:] = (array[:, 1:] + array[:, :-1]) // 2
+    return surface
 
-pygame.quit()
+
+# background_music=pygame.mixer.Sound("") ##! cần cập nhật sau
+
+
+def setup_sound():
+    SoundPlayer.get_instance().load_sound("click", "assets/musics/click.wav")
+    pass
+
+
+def play_menu_music():
+    global menu_music_played
+    if not menu_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music.mp3")
+        # SoundPlayer.get_instance().set_music_volume(1.0)
+        menu_music_played = True
+
+
+def play_bg_music():
+    global bg_music_played
+    if not bg_music_played:
+        SoundPlayer.get_instance().play_music("assets/musics/bg_music2.mp3")
+        # SoundPlayer.get_instance().set_music_volume(1.0)
+        bg_music_played = True
+
+
+def main():
+    clock = pygame.time.Clock()
+    running = True
+    setup_sound()
+    game_manager = GameManager(screen)
+    main_menu = MainMenu(
+        screen, "images/menu_background_image.jpeg", "", "", game_manager
+    )
+    game_menu = GameMenu(screen, "", None, game_manager)
+    pause_menu = PauseMenu(screen, None, None, 0, game_manager)
+    game_over_menu = GameOverMenu(screen, None, False, game_manager)
+    # temp_gameplay_test = pygame.image.load("images/menu_background_image.png")
+
+    # Init soundplayer
+
+    while running:
+        screen.fill((0, 0, 0))
+        if game_state["menu"]:
+            play_menu_music()
+            # SoundPlayer.get_instance().play_sound("menu", -1)
+            main_menu.update(game_state)
+        elif game_state["game"]:
+            # play_bg_music()
+            # SoundPlayer.get_instance().stop_sound("menu")
+            # SoundPlayer.get_instance().play_sound("bg", -1)
+            if game_menu.start_time is None:
+                game_menu.start_time = pygame.time.get_ticks()
+            ##! gameplay here
+            # screen.blit(temp_gameplay_test, (0, 0))
+            game_manager.update()
+            if game_manager.boss_is_dead:
+                game_over_menu.player_win = True
+                end_screen = screen.copy()  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
+                game_state["game"] = False  ##! xóa sau khi finalize
+                game_state["game_over"] = True  ##! xóa sau khi finalize
+            if game_manager.player_is_dead:
+                game_over_menu.player_win = False
+                end_screen = screen.copy()  ##! xóa sau khi finalize
+                end_screen = blur_surface(end_screen, 5)  ##! xóa sau khi finalize
+                game_state["game"] = False  ##! xóa sau khi finalize
+                game_state["game_over"] = True  ##! xóa sau khi finalize
+            game_menu.update(pause_menu.pause_time)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+                        game_state["pause"] = True
+                        game_state["game"] = False
+                        paused_screen = screen.copy()
+                        paused_screen = blur_surface(paused_screen, 5)
+                        pause_menu.pause_time_start = pygame.time.get_ticks()
+                    # if event.key == pygame.K_SPACE:  ##! xóa sau khi finalize
+                    #     end_screen = screen.copy()  ##! xóa sau khi finalize
+                    #     end_screen = blur_surface(
+                    #         end_screen, 5
+                    #     )  ##! xóa sau khi finalize
+                    #     game_state["game"] = False  ##! xóa sau khi finalize
+                    #     game_state["game_over"] = True  ##! xóa sau khi finalize
+
+        elif game_state["pause"]:
+            screen.blit(paused_screen, (0, 0))
+            pause_menu.start_time = game_menu.start_time
+            pause_menu.update(game_state)
+            game_menu.start_time = pause_menu.start_time
+
+        elif game_state["game_over"]:
+            screen.blit(end_screen, (0, 0))
+            game_over_menu.start_time = game_menu.start_time
+            game_over_menu.update(game_state)
+            game_menu.start_time = game_over_menu.start_time
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+    sys.exit()
+
+
+if __name__ == "__main__":
+    main()

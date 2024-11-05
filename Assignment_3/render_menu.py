@@ -32,7 +32,7 @@ menu_music_played = False
 bg_music_played = False
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Mario")
+pygame.display.set_caption("Night City")
 game_state = {
     "menu": True,
     "game": False,
