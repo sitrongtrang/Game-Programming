@@ -29,7 +29,7 @@ class MapSpawner:
             try:
                 bg_image = pygame.image.load(bg_folder).convert()
                 scale_bg = pygame.transform.scale(bg_image, (constant.SCREEN_WIDTH, constant.SCREEN_HEIGHT))
-                self.backgrounds.append(scale_bg)
+                self.backgrounds.extend([scale_bg for _ in range(4)])
             except pygame.error as e:
                 print(f"Could not load background image {bg_folder}: {e}")
     
@@ -38,7 +38,7 @@ class MapSpawner:
             raise IndexError(f"Map ID {mapId} is out of range.")
         
         mapFile = self.mapFolders[mapId]
-        size = (10, 20)  # Adjust based on your map size
+        size = (30, 100)  # Adjust based on your map size
         
         self.tilemap = Tilemap(self.tileSetFolder, mapFile, size)
         # Initialize the map with all background layers

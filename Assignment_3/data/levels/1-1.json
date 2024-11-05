@@ -1,0 +1,25 @@
+{
+    "Player" :{
+        "x" :7,
+        "y" : 6
+    }
+    ,
+    # Temporal
+    "Coins": {
+        (3,11),
+        (42,14)
+    },
+    "Enemies": {
+        (10, 10),
+        (20, 20)
+    },
+    "Boss": {
+
+    },
+    "Barrels":{
+
+    },
+    "BulletItems" : {
+
+    },
+}
