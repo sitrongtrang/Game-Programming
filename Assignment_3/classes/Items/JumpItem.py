@@ -5,6 +5,7 @@ class JumpItem(BaseItem):
     JUMP_COEFF  = 2
     def __init__(self, all_sprites, x, y, width=constant.TILE_SIZE, height=constant.TILE_SIZE):
         super().__init__(all_sprites, x, y, width, height)
+        self.load_img("assets\\sprites\\items\\jump.png")
 
     def takeEffect(self, character):
         self.char_jump_before = character.jump
