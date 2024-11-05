@@ -50,10 +50,10 @@ class BaseItem(pygame.sprite.Sprite):
 
     def load_img(self, filePath):
         try:
-            # Load the bullet image
+            # Load the  image
             self.image = pygame.image.load(filePath).convert_alpha()
             # Scale the image to fit the dimensions of self.img
-            #self.image = pygame.transform.scale(self.image, self.image.get_size())
+            self.image = pygame.transform.scale(self.image, self.image.get_size())
         except pygame.error:
             print("Unable to load item image.")
             raise SystemExit
