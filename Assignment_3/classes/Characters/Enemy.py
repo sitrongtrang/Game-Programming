@@ -38,7 +38,6 @@ class Enemy(Character):
         self.setup_animations()
 
     def setup_animations(self):
-        print("Go add enemy")
         self.animator.add_animation("idle_left", 'assets\\animations\\enemy\\idle_left.png', (32, 48), 4, 0.2, 16)
         self.animator.add_animation("idle_right", 'assets\\animations\\enemy\\idle_right.png', (32, 48), 4, 0.2, 16)
 

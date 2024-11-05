@@ -106,6 +106,9 @@ class Character(pygame.sprite.Sprite):
     def setBullet(self, bullet):
         self.bullet = min(bullet, constant.BULLET_LIMIT)
 
+    def setJump(self, jump):
+        self.jump_power = jump
+
     def draw(self, screen, camera_x=0):
         screen.blit(
             self.image,

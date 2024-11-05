@@ -76,11 +76,11 @@ class GameManager:
             self.enemies.add(enemy)
 
         if boss_data:
-            self.boss = Boss(self.all_sprites, boss_data['x'] * 32, boss_data['y'] * 32, 32, 32)
+            self.boss = Boss(self.all_sprites, boss_data['x'] * 32, boss_data['y'] * 32 - 32, 64, 64)
             self.enemies.add(self.boss)
 
         for barrel_data in barrels_data:
-            barrel = Barrel(self.all_sprites, barrel_data['x'] * 32, barrel_data['y'] * 32)
+            barrel = Barrel(self.all_sprites, barrel_data['x'] * 32, barrel_data['y'] * 32, self)
             self.barrels.add(barrel)
 
         for bullet_data in bullets_data:
@@ -88,7 +88,7 @@ class GameManager:
             self.items.add(bullet)
 
         if shop_data:
-            self.shop = Shop(self.all_sprites, shop_data['x']* 32, shop_data['y']* 32, 64, 64)
+            self.shop = Shop(self.all_sprites, shop_data['x']* 32, shop_data['y']* 32 - 32, 64, 64)
         
         self.total_bg_width = self.mapSpawner.tilemap.map_width
 
