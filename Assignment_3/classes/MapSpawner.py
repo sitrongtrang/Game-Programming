@@ -9,13 +9,22 @@ class MapSpawner:
         self.mapNumber = mapNumber
         
         self.mapFolders = [
-            os.path.join("data", "maps", "TestMap.csv")
+            os.path.join("data", "maps", "1-1.csv")
         ]
         
         self.tileSetFolder = os.path.join("assets", "maps", "tileset.png")
         self.backgroundFolders = [
             os.path.join("assets", "maps", "Background1.png"),
             os.path.join("assets", "maps", "Background2.png"),
+            os.path.join("assets", "maps", "Background1.png"),
+            os.path.join("assets", "maps", "Background2.png"),
+            os.path.join("assets", "maps", "Background1.png"),
+            os.path.join("assets", "maps", "Background2.png"),
+            os.path.join("assets", "maps", "Background1.png"),
+            os.path.join("assets", "maps", "Background2.png"),
+            os.path.join("assets", "maps", "Background1.png"),
+            os.path.join("assets", "maps", "Background2.png"),
+            
             # Add more background layers as needed
         ]
         

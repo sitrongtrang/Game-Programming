@@ -5,13 +5,14 @@ from classes.Characters.Player import Player
 from classes.Characters.Enemy import Enemy
 from classes.Characters.Bullet import *
 from .Coin import Coin
-from .Platform import Platform
 from .CollisionManager import CollisionManager
-from .Tilemap import Tilemap
 from .MapSpawner import MapSpawner
 from data import constant
 from .PlatformManager import PlatformManager
 from classes.Characters.Barrel import Barrel
+from classes.Items.BulletItem import BulletItem
+import json
+
 class GameManager:
     # def __init__(self, screen, player, enemies, platforms, items, coins):
     def __init__(self, screen):
@@ -50,40 +51,44 @@ class GameManager:
         self.barrels = pygame.sprite.Group()
         self.platforms = self.platform_manager.platforms
 
-        # if self.tile_map.player_position:
-        #     player_x, player_y = self.tile_map.player_position
-        #     self.player = Player(self.all_sprites, player_x, player_y, constant.TILE_SIZE, constant.TILE_SIZE)
+        with open("data/levels/" + self.level + ".json", 'r') as f:
+            self.entities = json.load(f)
+
+        player_data = self.entities['Player']
+        coins_data = self.entities['Coins']
+        enemies_data = self.entities['Enemies']
+        boss_data = self.entities['Boss']
+        barrels_data = self.entities['Barrels']
+        bullets_data = self.entities['BulletItems']
+        shop_data = self.entities['Shop']
+
+        if player_data:
+            self.player = Player(self.all_sprites, player_data['x'], player_data['y'], 32, 32)
+
+        for coin_data in coins_data:
+            coin = Coin(self.all_sprites, coin_data['x'], coin_data['y'], 32, 32)
+            self.coins.add(coin)
+
+        for enemy_data in enemies_data:
+            enemy = Enemy(self.all_sprites, enemy_data['x'], enemy_data['y'], 32, 32)
+            self.enemies.add(enemy)
+
+        if boss_data:
+            self.boss = Boss(self.all_sprites, boss_data['x'], boss_data['y'], 32, 32)
+            self.enemies.add(self.boss)
+
+        for barrel_data in barrels_data:
+            barrel = Barrel(self.all_sprites, barrel_data['x'], barrel_data['y'])
+            self.barrels.add(barrel)
+
+        for bullet_data in bullets_data:
+            bullet = BulletItem(self.all_sprites, bullet_data['x'], bullet_data['y'], 32, 32)
+            self.items.add(bullet)
+
+        # if shop_data:
+        #     self.shop = Shop()
         
-        # if self.tile_map.boss_position:
-        #     boss_x, boss_y = self.tile_map.boss_position
-        #     self.boss = Boss(self.all_sprites, boss_x, boss_y, constant.TILE_SIZE, constant.TILE_SIZE)
-        #     self.enemies.add(self.boss)
 
-        # # Initialize Enemies
-        # for enemy_pos in self.tile_map.enemy_positions:
-        #     enemy_x, enemy_y = enemy_pos
-        #     enemy = Enemy(self.all_sprites, enemy_x, enemy_y, constant.TILE_SIZE, constant.TILE_SIZE)
-        #     self.enemies.add(enemy)
-
-        # # Initialize Platforms
-        # for platform_pos in self.tile_map.platform_positions:
-        #     platform_x, platform_y = platform_pos
-        #     platform = Platform(self.all_sprites, platform_x, platform_y, constant.TILE_SIZE, constant.TILE_SIZE)
-        #     self.platforms.add(platform)
-
-        # # Initialize Items
-        # for item_pos in self.tile_map.item_positions:
-        #     item_x, item_y = item_pos
-        #     item = DmgItem(self.all_sprites, item_x, item_y, constant.TILE_SIZE, constant.TILE_SIZE)
-        #     self.items.add(item)
-
-        # # Initialize Coins
-        # for coin_pos in self.tile_map.coin_positions:
-        #     coin_x, coin_y = coin_pos
-        #     coin = Coin(self.all_sprites, coin_x, coin_y, constant.TILE_SIZE, constant.TILE_SIZE)
-        #     self.coins.add(coin)
-
-        self.player = Player(self.all_sprites, 100, 300, 32, 32)
         self.boss = Boss(self.all_sprites, 1000, 300, 1000, 1000)
         barrels = [(10, 30), (600, 300), (700, 300), (800, 300), (900, 300)]
         enemy = Enemy(self.all_sprites, 300, 300, 48, 48) 
