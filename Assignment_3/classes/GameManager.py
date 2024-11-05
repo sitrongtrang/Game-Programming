@@ -92,7 +92,8 @@ class GameManager:
         self.enemies.add(self.boss)
         for barrels in barrels:
             self.barrels.add(Barrel(self.all_sprites, *barrels))
-        self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
+        # self.total_bg_width = len(self.mapSpawner.backgroundFolders) * constant.SCREEN_WIDTH
+        self.total_bg_width = self.mapSpawner.tilemap.map_width
 
         self.collision_manager = CollisionManager(self)
         self.player_coins = 0
